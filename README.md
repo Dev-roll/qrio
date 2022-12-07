@@ -1,4 +1,4 @@
-# qrio
+# QR I/O
 
 ![checks](https://img.shields.io/github/checks-status/Dev-roll/qrio/main)
 ![release](https://img.shields.io/github/v/release/Dev-roll/qrio)
