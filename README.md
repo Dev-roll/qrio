@@ -1,16 +1,35 @@
 # qrio
 
-A new Flutter project.
+![checks](https://img.shields.io/github/checks-status/Dev-roll/qrio/main)
+![release](https://img.shields.io/github/v/release/Dev-roll/qrio)
 
-## Getting Started
+## Supported Platforms
 
-This project is a starting point for a Flutter application.
+QR I/O has been built to support multiple platforms. These include:
 
-A few resources to get you started if this is your first Flutter project:
+- Android <!-- ([Google Play]()) -->
+- iOS <!-- ([App Store]()) -->
+- Web <!-- ([]()) -->
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Development
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This project uses [Flutter](https://flutter.dev).
+
+Install the following tools, if you don't have them already:
+
+- [Flutter](https://flutter.dev/docs/get-started/install)
+- [Firebase CLI](https://firebase.google.com/docs/cli#install_the_firebase_cli)
+
+One can run this app locally for any of these platforms.
+To develop locally, clone this repository and run the following commands:
+
+```bash
+flutter pub get
+flutter run
+```
+
+## Contributers
+
+- [@notchcoder](https://github.com/notchcoder)
+- [@cardseditor](https://github.com/cardseditor)
+- [@keigomichi](https://github.com/keigomichi)
