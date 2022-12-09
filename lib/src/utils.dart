@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'widgets/select_theme_dialog.dart';
-
 ThemeMode stringToThemeMode(String theme) {
   switch (theme) {
     case 'light':
@@ -26,11 +24,4 @@ String themeModeToString(ThemeMode themeMode) {
     default:
       throw Error();
   }
-}
-
-void openSelectThemeDialog(BuildContext context) {
-  showDialog<void>(
-    context: context,
-    builder: (context) => SelectThemeDialog(),
-  );
 }

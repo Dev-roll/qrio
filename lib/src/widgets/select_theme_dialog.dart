@@ -8,8 +8,8 @@ import '../utils.dart';
 
 class SelectThemeDialog extends ConsumerWidget {
   SelectThemeDialog({Key? key}) : super(key: key);
-  final temporaryThemeProvider =
-      StateProvider((ref) => ref.watch(themeProvider));
+  final temporaryThemeModeProvider =
+      StateProvider((ref) => ref.watch(themeModeProvider));
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,25 +17,25 @@ class SelectThemeDialog extends ConsumerWidget {
         title: const Text("テーマの選択"),
         content: Column(
             mainAxisSize: MainAxisSize.min,
-            children: selectThemeOption
+            children: selectThemeOptions
                 .map((e) => RadioListTile<ThemeMode>(
                     title: Text(e['label']),
+                    activeColor: Theme.of(context).colorScheme.primary,
                     value: e['value'],
-                    groupValue: ref.watch(temporaryThemeProvider),
+                    groupValue: ref.watch(temporaryThemeModeProvider),
                     onChanged: (ThemeMode? value) => ref
-                        .read(temporaryThemeProvider.notifier)
+                        .read(temporaryThemeModeProvider.notifier)
                         .state = value!))
                 .toList(growable: false)),
         actions: <Widget>[
           TextButton(
-            child: const Text('キャンセル'),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
+              child: const Text('キャンセル'),
+              onPressed: () => Navigator.of(context).pop()),
           TextButton(
               child: const Text('OK'),
               onPressed: () async {
-                final selectedTheme = ref.watch(temporaryThemeProvider);
-                ref.read(themeProvider.notifier).state = selectedTheme;
+                final selectedTheme = ref.watch(temporaryThemeModeProvider);
+                ref.read(themeModeProvider.notifier).state = selectedTheme;
                 final SharedPreferences prefs =
                     await SharedPreferences.getInstance();
                 await prefs.setString(

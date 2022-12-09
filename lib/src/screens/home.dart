@@ -12,8 +12,17 @@ class Home extends ConsumerWidget {
         appBar: AppBar(actions: const <Widget>[DefaultPopupMenu()]),
         body: Center(
             child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[],
-        )));
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    // ignore: deprecated_member_use
+                    onPrimary: Theme.of(context).colorScheme.onPrimary,
+                    // ignore: deprecated_member_use
+                    primary: Theme.of(context).colorScheme.primary,
+                  ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+                  onPressed: () => {},
+                  child: const Text('Filled'))
+            ])));
   }
 }
