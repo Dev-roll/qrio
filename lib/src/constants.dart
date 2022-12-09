@@ -2,15 +2,23 @@ import 'package:flutter/material.dart';
 
 const Color baseColor = Colors.blue;
 
-const List<Map<String, dynamic>> popupMenuItems = [
-  {'label': '履歴', 'value': DefaultPopupMenuType.history},
-  {'label': 'このアプリについて', 'value': DefaultPopupMenuType.about},
-  {'label': 'テーマの選択', 'value': DefaultPopupMenuType.selectTheme},
-  {'label': 'プライバシーポリシー', 'value': DefaultPopupMenuType.privacyPolicy},
-  {'label': '利用規約', 'value': DefaultPopupMenuType.terms}
+enum DefaultPopupMenuItemsType {
+  history,
+  about,
+  selectTheme,
+  privacyPolicy,
+  terms
+}
+
+const List<Map<String, dynamic>> defaultPopupMenuItems = [
+  {'label': '履歴', 'value': DefaultPopupMenuItemsType.history},
+  {'label': 'このアプリについて', 'value': DefaultPopupMenuItemsType.about},
+  {'label': 'テーマの選択', 'value': DefaultPopupMenuItemsType.selectTheme},
+  {'label': 'プライバシーポリシー', 'value': DefaultPopupMenuItemsType.privacyPolicy},
+  {'label': '利用規約', 'value': DefaultPopupMenuItemsType.terms}
 ];
 
-const List<Map<String, dynamic>> selectThemeOption = [
+const List<Map<String, dynamic>> selectThemeOptions = [
   {'label': 'ライト', 'value': ThemeMode.light},
   {'label': 'ダーク', 'value': ThemeMode.dark},
   {'label': 'システムのデフォルト', 'value': ThemeMode.system}

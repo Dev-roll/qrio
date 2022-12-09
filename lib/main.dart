@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'src/screens/home.dart';
 import 'src/utils.dart';
 
-final themeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.system);
+final themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.system);
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
