@@ -16,6 +16,7 @@ class DefaultPopupMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<DefaultPopupMenuItemsType>(
+        position: PopupMenuPosition.under,
         onSelected: ((value) {
           switch (value) {
             case DefaultPopupMenuItemsType.selectTheme:
