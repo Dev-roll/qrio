@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum DefaultPopupMenuType { history, about, selectTheme, privacyPolicy, terms }
+const Color baseColor = Colors.blue;
 
 const List<Map<String, dynamic>> popupMenuItems = [
   {'label': '履歴', 'value': DefaultPopupMenuType.history},
