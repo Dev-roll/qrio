@@ -4,9 +4,7 @@ import '../constants.dart';
 import '../utils.dart';
 
 class DefaultPopupMenu extends StatelessWidget {
-  const DefaultPopupMenu({
-    Key? key,
-  }) : super(key: key);
+  const DefaultPopupMenu({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -11,10 +11,9 @@ class Home extends ConsumerWidget {
     return Scaffold(
         appBar: AppBar(actions: const <Widget>[DefaultPopupMenu()]),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const <Widget>[],
-          ),
-        ));
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const <Widget>[],
+        )));
   }
 }
