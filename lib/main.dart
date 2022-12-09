@@ -26,6 +26,12 @@ class Qrio extends ConsumerWidget {
         builder: ((context, ref, _) => MaterialApp(
               debugShowCheckedModeBanner: false,
               title: 'qrio',
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [Locale('ja', 'JP')],
               themeMode: ref.watch(themeProvider),
               theme: ThemeData(
                   useMaterial3: true,
