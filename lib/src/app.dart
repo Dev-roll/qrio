@@ -1,3 +1,15 @@
+import 'package:dynamic_color/dynamic_color.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../main.dart';
+import 'constants.dart';
+import 'screens/home.dart';
+
+class App extends ConsumerWidget {
+  const App({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
@@ -28,3 +40,4 @@
           home: const Home());
     }));
   }
+}
