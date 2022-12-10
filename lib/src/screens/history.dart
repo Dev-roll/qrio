@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // import '../utils.dart';
-import '../utils.dart';
+// import '../utils.dart';
 import '../widgets/default_popup_menu.dart';
 
 final FutureProvider futureProvider = FutureProvider<dynamic>((ref) async {
@@ -17,6 +17,7 @@ class History extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final _ = ref.refresh(futureProvider);
     final asyncValue = ref.watch(futureProvider);
     return asyncValue.when(
       error: (err, _) => Text(err.toString()), //エラー時
@@ -29,16 +30,14 @@ class History extends ConsumerWidget {
               DefaultPopupMenu(),
             ],
           ),
-          floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.refresh),
-            onPressed: () {
-              // 状態を更新する
-              historyList.add('hoge');
-              // historyList = [];
-              updateHistory(historyList);
-              final _ = ref.refresh(futureProvider);
-            },
-          ),
+          // floatingActionButton: FloatingActionButton(
+          //   child: const Icon(Icons.refresh),
+          //   onPressed: () {
+          //     // 状態を更新する
+          //     // updateHistory('hoge');
+          //     final _ = ref.refresh(futureProvider);
+          //   },
+          // ),
           body: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
