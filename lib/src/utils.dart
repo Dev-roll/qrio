@@ -31,8 +31,15 @@ String themeModeToString(ThemeMode themeMode) {
 updateHistory(data) async {
   final prefs = await SharedPreferences.getInstance();
   final List<String> historyList = prefs.getStringList('qrio_history') ?? [];
-  historyList.add(data);
-  await prefs.setStringList('qrio_history', historyList);
+  if (historyList.isNotEmpty) {
+    if (historyList.last != data) {
+      historyList.add(data);
+      await prefs.setStringList('qrio_history', historyList);
+    }
+  } else {
+    historyList.add(data);
+    await prefs.setStringList('qrio_history', historyList);
+  }
   // await prefs.setStringList('qrio_history', []);
   // final FutureProvider futureProvider = FutureProvider<dynamic>((ref) async {
   //   final prefs = await SharedPreferences.getInstance();
