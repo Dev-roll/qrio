@@ -48,69 +48,41 @@ class _ScanCodeState extends State<ScanCode> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Stack(
-        alignment: AlignmentDirectional.center,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                margin: const EdgeInsets.all(8),
-                child: FutureBuilder(
-                  future: controller?.getFlashStatus(),
-                  builder: (context, snapshot) {
-                    if (snapshot.data != null && snapshot.data == true) {
-                      return IconButton(
-                        onPressed: () async {
-                          await controller?.toggleFlash();
-                          setState(() {});
-                        },
-                        icon: const Icon(Icons.flashlight_on_rounded),
-                        padding: const EdgeInsets.all(20),
-                        style: IconButton.styleFrom(
-                          foregroundColor:
-                              Theme.of(context).colorScheme.secondaryContainer,
-                          backgroundColor: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer,
-                        ),
-                      );
-                    } else {
-                      return IconButton(
-                        onPressed: () async {
-                          await controller?.toggleFlash();
-                          setState(() {});
-                        },
-                        icon: const Icon(Icons.flashlight_off_rounded),
-                        padding: const EdgeInsets.all(20),
-                        style: IconButton.styleFrom(
-                          foregroundColor: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.secondaryContainer,
-                        ),
-                      );
-                    }
-                  },
-                ),
+      floatingActionButton: FutureBuilder(
+        future: controller?.getFlashStatus(),
+        builder: (context, snapshot) {
+          if (snapshot.data != null && snapshot.data == true) {
+            return IconButton(
+              onPressed: () async {
+                await controller?.toggleFlash();
+                setState(() {});
+              },
+              icon: const Icon(Icons.flashlight_on_rounded),
+              padding: const EdgeInsets.all(20),
+              style: IconButton.styleFrom(
+                foregroundColor:
+                    Theme.of(context).colorScheme.secondaryContainer,
+                backgroundColor:
+                    Theme.of(context).colorScheme.onSecondaryContainer,
               ),
-              const SizedBox(
-                width: 200,
-              )
-            ],
-          ),
-          FloatingActionButton.large(
-            onPressed: () {
-              // Navigator.of(context).push(
-              //   MaterialPageRoute(builder: (context) {
-              //     return const hoge();
-              //   }),
-              // );
-            },
-            child: const Icon(Icons.qr_code_2_rounded),
-          ),
-        ],
+            );
+          } else {
+            return IconButton(
+              onPressed: () async {
+                await controller?.toggleFlash();
+                setState(() {});
+              },
+              icon: const Icon(Icons.flashlight_off_rounded),
+              padding: const EdgeInsets.all(20),
+              style: IconButton.styleFrom(
+                foregroundColor:
+                    Theme.of(context).colorScheme.onSecondaryContainer,
+                backgroundColor:
+                    Theme.of(context).colorScheme.secondaryContainer,
+              ),
+            );
+          }
+        },
       ),
       // bottomNavigationBar: Container(
       //   padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
