@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../main.dart';
 import 'constants.dart';
+// import 'screens/history.dart';
 import 'screens/home.dart';
 
 class App extends ConsumerWidget {
@@ -37,6 +38,7 @@ class App extends ConsumerWidget {
           theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
           darkTheme:
               ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
+          // home: const History());
           home: const Home());
     }));
   }
