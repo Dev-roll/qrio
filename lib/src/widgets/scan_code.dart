@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:flutter/foundation.dart';
+import 'package:qrio/src/screens/history.dart';
+import 'package:qrio/src/utils.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -121,6 +123,37 @@ class _ScanCodeState extends State<ScanCode> {
             },
             child: const Icon(Icons.qr_code_2_rounded),
           ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(
+                width: 200,
+              ),
+              Container(
+                margin: const EdgeInsets.all(8),
+                child: IconButton(
+                  onPressed: () {
+                    controller?.pauseCamera();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) {
+                        return const History();
+                      }),
+                    ).then((value) {
+                      controller?.resumeCamera();
+                    });
+                  },
+                  icon: const Icon(Icons.history_rounded),
+                  padding: const EdgeInsets.all(20),
+                  style: IconButton.styleFrom(
+                    foregroundColor:
+                        Theme.of(context).colorScheme.onSecondaryContainer,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.secondaryContainer,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
       bottomNavigationBar: Container(
@@ -227,6 +260,8 @@ class _ScanCodeState extends State<ScanCode> {
         } else if (describeEnum(scanData.format) == 'qrcode') {
           final str = scanData.code.toString();
           final nowDate = DateTime.now();
+          await updateHistory(scanData.code.toString());
+          if (!mounted) return;
           if (openUrl != str ||
               nowDate.difference(_lastChangedDate).inSeconds >= linkTime) {
             openUrl = str;
