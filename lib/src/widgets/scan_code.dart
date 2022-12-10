@@ -260,7 +260,7 @@ class _ScanCodeState extends State<ScanCode> {
         } else if (describeEnum(scanData.format) == 'qrcode') {
           final str = scanData.code.toString();
           final nowDate = DateTime.now();
-          await updateHistory(scanData.code.toString());
+          await updateHistory(scanData.code.toString().trim());
           if (!mounted) return;
           if (openUrl != str ||
               nowDate.difference(_lastChangedDate).inSeconds >= linkTime) {
