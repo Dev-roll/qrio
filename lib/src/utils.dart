@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 ThemeMode stringToThemeMode(String theme) {
   switch (theme) {
@@ -24,4 +26,14 @@ String themeModeToString(ThemeMode themeMode) {
     default:
       throw Error();
   }
+}
+
+updateHistory(data) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setStringList('qrio_history', data);
+  // final FutureProvider futureProvider = FutureProvider<dynamic>((ref) async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   final List<String> historyList = prefs.getStringList('qrio_history') ?? [];
+  //   return historyList;
+  // });
 }
