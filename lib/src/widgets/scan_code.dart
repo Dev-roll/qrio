@@ -39,17 +39,6 @@ class _ScanCodeState extends State<ScanCode> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        systemNavigationBarColor: Theme.of(context).colorScheme.onSecondary,
-        // systemNavigationBarIconBrightness: ThemeData(),
-        // statusBarColor: Theme.of(context).colorScheme.onSecondary,
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.dark,
-      ),
-      // SystemUiOverlayStyle.dark,
-    );
-
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -123,19 +112,20 @@ class _ScanCodeState extends State<ScanCode> {
           ),
         ],
       ),
-      bottomNavigationBar: Container(
-        color: Theme.of(context).colorScheme.onSecondary,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (result != null)
-              Text(
-                  'Type: ${describeEnum(result!.format)}, Data: ${result!.code}'),
-            if (result == null) const Text('Scan a code'),
-          ],
-        ),
-      ),
+      // bottomNavigationBar: Container(
+      //   padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+      //   height: 120,
+      //   color: Colors.transparent,
+      //   child: Column(
+      //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //     children: [
+      //       if (result != null)
+      //         Text(
+      //             'Type: ${describeEnum(result!.format)}, Data: ${result!.code}'),
+      //       if (result == null) const Text('Scan a code'),
+      //     ],
+      //   ),
+      // ),
     );
   }
 
