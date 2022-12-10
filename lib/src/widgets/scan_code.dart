@@ -41,17 +41,6 @@ class _ScanCodeState extends State<ScanCode> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        systemNavigationBarColor: Theme.of(context).colorScheme.onSecondary,
-        // systemNavigationBarIconBrightness: ThemeData(),
-        // statusBarColor: Theme.of(context).colorScheme.onSecondary,
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.dark,
-      ),
-      // SystemUiOverlayStyle.dark,
-    );
-
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -61,114 +50,56 @@ class _ScanCodeState extends State<ScanCode> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Stack(
-        alignment: AlignmentDirectional.center,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                margin: const EdgeInsets.all(8),
-                child: FutureBuilder(
-                  future: controller?.getFlashStatus(),
-                  builder: (context, snapshot) {
-                    if (snapshot.data != null && snapshot.data == true) {
-                      return IconButton(
-                        onPressed: () async {
-                          await controller?.toggleFlash();
-                          setState(() {});
-                        },
-                        icon: const Icon(Icons.flashlight_on_rounded),
-                        padding: const EdgeInsets.all(20),
-                        style: IconButton.styleFrom(
-                          foregroundColor:
-                              Theme.of(context).colorScheme.secondaryContainer,
-                          backgroundColor: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer,
-                        ),
-                      );
-                    } else {
-                      return IconButton(
-                        onPressed: () async {
-                          await controller?.toggleFlash();
-                          setState(() {});
-                        },
-                        icon: const Icon(Icons.flashlight_off_rounded),
-                        padding: const EdgeInsets.all(20),
-                        style: IconButton.styleFrom(
-                          foregroundColor: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.secondaryContainer,
-                        ),
-                      );
-                    }
-                  },
-                ),
+      floatingActionButton: FutureBuilder(
+        future: controller?.getFlashStatus(),
+        builder: (context, snapshot) {
+          if (snapshot.data != null && snapshot.data == true) {
+            return IconButton(
+              onPressed: () async {
+                await controller?.toggleFlash();
+                setState(() {});
+              },
+              icon: const Icon(Icons.flashlight_on_rounded),
+              padding: const EdgeInsets.all(20),
+              style: IconButton.styleFrom(
+                foregroundColor:
+                    Theme.of(context).colorScheme.secondaryContainer,
+                backgroundColor:
+                    Theme.of(context).colorScheme.onSecondaryContainer,
               ),
-              const SizedBox(
-                width: 200,
-              )
-            ],
-          ),
-          FloatingActionButton.large(
-            onPressed: () {
-              // Navigator.of(context).push(
-              //   MaterialPageRoute(builder: (context) {
-              //     return const hoge();
-              //   }),
-              // );
-            },
-            child: const Icon(Icons.qr_code_2_rounded),
-          ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(
-                width: 200,
+            );
+          } else {
+            return IconButton(
+              onPressed: () async {
+                await controller?.toggleFlash();
+                setState(() {});
+              },
+              icon: const Icon(Icons.flashlight_off_rounded),
+              padding: const EdgeInsets.all(20),
+              style: IconButton.styleFrom(
+                foregroundColor:
+                    Theme.of(context).colorScheme.onSecondaryContainer,
+                backgroundColor:
+                    Theme.of(context).colorScheme.secondaryContainer,
               ),
-              Container(
-                margin: const EdgeInsets.all(8),
-                child: IconButton(
-                  onPressed: () {
-                    controller?.pauseCamera();
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) {
-                        return const History();
-                      }),
-                    ).then((value) {
-                      controller?.resumeCamera();
-                    });
-                  },
-                  icon: const Icon(Icons.history_rounded),
-                  padding: const EdgeInsets.all(20),
-                  style: IconButton.styleFrom(
-                    foregroundColor:
-                        Theme.of(context).colorScheme.onSecondaryContainer,
-                    backgroundColor:
-                        Theme.of(context).colorScheme.secondaryContainer,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
+            );
+          }
+        },
       ),
-      bottomNavigationBar: Container(
-        color: Theme.of(context).colorScheme.onSecondary,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (result != null)
-              Text(
-                  'Type: ${describeEnum(result!.format)}, Data: ${result!.code}'),
-            if (result == null) const Text('Scan a code'),
-          ],
-        ),
-      ),
+      // bottomNavigationBar: Container(
+      //   padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+      //   height: 120,
+      //   color: Colors.transparent,
+      //   child: Column(
+      //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //     children: [
+      //       if (result != null)
+      //         Text(
+      //             'Type: ${describeEnum(result!.format)}, Data: ${result!.code}'),
+      //       if (result == null) const Text('Scan a code'),
+      //     ],
+      //   ),
+      // ),
     );
   }
 
