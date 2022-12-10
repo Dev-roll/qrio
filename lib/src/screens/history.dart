@@ -3,34 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // import '../utils.dart';
+import '../utils.dart';
 import '../widgets/default_popup_menu.dart';
 
 final FutureProvider futureProvider = FutureProvider<dynamic>((ref) async {
   final prefs = await SharedPreferences.getInstance();
-  await prefs.setStringList('items', [
-    'https://github.com/Dev-roll/thundercard',
-    'https://github.com/cardseditor/portfolio',
-    'https://twitter.com/cardseditor',
-    'https://www.instagram.com/cardseditor/',
-    'https://flutter.dev/',
-    'https://pub.dev/packages/shared_preferences',
-    'https://pub.dev/packages/qr_flutter',
-    'https://nextjs.org/',
-    'https://zenn.dev/kazutxt/books/flutter_practice_introduction',
-    'https://qiita.com/advent-calendar/2022/gajeroll',
-    'https://github.com/Dev-roll/thundercard',
-    'https://github.com/cardseditor/portfolio',
-    'https://twitter.com/cardseditor',
-    'https://www.instagram.com/cardseditor/',
-    'https://flutter.dev/',
-    'https://pub.dev/packages/shared_preferences',
-    'https://pub.dev/packages/qr_flutter',
-    'https://nextjs.org/',
-    'https://zenn.dev/kazutxt/books/flutter_practice_introduction',
-    'https://qiita.com/advent-calendar/2022/gajeroll',
-  ]);
-  final List? items = prefs.getStringList('items');
-  return items;
+  final List<String> historyList = prefs.getStringList('qrio_history') ?? [];
+  return historyList;
 });
 
 class History extends ConsumerWidget {
@@ -39,37 +18,43 @@ class History extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncValue = ref.watch(futureProvider);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('履歴'),
-        actions: const <Widget>[
-          DefaultPopupMenu(),
-        ],
-      ),
-      // floatingActionButton: FloatingActionButton(
-      //   child: const Icon(Icons.refresh),
-      //   onPressed: () {
-      //     // 状態を更新する
-      //     ref.refresh(futureProvider);
-      //   },
-      // ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              asyncValue.when(
-                error: (err, _) => Text(err.toString()), //エラー時
-                loading: () => const CircularProgressIndicator(), //読み込み時
-                data: (data) {
-                  return Column(
-                    children: [
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      for (var i in data)
-                        Column(
+    return asyncValue.when(
+      error: (err, _) => Text(err.toString()), //エラー時
+      loading: () => const CircularProgressIndicator(), //読み込み時
+      data: (historyList) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('履歴'),
+            actions: const <Widget>[
+              DefaultPopupMenu(),
+            ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.refresh),
+            onPressed: () {
+              // 状態を更新する
+              historyList.add('hoge');
+              // historyList = [];
+              updateHistory(historyList);
+              final _ = ref.refresh(futureProvider);
+            },
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  children: [
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    for (var i in List.from(historyList.reversed))
+                      InkWell(
+                        child: Column(
                           children: [
+                            const SizedBox(
+                              height: 12,
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               mainAxisSize: MainAxisSize.max,
@@ -79,17 +64,15 @@ class History extends ConsumerWidget {
                                     const SizedBox(
                                       width: 36,
                                     ),
-                                    Expanded(
-                                      child: Text(
-                                        '$i',
-                                        style: TextStyle(
-                                          fontSize: 24,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onBackground,
-                                        ),
-                                        overflow: TextOverflow.clip,
+                                    Text(
+                                      '$i',
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
                                       ),
+                                      overflow: TextOverflow.clip,
                                     ),
                                   ],
                                 ),
@@ -115,18 +98,24 @@ class History extends ConsumerWidget {
                               ],
                             ),
                             const SizedBox(
-                              height: 24,
+                              height: 12,
                             ),
                           ],
                         ),
-                    ],
-                  );
-                }, //データ受け取り時
-              ),
-            ],
+                        onTap: () {
+                          // Navigator.of(context).push();
+                        },
+                      ),
+                    const SizedBox(
+                      height: 80,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }, //データ受け取り時
     );
   }
 }
