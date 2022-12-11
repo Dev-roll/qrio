@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/screens/history.dart';
+import 'package:qrio/src/utils.dart';
 import 'package:qrio/src/widgets/qr_i_o.dart';
 
 import '../widgets/default_popup_menu.dart';
@@ -34,17 +36,17 @@ class Home extends ConsumerWidget {
           const QRIO(),
           SizedBox.expand(
             child: DraggableScrollableSheet(
-              initialChildSize: 0.1,
-              minChildSize: 0.1,
+              initialChildSize: defaultSheetHeight,
+              minChildSize: defaultSheetHeight,
               maxChildSize: 1,
               builder:
                   (BuildContext context, ScrollController scrollController) {
                 return Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .background
-                        .withOpacity(0.7),
+                    color: alphaBlend(
+                      Theme.of(context).colorScheme.primary.withOpacity(0.12),
+                      Theme.of(context).colorScheme.background.withOpacity(0.6),
+                    ),
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(0),
                       topRight: Radius.circular(0),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-const Color baseColor = Colors.blue;
+const Color seedColor = Colors.blue;
 
 enum DefaultPopupMenuItemsType {
   history,
@@ -18,6 +18,8 @@ const List<Map<String, dynamic>> defaultPopupMenuItems = [
   {'label': 'プライバシーポリシー', 'value': DefaultPopupMenuItemsType.privacyPolicy},
   {'label': '利用規約', 'value': DefaultPopupMenuItemsType.terms}
 ];
+
+const defaultSheetHeight = 0.2;
 
 class SelectOption<T> {
   final String label;

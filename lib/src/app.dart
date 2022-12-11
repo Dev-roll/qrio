@@ -19,11 +19,11 @@ class App extends ConsumerWidget {
         builder: ((ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
       ColorScheme lightColorScheme = (lightDynamic != null)
           ? lightDynamic.harmonized()
-          : ColorScheme.fromSeed(seedColor: baseColor);
+          : ColorScheme.fromSeed(seedColor: seedColor);
       ColorScheme darkColorScheme = (darkDynamic != null)
           ? darkDynamic.harmonized()
           : ColorScheme.fromSeed(
-              seedColor: baseColor, brightness: Brightness.dark);
+              seedColor: seedColor, brightness: Brightness.dark);
 
       return MaterialApp(
           debugShowCheckedModeBanner: false,

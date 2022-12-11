@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/screens/editor.dart';
 import 'package:qrio/src/widgets/scan_code.dart';
 
@@ -94,7 +95,7 @@ class _QRIOState extends State<QRIO> with SingleTickerProviderStateMixin {
             ),
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.1 + 8,
+            height: MediaQuery.of(context).size.height * defaultSheetHeight + 8,
           ),
         ],
       ),
