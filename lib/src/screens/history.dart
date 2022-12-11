@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qrio/src/utils.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -108,19 +109,73 @@ class History extends ConsumerWidget {
                 height: 20,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const SizedBox(
-                    width: 32,
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 32,
+                      ),
+                      const Text('履歴'),
+                      const SizedBox(
+                        width: 28,
+                      ),
+                      Text(
+                        '${List.from(historyList).length}件',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ),
+                      ),
+                    ],
                   ),
-                  const Text('履歴'),
-                  const SizedBox(
-                    width: 28,
-                  ),
-                  Text(
-                    '${List.from(historyList).length}件',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
+                  Row(
+                    children: [
+                      List.from(historyList).isEmpty
+                          ? const IconButton(
+                              onPressed: null,
+                              icon: Icon(Icons.delete_rounded),
+                              padding: EdgeInsets.all(16.0),
+                            )
+                          : IconButton(
+                              onPressed: () async {
+                                await showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    icon: const Icon(Icons.delete_rounded),
+                                    title: const Text('削除'),
+                                    content: Text(
+                                      'すべての履歴を削除しますか？',
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurfaceVariant,
+                                      ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () =>
+                                              {Navigator.pop(context)},
+                                          onLongPress: null,
+                                          child: const Text('キャンセル')),
+                                      TextButton(
+                                        onPressed: () async {
+                                          Navigator.pop(context);
+                                          deleteHistory();
+                                        },
+                                        onLongPress: null,
+                                        child: const Text('すべて削除'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              icon: const Icon(Icons.delete_rounded),
+                              padding: const EdgeInsets.all(16.0),
+                            ),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                    ],
                   ),
                 ],
               ),

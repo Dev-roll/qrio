@@ -31,7 +31,9 @@ String themeModeToString(ThemeMode themeMode) {
 updateHistory(data) async {
   final prefs = await SharedPreferences.getInstance();
   final List<String> historyList = prefs.getStringList('qrio_history') ?? [];
-  if (historyList.isNotEmpty) {
+  if (data == []) {
+    await prefs.setStringList('qrio_history', []);
+  } else if (historyList.isNotEmpty) {
     if (historyList.last != data) {
       historyList.add(data);
       await prefs.setStringList('qrio_history', historyList);
@@ -46,4 +48,9 @@ updateHistory(data) async {
   //   final List<String> historyList = prefs.getStringList('qrio_history') ?? [];
   //   return historyList;
   // });
+}
+
+deleteHistory() async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setStringList('qrio_history', []);
 }
