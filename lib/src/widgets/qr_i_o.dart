@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qrio/src/screens/editor.dart';
 import 'package:qrio/src/widgets/scan_code.dart';
 
 class QRIO extends StatefulWidget {
@@ -64,7 +65,7 @@ class _QRIOState extends State<QRIO> with SingleTickerProviderStateMixin {
         controller: _tabController,
         children: const [
           ScanCode(),
-          Center(child: Text('作成')),
+          Editor(),
         ],
       ),
       bottomNavigationBar: Column(
