@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../qr_image_config.dart';
 import '../widgets/config_items.dart';
-import '../widgets/default_popup_menu.dart';
 import '../widgets/qr_code_preview.dart';
 
 final qrImageConfigProvider =
@@ -22,18 +21,13 @@ class Editor extends StatelessWidget {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Scaffold(
-        appBar: AppBar(
-            title: const Text('QRコードを新規作成'),
-            actions: const <Widget>[DefaultPopupMenu()]),
         body: Form(
-          child: Scrollbar(
-            child: SingleChildScrollView(
-              child: Column(
-                children: const <Widget>[
-                  QrCodePreview(),
-                  ConfigItems(),
-                ],
-              ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: const <Widget>[
+                QrCodePreview(),
+                ConfigItems(),
+              ],
             ),
           ),
         ),
