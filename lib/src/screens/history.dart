@@ -100,7 +100,10 @@ class History extends ConsumerWidget {
                     height: 6,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(3),
-                      color: Theme.of(context).colorScheme.surfaceVariant,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .outline
+                          .withOpacity(0.8),
                     ),
                   ),
                 ],
