@@ -84,8 +84,8 @@ class History extends ConsumerWidget {
       data: (historyList) {
         return BackdropFilter(
           filter: ImageFilter.blur(
-            sigmaX: 16,
-            sigmaY: 16,
+            sigmaX: 12,
+            sigmaY: 8,
           ),
           child: Column(
             children: [
