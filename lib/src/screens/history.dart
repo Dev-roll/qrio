@@ -131,17 +131,22 @@ class History extends ConsumerWidget {
                   Row(
                     children: [
                       List.from(historyList).isEmpty
-                          ? const IconButton(
+                          ? IconButton(
                               onPressed: null,
-                              icon: Icon(Icons.delete_rounded),
-                              padding: EdgeInsets.all(16.0),
+                              icon: const Icon(Icons.delete_outline_rounded),
+                              disabledColor: Theme.of(context)
+                                  .colorScheme
+                                  .onBackground
+                                  .withOpacity(0.3),
+                              padding: const EdgeInsets.all(16.0),
                             )
                           : IconButton(
                               onPressed: () async {
                                 await showDialog(
                                   context: context,
                                   builder: (context) => AlertDialog(
-                                    icon: const Icon(Icons.delete_rounded),
+                                    icon: const Icon(
+                                        Icons.delete_outline_rounded),
                                     title: const Text('削除'),
                                     content: Text(
                                       'すべての履歴を削除しますか？',
@@ -169,7 +174,7 @@ class History extends ConsumerWidget {
                                   ),
                                 );
                               },
-                              icon: const Icon(Icons.delete_rounded),
+                              icon: const Icon(Icons.delete_outline_rounded),
                               padding: const EdgeInsets.all(16.0),
                             ),
                       const SizedBox(
