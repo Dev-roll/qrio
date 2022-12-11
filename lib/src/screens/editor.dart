@@ -19,9 +19,9 @@ class Editor extends StatelessWidget {
         body: Form(
           child: SingleChildScrollView(
             child: Column(
-              children: const <Widget>[
+              children: <Widget>[
                 QrCodePreview(),
-                ConfigItems(),
+                const ConfigItems(),
               ],
             ),
           ),
