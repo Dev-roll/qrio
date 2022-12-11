@@ -6,7 +6,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../main.dart';
 import 'constants.dart';
 // import 'screens/history.dart';
+import 'qr_image_config.dart';
 import 'screens/home.dart';
+
+final qrImageConfigProvider =
+    StateNotifierProvider<QrImageConfigNotifier, QrImageConfig>(
+  (ref) => QrImageConfigNotifier(),
+);
 
 class App extends ConsumerWidget {
   const App({super.key});

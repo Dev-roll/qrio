@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import '../app.dart';
 import '../qr_image_config.dart';
-import '../screens/editor.dart';
 
 class QrCodePreview extends ConsumerWidget {
   const QrCodePreview({super.key});
