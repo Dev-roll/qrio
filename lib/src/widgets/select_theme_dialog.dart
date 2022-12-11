@@ -19,9 +19,9 @@ class SelectThemeDialog extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: selectThemeOptions
                 .map((e) => RadioListTile<ThemeMode>(
-                    title: Text(e['label']),
+                    title: Text(e.label),
                     activeColor: Theme.of(context).colorScheme.primary,
-                    value: e['value'],
+                    value: e.value,
                     groupValue: ref.watch(temporaryThemeModeProvider),
                     onChanged: (ThemeMode? value) => ref
                         .read(temporaryThemeModeProvider.notifier)
