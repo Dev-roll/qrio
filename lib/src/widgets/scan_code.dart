@@ -37,41 +37,48 @@ class _ScanCodeState extends State<ScanCode> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FutureBuilder(
-        future: controller?.getFlashStatus(),
-        builder: (context, snapshot) {
-          if (snapshot.data != null && snapshot.data == true) {
-            return IconButton(
-              onPressed: () async {
-                await controller?.toggleFlash();
-                setState(() {});
-              },
-              icon: const Icon(Icons.flashlight_on_rounded),
-              padding: const EdgeInsets.all(20),
-              style: IconButton.styleFrom(
-                foregroundColor:
-                    Theme.of(context).colorScheme.secondaryContainer,
-                backgroundColor:
-                    Theme.of(context).colorScheme.onSecondaryContainer,
-              ),
-            );
-          } else {
-            return IconButton(
-              onPressed: () async {
-                await controller?.toggleFlash();
-                setState(() {});
-              },
-              icon: const Icon(Icons.flashlight_off_rounded),
-              padding: const EdgeInsets.all(20),
-              style: IconButton.styleFrom(
-                foregroundColor:
-                    Theme.of(context).colorScheme.onSecondaryContainer,
-                backgroundColor:
-                    Theme.of(context).colorScheme.secondaryContainer,
-              ),
-            );
-          }
-        },
+      floatingActionButton: Theme(
+        data: ThemeData(
+          colorSchemeSeed: Theme.of(context).colorScheme.primary,
+          brightness: Brightness.dark,
+          useMaterial3: true,
+        ),
+        child: FutureBuilder(
+          future: controller?.getFlashStatus(),
+          builder: (context, snapshot) {
+            if (snapshot.data != null && snapshot.data == true) {
+              return IconButton(
+                onPressed: () async {
+                  await controller?.toggleFlash();
+                  setState(() {});
+                },
+                icon: const Icon(Icons.flashlight_on_rounded),
+                padding: const EdgeInsets.all(20),
+                style: IconButton.styleFrom(
+                  foregroundColor:
+                      Theme.of(context).colorScheme.secondaryContainer,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.onSecondaryContainer,
+                ),
+              );
+            } else {
+              return IconButton(
+                onPressed: () async {
+                  await controller?.toggleFlash();
+                  setState(() {});
+                },
+                icon: const Icon(Icons.flashlight_off_rounded),
+                padding: const EdgeInsets.all(20),
+                style: IconButton.styleFrom(
+                  foregroundColor:
+                      Theme.of(context).colorScheme.onSecondaryContainer,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.secondaryContainer,
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }
