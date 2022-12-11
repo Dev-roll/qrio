@@ -185,7 +185,7 @@ class History extends ConsumerWidget {
                 ],
               ),
               const SizedBox(
-                height: 20,
+                height: 8,
               ),
               if (List.from(historyList).isEmpty)
                 Column(
