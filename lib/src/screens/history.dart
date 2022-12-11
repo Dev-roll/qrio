@@ -1,13 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-// import '../utils.dart';
-// import '../utils.dart';
-import '../widgets/default_popup_menu.dart';
 
 final FutureProvider futureProvider = FutureProvider<dynamic>((ref) async {
   final prefs = await SharedPreferences.getInstance();
@@ -83,158 +81,177 @@ class History extends ConsumerWidget {
       error: (err, _) => Text(err.toString()), //エラー時
       loading: () => const CircularProgressIndicator(), //読み込み時
       data: (historyList) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('履歴'),
-            actions: const <Widget>[
-              DefaultPopupMenu(),
-            ],
+        return BackdropFilter(
+          filter: ImageFilter.blur(
+            sigmaX: 16,
+            sigmaY: 16,
           ),
-          // floatingActionButton: FloatingActionButton(
-          //   child: const Icon(Icons.refresh),
-          //   onPressed: () {
-          //     // 状態を更新する
-          //     // updateHistory('hoge');
-          //     final _ = ref.refresh(futureProvider);
-          //   },
-          // ),
-          body: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 60,
+                    height: 6,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(3),
+                      color: Theme.of(context).colorScheme.surfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 32,
+                  ),
+                  const Text('履歴'),
+                  const SizedBox(
+                    width: 28,
+                  ),
+                  Text(
+                    '${List.from(historyList).length}件',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              if (List.from(historyList).isEmpty)
                 Column(
                   children: [
-                    const SizedBox(
-                      height: 12,
+                    Icon(
+                      Icons.update_disabled_rounded,
+                      size: 120,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onBackground
+                          .withOpacity(0.3),
                     ),
-                    for (var i in List.from(historyList.reversed))
-                      InkWell(
-                        onTap: () async {
-                          if (await canLaunchUrl(Uri.parse(i))) {
-                            launchURL(i);
-                          } else {
-                            await Clipboard.setData(
-                              ClipboardData(text: i),
-                            ).then((value) {
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  elevation: 20,
-                                  backgroundColor: Theme.of(context)
-                                      .colorScheme
-                                      .surfaceVariant,
-                                  behavior: SnackBarBehavior.floating,
-                                  clipBehavior: Clip.antiAlias,
-                                  dismissDirection: DismissDirection.horizontal,
-                                  margin: EdgeInsets.only(
-                                    left: 8,
-                                    right: 8,
-                                    bottom: MediaQuery.of(context).size.height -
-                                        160,
-                                  ),
-                                  duration: const Duration(seconds: 2),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(28),
-                                  ),
-                                  content: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(0, 0, 16, 0),
-                                        child: Icon(
-                                            Icons.library_add_check_rounded),
-                                      ),
-                                      Expanded(
-                                        child: Text(
-                                          'クリップボードにコピーしました',
-                                          style: TextStyle(
-                                              overflow: TextOverflow.fade,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onBackground),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  action: SnackBarAction(
-                                    label: 'OK',
-                                    onPressed: () {},
-                                  ),
-                                ),
-                              );
-                            });
-                          }
-                        },
-                        child: Column(
-                          children: [
-                            // const SizedBox(
-                            //   height: 4,
-                            // ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const SizedBox(
-                                  width: 36,
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    '$i',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onBackground,
-                                    ),
-                                    overflow: TextOverflow.fade,
-                                    maxLines: 1,
-                                    softWrap: false,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 12,
-                                ),
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      onPressed: () async {
-                                        await Share.share(
-                                          i,
-                                          subject: '読み取った文字列',
-                                        );
-                                      },
-                                      icon: const Icon(Icons.share_rounded),
-                                      padding: const EdgeInsets.all(16.0),
-                                    ),
-                                    const SizedBox(
-                                      width: 0,
-                                    ),
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.edit_rounded),
-                                      padding: const EdgeInsets.all(16.0),
-                                    ),
-                                    const SizedBox(
-                                      width: 12,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            // const SizedBox(
-                            //   height: 4,
-                            // ),
-                          ],
-                        ),
+                    const SizedBox(height: 20),
+                    Text(
+                      '読み取り・作成の履歴はありません',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onBackground,
                       ),
-                    const SizedBox(
-                      height: 80,
                     ),
                   ],
                 ),
-              ],
-            ),
+              for (var i in List.from(historyList.reversed))
+                InkWell(
+                  onTap: () async {
+                    if (await canLaunchUrl(Uri.parse(i))) {
+                      launchURL(i);
+                    } else {
+                      await Clipboard.setData(
+                        ClipboardData(text: i),
+                      ).then((value) {
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            elevation: 20,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.surfaceVariant,
+                            behavior: SnackBarBehavior.floating,
+                            clipBehavior: Clip.antiAlias,
+                            dismissDirection: DismissDirection.horizontal,
+                            margin: EdgeInsets.only(
+                              left: 8,
+                              right: 8,
+                              bottom: MediaQuery.of(context).size.height - 160,
+                            ),
+                            duration: const Duration(seconds: 2),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(28),
+                            ),
+                            content: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.fromLTRB(0, 0, 16, 0),
+                                  child: Icon(Icons.library_add_check_rounded),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    'クリップボードにコピーしました',
+                                    style: TextStyle(
+                                        overflow: TextOverflow.fade,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            action: SnackBarAction(
+                              label: 'OK',
+                              onPressed: () {},
+                            ),
+                          ),
+                        );
+                      });
+                    }
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        width: 32,
+                      ),
+                      Expanded(
+                        child: Text(
+                          '$i',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Theme.of(context).colorScheme.onBackground,
+                          ),
+                          overflow: TextOverflow.fade,
+                          maxLines: 1,
+                          softWrap: false,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () async {
+                              await Share.share(
+                                i,
+                                subject: '読み取った文字列',
+                              );
+                            },
+                            icon: const Icon(Icons.share_rounded),
+                            padding: const EdgeInsets.all(16.0),
+                          ),
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.edit_rounded),
+                            padding: const EdgeInsets.all(16.0),
+                          ),
+                          const SizedBox(
+                            width: 12,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              const SizedBox(
+                height: 32,
+              ),
+            ],
           ),
         );
       }, //データ受け取り時
