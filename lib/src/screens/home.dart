@@ -23,6 +23,7 @@ class Home extends ConsumerWidget {
       overlays: [SystemUiOverlay.top],
     );
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('QR I/O'),
         centerTitle: true,
