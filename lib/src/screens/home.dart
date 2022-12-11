@@ -1,8 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qrio/src/screens/history.dart';
 import 'package:qrio/src/widgets/qr_i_o.dart';
 
 import '../widgets/default_popup_menu.dart';
@@ -15,13 +14,7 @@ class Home extends ConsumerWidget {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
         systemNavigationBarColor: Colors.transparent,
-        // systemNavigationBarColor: Theme.of(context).colorScheme.background,
-        // systemNavigationBarIconBrightness: ThemeData(),
-        // statusBarColor: Theme.of(context).colorScheme.onSecondary,
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.dark,
       ),
-      // SystemUiOverlayStyle.dark,
     );
     SystemChrome.setEnabledSystemUIMode(
       SystemUiMode.manual,
@@ -59,41 +52,7 @@ class Home extends ConsumerWidget {
                   ),
                   child: SingleChildScrollView(
                     controller: scrollController,
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(
-                        sigmaX: 16,
-                        sigmaY: 16,
-                      ),
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 60,
-                                height: 6,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(3),
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .surfaceVariant,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          for (var i = 0; i < 50; i++) Text('data $i'),
-                          const SizedBox(
-                            height: 32,
-                          ),
-                        ],
-                      ),
-                    ),
+                    child: const History(),
                   ),
                 );
               },
