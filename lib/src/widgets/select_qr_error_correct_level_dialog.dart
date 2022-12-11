@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../app.dart';
 import '../constants.dart';
 import '../qr_image_config.dart';
-import '../screens/editor.dart';
 
 class SelectQrErrorCorrectLevelDialog extends ConsumerWidget {
   const SelectQrErrorCorrectLevelDialog({Key? key}) : super(key: key);

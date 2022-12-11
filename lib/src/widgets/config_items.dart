@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/widgets/select_qr_background_color_dialog.dart';
 
+import '../app.dart';
 import '../qr_image_config.dart';
-import '../screens/editor.dart';
 import 'config_item.dart';
 import 'select_qr_data_module_shape_dialog.dart';
 import 'select_qr_error_correct_level_dialog.dart';
@@ -67,6 +67,7 @@ class _ConfigItemsState extends State<ConfigItems> {
     return Consumer(
         builder: (BuildContext context, WidgetRef ref, Widget? child) {
       QrImageConfig qrImageConfig = ref.watch(qrImageConfigProvider);
+      _controller.text = qrImageConfig.data;
 
       return Column(
         children: <Widget>[

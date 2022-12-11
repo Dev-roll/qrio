@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import '../app.dart';
 import '../constants.dart';
 import '../qr_image_config.dart';
-import '../screens/editor.dart';
 
 class SelectQrEyeShapeDialog extends ConsumerWidget {
   const SelectQrEyeShapeDialog({Key? key}) : super(key: key);

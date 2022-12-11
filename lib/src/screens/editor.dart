@@ -5,11 +5,6 @@ import '../qr_image_config.dart';
 import '../widgets/config_items.dart';
 import '../widgets/qr_code_preview.dart';
 
-final qrImageConfigProvider =
-    StateNotifierProvider<QrImageConfigNotifier, QrImageConfig>(
-  (ref) => QrImageConfigNotifier(),
-);
-
 class Editor extends StatelessWidget {
   const Editor({super.key});
 

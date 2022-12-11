@@ -3,10 +3,12 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:qrio/src/utils.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../app.dart';
+import '../utils.dart';
 
 final FutureProvider futureProvider = FutureProvider<dynamic>((ref) async {
   final prefs = await SharedPreferences.getInstance();
@@ -296,7 +298,11 @@ class History extends ConsumerWidget {
                             padding: const EdgeInsets.all(16.0),
                           ),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              ref
+                                  .read(qrImageConfigProvider.notifier)
+                                  .editData(data: i);
+                            },
                             icon: const Icon(Icons.edit_rounded),
                             padding: const EdgeInsets.all(16.0),
                           ),
