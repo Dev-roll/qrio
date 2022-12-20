@@ -47,6 +47,7 @@ dependencies:
   share_plus: ^6.3.0
   qr_flutter: ^4.0.0
   image_gallery_saver: ^1.7.1
+  flutter_svg: ^1.1.6
   flutter_launcher_icons: ^0.11.0
 
 dev_dependencies:
@@ -98,6 +99,8 @@ flutter:
     - assets/png/icon_android.png
     - assets/png/icon_with_bg.png
     - assets/png/icon.png
+    - assets/svg/icon_dark.svg
+    - assets/svg/icon_light.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

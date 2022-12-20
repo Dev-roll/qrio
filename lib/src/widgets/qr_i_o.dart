@@ -95,7 +95,7 @@ class _QRIOState extends State<QRIO> with SingleTickerProviderStateMixin {
             ),
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * defaultSheetHeight + 8,
+            height: MediaQuery.of(context).size.height * defaultSheetHeight - 8,
           ),
         ],
       ),
