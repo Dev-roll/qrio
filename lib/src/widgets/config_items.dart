@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:qrio/src/constants.dart';
-import 'package:qrio/src/widgets/select_qr_background_color_dialog.dart';
 
 import '../app.dart';
+import '../constants.dart';
 import '../qr_image_config.dart';
 import 'config_item.dart';
+import 'select_qr_background_color_dialog.dart';
 import 'select_qr_data_module_shape_dialog.dart';
 import 'select_qr_error_correct_level_dialog.dart';
 import 'select_qr_eye_shape_dialog.dart';
