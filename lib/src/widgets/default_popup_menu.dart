@@ -28,12 +28,10 @@ class DefaultPopupMenu extends StatelessWidget {
             case DefaultPopupMenuItemsType.about:
               // TODO: Handle this case.
               break;
-            case DefaultPopupMenuItemsType.privacyPolicy:
-              // TODO: Handle this case.
-              break;
-            case DefaultPopupMenuItemsType.terms:
-              // TODO: Handle this case.
-              break;
+            // case DefaultPopupMenuItemsType.privacyPolicy:
+            //   break;
+            // case DefaultPopupMenuItemsType.terms:
+            //   break;
           }
         }),
         itemBuilder: (BuildContext context) => defaultPopupMenuItems
