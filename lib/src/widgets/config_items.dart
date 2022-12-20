@@ -11,20 +11,14 @@ import 'select_qr_error_correct_level_dialog.dart';
 import 'select_qr_eye_shape_dialog.dart';
 import 'select_qr_foreground_color_dialog.dart';
 
-class ConfigItems extends StatefulWidget {
+class ConfigItems extends ConsumerWidget {
   const ConfigItems({super.key});
 
-  @override
-  State<ConfigItems> createState() => _ConfigItemsState();
-}
+  static final TextEditingController _controller = TextEditingController();
 
-class _ConfigItemsState extends State<ConfigItems> {
-  late TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
+  static void updateTextFieldValue(String value) {
+    _controller.text = value;
+    _controller.selection = TextSelection.collapsed(offset: value.length);
   }
 
   void openSelectQrEyeShapeDialog(BuildContext context) {
@@ -63,76 +57,72 @@ class _ConfigItemsState extends State<ConfigItems> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer(
-        builder: (BuildContext context, WidgetRef ref, Widget? child) {
-      QrImageConfig qrImageConfig = ref.watch(qrImageConfigProvider);
-      _controller.text = qrImageConfig.data;
+  Widget build(BuildContext context, WidgetRef ref) {
+    QrImageConfig qrImageConfig = ref.watch(qrImageConfigProvider);
 
-      return Column(
-        children: <Widget>[
-          ...[
-            TextField(
-              controller: _controller,
-              decoration: const InputDecoration(
-                hintText: 'リンク',
-                border: InputBorder.none,
-                prefixIcon: Icon(Icons.link_rounded),
-              ),
-              onChanged: ((value) {
-                ref.read(qrImageConfigProvider.notifier).editData(data: value);
-              }),
+    return Column(
+      children: <Widget>[
+        ...[
+          TextField(
+            controller: _controller,
+            decoration: const InputDecoration(
+              hintText: 'リンク',
+              border: InputBorder.none,
+              prefixIcon: Icon(Icons.link_rounded),
             ),
-            ConfigItem(
+            onChanged: ((value) {
+              ref.read(qrImageConfigProvider.notifier).editData(data: value);
+            }),
+          ),
+          ConfigItem(
             label: '中央に画像を追加 (準備中)',
-              icon: Icons.add_photo_alternate_rounded,
-              onTapListener: ((context) {}),
-            ),
-            ConfigItem(
-              label: getOptionFromValue(
-                      qrImageConfig.eyeShape, selectQrEyeShapeOptions)
-                  .label,
-              icon: Icons.all_out_rounded,
-              onTapListener: openSelectQrEyeShapeDialog,
-            ),
-            ConfigItem(
-              label: getOptionFromValue(qrImageConfig.dataModuleShape,
-                      selectQrDataModuleShapeOptions)
-                  .label,
-              icon: Icons.apps_rounded,
-              onTapListener: openSelectQrDataModuleShapeDialog,
-            ),
-            ConfigItem(
-              label: getOptionFromValue(qrImageConfig.errorCorrectLevel,
-                      selectQrErrorCorrectLevelOptions)
-                  .label,
-              icon: Icons.check_circle_outline,
-              onTapListener: openSelectQrErrorCorrectLevelDialog,
-            ),
-            ConfigItem(
-              label: getOptionFromValue(
-                      qrImageConfig.backgroundColor, selectQrColorOptions)
-                  .label,
-              icon: Icons.format_color_fill_rounded,
-              onTapListener: openSelectQrBackgroundColorDialog,
-            ),
-            ConfigItem(
-              label: getOptionFromValue(
-                      qrImageConfig.foregroundColor, selectQrColorOptions)
-                  .label,
-              icon: Icons.border_color_rounded,
-              onTapListener: openSelectQrForegroundColorDialog,
-            ),
-          ].expand(
-            (widget) => [
-              widget,
-              Divider(
-                color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
-              )
-            ],
-          )
-        ],
-      );
-    });
+            icon: Icons.add_photo_alternate_rounded,
+            onTapListener: ((context) {}),
+          ),
+          ConfigItem(
+            label: getOptionFromValue(
+                    qrImageConfig.eyeShape, selectQrEyeShapeOptions)
+                .label,
+            icon: Icons.all_out_rounded,
+            onTapListener: openSelectQrEyeShapeDialog,
+          ),
+          ConfigItem(
+            label: getOptionFromValue(qrImageConfig.dataModuleShape,
+                    selectQrDataModuleShapeOptions)
+                .label,
+            icon: Icons.apps_rounded,
+            onTapListener: openSelectQrDataModuleShapeDialog,
+          ),
+          ConfigItem(
+            label: getOptionFromValue(qrImageConfig.errorCorrectLevel,
+                    selectQrErrorCorrectLevelOptions)
+                .label,
+            icon: Icons.check_circle_outline,
+            onTapListener: openSelectQrErrorCorrectLevelDialog,
+          ),
+          ConfigItem(
+            label: getOptionFromValue(
+                    qrImageConfig.backgroundColor, selectQrColorOptions)
+                .label,
+            icon: Icons.format_color_fill_rounded,
+            onTapListener: openSelectQrBackgroundColorDialog,
+          ),
+          ConfigItem(
+            label: getOptionFromValue(
+                    qrImageConfig.foregroundColor, selectQrColorOptions)
+                .label,
+            icon: Icons.border_color_rounded,
+            onTapListener: openSelectQrForegroundColorDialog,
+          ),
+        ].expand(
+          (widget) => [
+            widget,
+            Divider(
+              color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+            )
+          ],
+        )
+      ],
+    );
   }
 }
