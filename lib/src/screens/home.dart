@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/screens/history.dart';
 import 'package:qrio/src/utils.dart';
@@ -25,7 +26,22 @@ class Home extends ConsumerWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('QR I/O'),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset(
+              Theme.of(context).colorScheme.background.computeLuminance() < 0.5
+                  ? 'assets/svg/icon_dark.svg'
+                  : 'assets/svg/icon_light.svg',
+              width: 24,
+            ),
+            const SizedBox(width: 8),
+            const Text(
+              'QR I/O',
+              style: TextStyle(fontSize: 22),
+            ),
+          ],
+        ),
         centerTitle: true,
         actions: const <Widget>[
           DefaultPopupMenu(),
