@@ -123,7 +123,14 @@ class _ConfigItemsState extends State<ConfigItems> {
               icon: Icons.border_color_rounded,
               onTapListener: openSelectQrForegroundColorDialog,
             ),
-          ].expand((widget) => [widget, const Divider()])
+          ].expand(
+            (widget) => [
+              widget,
+              Divider(
+                color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+              )
+            ],
+          )
         ],
       );
     });
