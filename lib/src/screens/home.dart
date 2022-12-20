@@ -60,14 +60,15 @@ class Home extends ConsumerWidget {
               builder:
                   (BuildContext context, ScrollController scrollController) {
                 return Container(
+                  margin: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                   decoration: BoxDecoration(
                     color: alphaBlend(
-                      Theme.of(context).colorScheme.primary.withOpacity(0.12),
-                      Theme.of(context).colorScheme.background.withOpacity(0.6),
+                      Theme.of(context).colorScheme.primary.withOpacity(0.08),
+                      Theme.of(context).colorScheme.background,
                     ),
                     borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(0),
-                      topRight: Radius.circular(0),
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
                     ),
                   ),
                   child: SingleChildScrollView(
