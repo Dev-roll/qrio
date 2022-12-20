@@ -23,10 +23,12 @@ body:
       label: 動作環境
       multiple: true
       options:
-        - Firefox
-        - Chrome
-        - Safari
-        - Microsoft Edge
+        - Android
+        - iOS
+        - Linux
+        - macOS
+        - Web
+        - Windows
   - type: textarea
     id: reproduction
     attributes:
