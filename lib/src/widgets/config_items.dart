@@ -74,11 +74,11 @@ class ConfigItems extends ConsumerWidget {
               ref.read(qrImageConfigProvider.notifier).editData(data: value);
             }),
           ),
-          ConfigItem(
-            label: '中央に画像を追加 (準備中)',
-            icon: Icons.add_photo_alternate_rounded,
-            onTapListener: ((context) {}),
-          ),
+          // ConfigItem(
+          //   label: '中央に画像を追加 (準備中)',
+          //   icon: Icons.add_photo_alternate_rounded,
+          //   onTapListener: ((context) {}),
+          // ),
           ConfigItem(
             label: getOptionFromValue(
                     qrImageConfig.eyeShape, selectQrEyeShapeOptions)

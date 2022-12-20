@@ -61,23 +61,12 @@ class QrCodePreview extends ConsumerWidget {
                   child: IconButton(
                     onPressed: () async {
                       final bytes = await exportToImage(_globalKey);
-                      //byte data→Uint8List
                       final widgetImageBytes = bytes?.buffer.asUint8List(
                           bytes.offsetInBytes, bytes.lengthInBytes);
                       await ImageGallerySaver.saveImage(
                         widgetImageBytes!,
                         name: 'hoge',
                       );
-                      // final result =
-                      //     await ImageGallerySaver.saveImage(
-                      //   widgetImageBytes!,
-                      //   name: myCardId,
-                      // );
-                      //App directoryファイルに保存
-                      // final applicationDocumentsFile =
-                      //     await getApplicationDocumentsFile(
-                      //         myCardId, widgetImageBytes!);
-                      // final path = applicationDocumentsFile.path;
                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -113,21 +102,9 @@ class QrCodePreview extends ConsumerWidget {
                               ),
                             ],
                           ),
-                          // duration: const Duration(seconds: 12),
                           action: SnackBarAction(
-                            // label: '開く',
                             label: 'OK',
-                            onPressed: () {
-                              // pickImage();
-                              // _launchURL(
-                              // '',
-                              // 'mailto:example@gmail.com?subject=hoge&body=test',
-                              // thunderCardUrl,
-                              // 'twitter://user?screen_name=cardseditor',
-                              // secondUrl:
-                              //     'https://github.com/cardseditor',
-                              // );
-                            },
+                            onPressed: () {},
                           ),
                         ),
                       );

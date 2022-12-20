@@ -41,7 +41,6 @@ class App extends ConsumerWidget {
             colorSchemeSeed: darkDynamic?.harmonized().primary ?? seedColor,
             brightness: Brightness.dark,
           ),
-          // home: const History());
           home: const Home());
     }));
   }
