@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:qrio/src/constants.dart';
-import 'package:qrio/src/screens/editor.dart';
-import 'package:qrio/src/widgets/scan_code.dart';
 
-class QRIO extends StatefulWidget {
-  const QRIO({super.key});
+import '../constants.dart';
+import '../screens/editor.dart';
+import 'scan_code.dart';
+
+class Qrio extends StatefulWidget {
+  const Qrio({super.key});
 
   @override
-  State<QRIO> createState() => _QRIOState();
+  State<Qrio> createState() => _QrioState();
 }
 
-class _QRIOState extends State<QRIO> with SingleTickerProviderStateMixin {
+class _QrioState extends State<Qrio> with SingleTickerProviderStateMixin {
   final List<Tab> tabs = <Tab>[
     Tab(
       icon: Row(

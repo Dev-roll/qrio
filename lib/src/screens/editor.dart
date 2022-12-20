@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../qr_image_config.dart';
 import '../widgets/config_items.dart';
 import '../widgets/qr_code_preview.dart';
 

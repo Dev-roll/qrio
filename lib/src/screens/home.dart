@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:qrio/src/constants.dart';
-import 'package:qrio/src/screens/history.dart';
-import 'package:qrio/src/utils.dart';
-import 'package:qrio/src/widgets/qr_i_o.dart';
 
+import '../constants.dart';
+import '../utils.dart';
 import '../widgets/default_popup_menu.dart';
+import '../widgets/history.dart';
+import '../widgets/qrio.dart';
 
 class Home extends ConsumerWidget {
   const Home({super.key});
@@ -51,7 +51,7 @@ class Home extends ConsumerWidget {
       body: Stack(
         alignment: AlignmentDirectional.topCenter,
         children: [
-          const QRIO(),
+          const Qrio(),
           SizedBox.expand(
             child: DraggableScrollableSheet(
               initialChildSize: defaultSheetHeight,
