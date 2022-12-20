@@ -84,7 +84,7 @@ class _ConfigItemsState extends State<ConfigItems> {
               }),
             ),
             ConfigItem(
-              label: '中央に画面を追加',
+            label: '中央に画像を追加 (準備中)',
               icon: Icons.add_photo_alternate_rounded,
               onTapListener: ((context) {}),
             ),
