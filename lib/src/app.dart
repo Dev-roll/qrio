@@ -23,14 +23,6 @@ class App extends ConsumerWidget {
 
     return DynamicColorBuilder(
         builder: ((ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-      ColorScheme lightColorScheme = (lightDynamic != null)
-          ? lightDynamic.harmonized()
-          : ColorScheme.fromSeed(seedColor: seedColor);
-      ColorScheme darkColorScheme = (darkDynamic != null)
-          ? darkDynamic.harmonized()
-          : ColorScheme.fromSeed(
-              seedColor: seedColor, brightness: Brightness.dark);
-
       return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'QR I/O',
@@ -41,9 +33,15 @@ class App extends ConsumerWidget {
           ],
           supportedLocales: const [Locale('ja', 'JP')],
           themeMode: themeMode,
-          theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
-          darkTheme:
-              ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
+          theme: ThemeData(
+            useMaterial3: true,
+            colorSchemeSeed: lightDynamic?.harmonized().primary ?? seedColor,
+          ),
+          darkTheme: ThemeData(
+            useMaterial3: true,
+            colorSchemeSeed: darkDynamic?.harmonized().primary ?? seedColor,
+            brightness: Brightness.dark,
+          ),
           // home: const History());
           home: const Home());
     }));
