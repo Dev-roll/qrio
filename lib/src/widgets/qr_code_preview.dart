@@ -12,7 +12,7 @@ import '../qr_image_config.dart';
 
 class QrCodePreview extends ConsumerWidget {
   QrCodePreview({super.key});
-  final GlobalKey _globalKey = GlobalKey();
+  final GlobalKey _qrKey = GlobalKey();
 
   Future<ByteData?> exportToImage(GlobalKey globalKey) async {
     final boundary =
@@ -39,7 +39,7 @@ class QrCodePreview extends ConsumerWidget {
           ? Column(
               children: [
                 RepaintBoundary(
-                  key: _globalKey,
+                  key: _qrKey,
                   child: QrImage(
                     data: qrImageConfig.data,
                     size: qrImageConfig.size,
@@ -60,12 +60,15 @@ class QrCodePreview extends ConsumerWidget {
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: IconButton(
                     onPressed: () async {
-                      final bytes = await exportToImage(_globalKey);
+                      final bytes = await exportToImage(_qrKey);
                       final widgetImageBytes = bytes?.buffer.asUint8List(
                           bytes.offsetInBytes, bytes.lengthInBytes);
+                      int year = DateTime.now().year % 100;
+                      int month = DateTime.now().month;
+                      int day = DateTime.now().day;
                       await ImageGallerySaver.saveImage(
                         widgetImageBytes!,
-                        name: 'hoge',
+                        name: 'QRIO_$year$month$day',
                       );
                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -76,10 +79,10 @@ class QrCodePreview extends ConsumerWidget {
                           behavior: SnackBarBehavior.floating,
                           clipBehavior: Clip.antiAlias,
                           dismissDirection: DismissDirection.horizontal,
-                          margin: EdgeInsets.only(
+                          margin: const EdgeInsets.only(
                             left: 8,
                             right: 8,
-                            bottom: MediaQuery.of(context).size.height - 160,
+                            bottom: 80,
                           ),
                           duration: const Duration(seconds: 2),
                           shape: RoundedRectangleBorder(
@@ -87,8 +90,8 @@ class QrCodePreview extends ConsumerWidget {
                           ),
                           content: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Padding(
+                            children: [
+                              const Padding(
                                 padding: EdgeInsets.fromLTRB(0, 0, 16, 0),
                                 child: Icon(Icons.file_download_done_rounded),
                               ),
@@ -96,7 +99,9 @@ class QrCodePreview extends ConsumerWidget {
                                 child: Text(
                                   'QRコードをダウンロードしました',
                                   style: TextStyle(
-                                      color: Color(0xFFFFFFFF),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant,
                                       overflow: TextOverflow.fade),
                                 ),
                               ),
