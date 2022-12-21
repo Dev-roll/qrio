@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../app.dart';
 import '../constants.dart';
 import '../qr_image_config.dart';
+import '../utils.dart';
 import 'config_item.dart';
 import 'select_qr_background_color_dialog.dart';
 import 'select_qr_data_module_shape_dialog.dart';
@@ -19,41 +20,6 @@ class ConfigItems extends ConsumerWidget {
   static void updateTextFieldValue(String value) {
     _controller.text = value;
     _controller.selection = TextSelection.collapsed(offset: value.length);
-  }
-
-  void openSelectQrEyeShapeDialog(BuildContext context) {
-    showDialog<void>(
-      context: context,
-      builder: (context) => const SelectQrEyeShapeDialog(),
-    );
-  }
-
-  void openSelectQrDataModuleShapeDialog(BuildContext context) {
-    showDialog<void>(
-      context: context,
-      builder: (context) => const SelectQrDataModuleShapeDialog(),
-    );
-  }
-
-  void openSelectQrErrorCorrectLevelDialog(BuildContext context) {
-    showDialog<void>(
-      context: context,
-      builder: (context) => const SelectQrErrorCorrectLevelDialog(),
-    );
-  }
-
-  void openSelectQrBackgroundColorDialog(BuildContext context) {
-    showDialog<void>(
-      context: context,
-      builder: (context) => const SelectQrBackgroundColorDialog(),
-    );
-  }
-
-  void openSelectQrForegroundColorDialog(BuildContext context) {
-    showDialog<void>(
-      context: context,
-      builder: (context) => const SelectQrForegroundColorDialog(),
-    );
   }
 
   @override
@@ -75,7 +41,7 @@ class ConfigItems extends ConsumerWidget {
             }),
           ),
           // ConfigItem(
-          //   label: '中央に画像を追加 (準備中)',
+          //   label: '中央に画像を追加',
           //   icon: Icons.add_photo_alternate_rounded,
           //   onTapListener: ((context) {}),
           // ),
@@ -84,35 +50,39 @@ class ConfigItems extends ConsumerWidget {
                     qrImageConfig.eyeShape, selectQrEyeShapeOptions)
                 .label,
             icon: Icons.all_out_rounded,
-            onTapListener: openSelectQrEyeShapeDialog,
+            onTapListener: openDialogFactory(const SelectQrEyeShapeDialog()),
           ),
           ConfigItem(
             label: getOptionFromValue(qrImageConfig.dataModuleShape,
                     selectQrDataModuleShapeOptions)
                 .label,
             icon: Icons.apps_rounded,
-            onTapListener: openSelectQrDataModuleShapeDialog,
+            onTapListener:
+                openDialogFactory(const SelectQrDataModuleShapeDialog()),
           ),
           ConfigItem(
             label: getOptionFromValue(qrImageConfig.errorCorrectLevel,
                     selectQrErrorCorrectLevelOptions)
                 .label,
             icon: Icons.check_circle_outline,
-            onTapListener: openSelectQrErrorCorrectLevelDialog,
+            onTapListener:
+                openDialogFactory(const SelectQrErrorCorrectLevelDialog()),
           ),
           ConfigItem(
             label: getOptionFromValue(
                     qrImageConfig.backgroundColor, selectQrColorOptions)
                 .label,
             icon: Icons.format_color_fill_rounded,
-            onTapListener: openSelectQrBackgroundColorDialog,
+            onTapListener:
+                openDialogFactory(const SelectQrBackgroundColorDialog()),
           ),
           ConfigItem(
             label: getOptionFromValue(
                     qrImageConfig.foregroundColor, selectQrColorOptions)
                 .label,
             icon: Icons.border_color_rounded,
-            onTapListener: openSelectQrForegroundColorDialog,
+            onTapListener:
+                openDialogFactory(const SelectQrForegroundColorDialog()),
           ),
         ].expand(
           (widget) => [
