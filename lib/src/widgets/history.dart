@@ -222,10 +222,10 @@ class History extends ConsumerWidget {
                           behavior: SnackBarBehavior.floating,
                           clipBehavior: Clip.antiAlias,
                           dismissDirection: DismissDirection.horizontal,
-                          margin: EdgeInsets.only(
+                          margin: const EdgeInsets.only(
                             left: 8,
                             right: 8,
-                            bottom: MediaQuery.of(context).size.height - 160,
+                            bottom: 80,
                           ),
                           duration: const Duration(seconds: 2),
                           shape: RoundedRectangleBorder(

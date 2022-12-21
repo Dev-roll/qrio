@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 ThemeMode stringToThemeMode(String theme) {
@@ -82,4 +85,16 @@ updateHistory(data) async {
 deleteHistory() async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setStringList('qrio_history', []);
+}
+
+Future<File> getApplicationDocumentsFile(
+    String text, List<int> imageData) async {
+  final directory = await getApplicationDocumentsDirectory();
+
+  final exportFile = File('${directory.path}/$text.png');
+  if (!await exportFile.exists()) {
+    await exportFile.create(recursive: true);
+  }
+  final file = await exportFile.writeAsBytes(imageData);
+  return file;
 }
