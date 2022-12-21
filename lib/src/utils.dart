@@ -98,3 +98,12 @@ Future<File> getApplicationDocumentsFile(
   final file = await exportFile.writeAsBytes(imageData);
   return file;
 }
+
+void Function(BuildContext context) openDialogFactory(Widget dialogWidget) {
+  return (BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (context) => dialogWidget,
+    );
+  };
+}

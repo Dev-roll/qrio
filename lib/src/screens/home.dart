@@ -44,7 +44,7 @@ class Home extends ConsumerWidget {
         ),
         centerTitle: true,
         surfaceTintColor: Colors.transparent,
-        actions: const <Widget>[
+        actions: <Widget>[
           DefaultPopupMenu(),
         ],
       ),

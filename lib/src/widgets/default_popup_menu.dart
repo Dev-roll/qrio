@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
+import '../utils.dart';
 import 'select_theme_dialog.dart';
 
 class DefaultPopupMenu extends StatelessWidget {
-  const DefaultPopupMenu({Key? key}) : super(key: key);
+  DefaultPopupMenu({super.key});
 
-  void openSelectThemeDialog(BuildContext context) {
-    showDialog<void>(
-      context: context,
-      builder: (context) => SelectThemeDialog(),
-    );
-  }
+  final openSelectThemeDialog = openDialogFactory(SelectThemeDialog());
 
   @override
   Widget build(BuildContext context) {
