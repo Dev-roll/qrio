@@ -75,7 +75,7 @@ class QrCodePreview extends ConsumerWidget {
                               bytes.offsetInBytes, bytes.lengthInBytes);
                           final applicationDocumentsFile =
                               await getApplicationDocumentsFile(
-                                  qrImageConfig.data, widgetImageBytes!);
+                                  'qrImage', widgetImageBytes!);
                           final path = applicationDocumentsFile.path;
                           await Share.shareXFiles(
                             [XFile(path)],
