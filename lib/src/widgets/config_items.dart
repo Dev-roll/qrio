@@ -6,6 +6,7 @@ import '../constants.dart';
 import '../qr_image_config.dart';
 import '../utils.dart';
 import 'config_item.dart';
+import 'icon_box.dart';
 import 'select_qr_background_color_dialog.dart';
 import 'select_qr_data_module_shape_dialog.dart';
 import 'select_qr_error_correct_level_dialog.dart';
@@ -29,16 +30,24 @@ class ConfigItems extends ConsumerWidget {
     return Column(
       children: <Widget>[
         ...[
-          TextField(
-            controller: _controller,
-            decoration: const InputDecoration(
-              hintText: 'リンク',
-              border: InputBorder.none,
-              prefixIcon: Icon(Icons.link_rounded),
-            ),
-            onChanged: ((value) {
-              ref.read(qrImageConfigProvider.notifier).editData(data: value);
-            }),
+          Row(
+            children: [
+              const IconBox(icon: Icons.link_rounded),
+              Flexible(
+                child: TextField(
+                  controller: _controller,
+                  decoration: const InputDecoration(
+                    hintText: 'リンク',
+                    border: InputBorder.none,
+                  ),
+                  onChanged: ((value) {
+                    ref
+                        .read(qrImageConfigProvider.notifier)
+                        .editData(data: value);
+                  }),
+                ),
+              ),
+            ],
           ),
           // ConfigItem(
           //   label: '中央に画像を追加',

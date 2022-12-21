@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qrio/src/widgets/icon_box.dart';
 
 class ConfigItem extends StatelessWidget {
   final String label;
@@ -18,15 +19,7 @@ class ConfigItem extends StatelessWidget {
       onTap: () => onTapListener(context),
       child: Row(
         children: <Widget>[
-          SizedBox(
-            width: 48.0,
-            height: 48.0,
-            child: Icon(
-              icon,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-              size: 24.0,
-            ),
-          ),
+          IconBox(icon: icon),
           Text(label, style: const TextStyle(fontSize: 16.0))
         ],
       ),
