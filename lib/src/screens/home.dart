@@ -57,6 +57,7 @@ class Home extends ConsumerWidget {
               initialChildSize: defaultSheetHeight,
               minChildSize: defaultSheetHeight,
               maxChildSize: 1,
+              snap: true,
               builder:
                   (BuildContext context, ScrollController scrollController) {
                 return Container(

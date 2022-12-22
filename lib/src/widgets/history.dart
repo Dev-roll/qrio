@@ -86,24 +86,21 @@ class History extends ConsumerWidget {
         return Column(
           children: [
             const SizedBox(
-              height: 20,
+              height: 16,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: 60,
-                  height: 6,
+                  width: 32,
+                  height: 4,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(3),
+                    borderRadius: BorderRadius.circular(2),
                     color:
                         Theme.of(context).colorScheme.outline.withOpacity(0.8),
                   ),
                 ),
               ],
-            ),
-            const SizedBox(
-              height: 20,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -111,34 +108,37 @@ class History extends ConsumerWidget {
                 Row(
                   children: [
                     const SizedBox(
-                      width: 32,
-                    ),
-                    const Text('履歴'),
-                    const SizedBox(
                       width: 28,
                     ),
                     Text(
-                      '${List.from(historyList).length}件',
+                      '履歴',
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.onBackground,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onBackground
+                            .withOpacity(0.7),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 24,
+                    ),
+                    Text(
+                      '${List.from(historyList).length} 件',
+                      style: TextStyle(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onBackground
+                            .withOpacity(0.7),
                       ),
                     ),
                   ],
                 ),
                 Row(
                   children: [
-                    List.from(historyList).isEmpty
-                        ? IconButton(
-                            onPressed: null,
-                            icon: const Icon(Icons.delete_outline_rounded),
-                            disabledColor: Theme.of(context)
-                                .colorScheme
-                                .onBackground
-                                .withOpacity(0.3),
-                            padding: const EdgeInsets.all(16.0),
-                          )
-                        : IconButton(
-                            onPressed: () async {
+                    IconButton(
+                      onPressed: List.from(historyList).isEmpty
+                          ? null
+                          : () async {
                               await showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
@@ -171,11 +171,15 @@ class History extends ConsumerWidget {
                                 ),
                               );
                             },
-                            icon: const Icon(Icons.delete_outline_rounded),
-                            padding: const EdgeInsets.all(16.0),
-                          ),
+                      icon: const Icon(Icons.delete_outline_rounded),
+                      disabledColor: Theme.of(context)
+                          .colorScheme
+                          .onBackground
+                          .withOpacity(0.3),
+                      padding: const EdgeInsets.all(16.0),
+                    ),
                     const SizedBox(
-                      width: 12,
+                      width: 8,
                     ),
                   ],
                 ),
@@ -263,7 +267,7 @@ class History extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const SizedBox(
-                      width: 32,
+                      width: 28,
                     ),
                     Expanded(
                       child: Text(
@@ -276,9 +280,6 @@ class History extends ConsumerWidget {
                         maxLines: 1,
                         softWrap: false,
                       ),
-                    ),
-                    const SizedBox(
-                      width: 12,
                     ),
                     Row(
                       children: [
@@ -299,11 +300,11 @@ class History extends ConsumerWidget {
                                 .editData(data: i);
                             ConfigItems.updateTextFieldValue(i);
                           },
-                          icon: const Icon(Icons.edit_rounded),
+                          icon: const Icon(Icons.more_vert_rounded),
                           padding: const EdgeInsets.all(16.0),
                         ),
                         const SizedBox(
-                          width: 12,
+                          width: 8,
                         ),
                       ],
                     ),
@@ -311,7 +312,7 @@ class History extends ConsumerWidget {
                 ),
               ),
             const SizedBox(
-              height: 32,
+              height: 28,
             ),
           ],
         );
