@@ -46,19 +46,13 @@ class ConfigItems extends ConsumerWidget {
               ),
             ],
           ),
-          // ConfigItem(
-          //   label: '中央に画像を追加',
-          //   icon: Icons.add_photo_alternate_rounded,
-          //   onTapListener: ((context) {}),
-          // ),
           ConfigItem(
-            label: getOptionFromValue(
-                    qrImageConfig.eyeShape, selectQrEyeShapeOptions)
-                .label,
-            icon: Icons.all_out_rounded,
+            label: selectQrEyeShapeOptionGroup
+                .getLabelFromValue(qrImageConfig.eyeShape),
+            icon: selectQrEyeShapeOptionGroup.icon!,
             onTapListener: openDialogFactory(SelectQrConfigDialog<QrEyeShape>(
-              title: "EyeShape の選択",
-              options: selectQrEyeShapeOptions,
+              title: selectQrEyeShapeOptionGroup.title,
+              options: selectQrEyeShapeOptionGroup.options,
               editConfigFunc: (QrEyeShape? value) {
                 ref
                     .read(qrImageConfigProvider.notifier)
@@ -68,14 +62,13 @@ class ConfigItems extends ConsumerWidget {
             )),
           ),
           ConfigItem(
-            label: getOptionFromValue(qrImageConfig.dataModuleShape,
-                    selectQrDataModuleShapeOptions)
-                .label,
-            icon: Icons.apps_rounded,
+            label: selectQrDataModuleShapeOptionGroup
+                .getLabelFromValue(qrImageConfig.dataModuleShape),
+            icon: selectQrDataModuleShapeOptionGroup.icon!,
             onTapListener:
                 openDialogFactory(SelectQrConfigDialog<QrDataModuleShape>(
-              title: "DataModuleShape の選択",
-              options: selectQrDataModuleShapeOptions,
+              title: selectQrDataModuleShapeOptionGroup.title,
+              options: selectQrDataModuleShapeOptionGroup.options,
               editConfigFunc: (QrDataModuleShape? value) {
                 ref
                     .read(qrImageConfigProvider.notifier)
@@ -85,13 +78,12 @@ class ConfigItems extends ConsumerWidget {
             )),
           ),
           ConfigItem(
-            label: getOptionFromValue(qrImageConfig.errorCorrectLevel,
-                    selectQrErrorCorrectLevelOptions)
-                .label,
-            icon: Icons.check_circle_outline,
+            label: selectQrErrorCorrectLevelOptionGroup
+                .getLabelFromValue(qrImageConfig.errorCorrectLevel),
+            icon: selectQrErrorCorrectLevelOptionGroup.icon!,
             onTapListener: openDialogFactory(SelectQrConfigDialog<int>(
-              title: "ErrorCorrectLevel の選択",
-              options: selectQrErrorCorrectLevelOptions,
+              title: selectQrErrorCorrectLevelOptionGroup.title,
+              options: selectQrErrorCorrectLevelOptionGroup.options,
               editConfigFunc: (int? value) {
                 ref
                     .read(qrImageConfigProvider.notifier)
@@ -101,37 +93,26 @@ class ConfigItems extends ConsumerWidget {
             )),
           ),
           ConfigItem(
-            label: getOptionFromValue(
-                    qrImageConfig.backgroundColor, selectQrColorOptions)
-                .label,
-            icon: Icons.format_color_fill_rounded,
+            label: selectQrSeedColorOptionGroup
+                .getLabelFromValue(qrImageConfig.qrSeedColor),
+            icon: selectQrSeedColorOptionGroup.icon!,
             onTapListener: openDialogFactory(SelectQrConfigDialog<Color>(
-              title: "背景色の選択",
-              options: selectQrColorOptions,
+              title: selectQrSeedColorOptionGroup.title,
+              options: selectQrSeedColorOptionGroup.options,
               editConfigFunc: (Color? value) {
                 ref
                     .read(qrImageConfigProvider.notifier)
-                    .editBackgroundColor(backgroundColor: value!);
+                    .editQrSeedColor(qrSeedColor: value!);
               },
-              groupValue: qrImageConfig.backgroundColor,
+              groupValue: qrImageConfig.qrSeedColor,
             )),
           ),
           ConfigItem(
-            label: getOptionFromValue(
-                    qrImageConfig.foregroundColor, selectQrColorOptions)
-                .label,
-            icon: Icons.border_color_rounded,
-            onTapListener: openDialogFactory(SelectQrConfigDialog<Color>(
-              title: "QRコードの色の選択",
-              options: selectQrColorOptions,
-              editConfigFunc: (Color? value) {
-                ref
-                    .read(qrImageConfigProvider.notifier)
-                    .editForegroundColor(foregroundColor: value!);
-              },
-              groupValue: qrImageConfig.foregroundColor,
-            )),
-          ),
+            label: '色を反転する',
+            icon: Icons.swap_horiz_rounded,
+            onTapListener: ((context) =>
+                ref.read(qrImageConfigProvider.notifier).toggleIsReversed()),
+          )
         ].expand(
           (widget) => [
             widget,

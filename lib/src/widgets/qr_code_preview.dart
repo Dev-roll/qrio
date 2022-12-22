@@ -5,13 +5,13 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import 'package:qrio/src/widgets/bottom_snack_bar.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../app.dart';
 import '../qr_image_config.dart';
 import '../utils.dart';
+import 'bottom_snack_bar.dart';
+import 'custom_qr_image.dart';
 
 class QrCodePreview extends ConsumerWidget {
   QrCodePreview({super.key});
@@ -32,6 +32,9 @@ class QrCodePreview extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     QrImageConfig qrImageConfig = ref.watch(qrImageConfigProvider);
+    final bool isGray =
+        qrImageConfig.qrSeedColor.red == qrImageConfig.qrSeedColor.green &&
+            qrImageConfig.qrSeedColor.green == qrImageConfig.qrSeedColor.blue;
 
     return Container(
       alignment: Alignment.center,
@@ -45,21 +48,13 @@ class QrCodePreview extends ConsumerWidget {
                   child: FittedBox(
                     child: RepaintBoundary(
                       key: _qrKey,
-                      child: QrImage(
-                        padding: const EdgeInsets.all(24),
-                        data: qrImageConfig.data,
-                        size: qrImageConfig.size,
-                        backgroundColor: qrImageConfig.backgroundColor,
-                        version: qrImageConfig.version,
-                        errorCorrectionLevel: qrImageConfig.errorCorrectLevel,
-                        eyeStyle: QrEyeStyle(
-                          eyeShape: qrImageConfig.eyeShape,
-                          color: qrImageConfig.foregroundColor,
-                        ),
-                        dataModuleStyle: QrDataModuleStyle(
-                          dataModuleShape: qrImageConfig.dataModuleShape,
-                          color: qrImageConfig.foregroundColor,
-                        ),
+                      child: Theme(
+                        data: ThemeData(
+                            colorSchemeSeed:
+                                !isGray ? qrImageConfig.qrSeedColor : null,
+                            primaryColor:
+                                isGray ? qrImageConfig.qrSeedColor : null),
+                        child: CustomQrImage(qrImageConfig: qrImageConfig),
                       ),
                     ),
                   ),
