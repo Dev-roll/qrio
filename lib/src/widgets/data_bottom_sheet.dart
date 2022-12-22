@@ -8,8 +8,8 @@ import '../utils.dart';
 import 'bottom_snack_bar.dart';
 import 'config_items.dart';
 
-class CustomBottomSheet extends StatelessWidget {
-  const CustomBottomSheet({super.key, required this.data, required this.ref});
+class DataBottomSheet extends StatelessWidget {
+  const DataBottomSheet({super.key, required this.data, required this.ref});
   final String data;
   final WidgetRef ref;
 
