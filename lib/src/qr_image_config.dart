@@ -7,42 +7,42 @@ class QrImageConfig {
   const QrImageConfig({
     required this.data,
     this.size = 280,
-    this.backgroundColor = const Color(0xFFFFFFFF),
-    this.foregroundColor = const Color(0xFF333333),
+    this.qrSeedColor = const Color(0xFF333333),
     this.version = QrVersions.auto,
     this.errorCorrectLevel = QrErrorCorrectLevel.L,
     this.eyeShape = QrEyeShape.square,
     this.dataModuleShape = QrDataModuleShape.circle,
+    this.isReversed = false,
   });
 
   final String data;
   final double size;
-  final Color backgroundColor;
-  final Color foregroundColor;
+  final Color qrSeedColor;
   final int version;
   final int errorCorrectLevel;
   final QrEyeShape eyeShape;
   final QrDataModuleShape dataModuleShape;
+  final bool isReversed;
 
   QrImageConfig copyWith({
     String? data,
     double? size,
-    Color? backgroundColor,
-    Color? foregroundColor,
+    Color? qrSeedColor,
     int? version,
     int? errorCorrectLevel,
     QrEyeShape? eyeShape,
     QrDataModuleShape? dataModuleShape,
+    bool? isReversed,
   }) {
     return QrImageConfig(
       data: data ?? this.data,
       size: size ?? this.size,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
-      foregroundColor: foregroundColor ?? this.foregroundColor,
+      qrSeedColor: qrSeedColor ?? this.qrSeedColor,
       version: version ?? this.version,
       errorCorrectLevel: errorCorrectLevel ?? this.errorCorrectLevel,
       eyeShape: eyeShape ?? this.eyeShape,
       dataModuleShape: dataModuleShape ?? this.dataModuleShape,
+      isReversed: isReversed ?? this.isReversed,
     );
   }
 }
@@ -58,12 +58,8 @@ class QrImageConfigNotifier extends StateNotifier<QrImageConfig> {
     state = state.copyWith(size: size);
   }
 
-  void editBackgroundColor({required Color backgroundColor}) {
-    state = state.copyWith(backgroundColor: backgroundColor);
-  }
-
-  void editForegroundColor({required Color foregroundColor}) {
-    state = state.copyWith(foregroundColor: foregroundColor);
+  void editQrSeedColor({required Color qrSeedColor}) {
+    state = state.copyWith(qrSeedColor: qrSeedColor);
   }
 
   void editVersion({required int version}) {
@@ -80,6 +76,10 @@ class QrImageConfigNotifier extends StateNotifier<QrImageConfig> {
 
   void editDataModuleShape({required QrDataModuleShape dataModuleShape}) {
     state = state.copyWith(dataModuleShape: dataModuleShape);
+  }
+
+  void toggleIsReversed() {
+    state = state.copyWith(isReversed: !state.isReversed);
   }
 
   void reset() {

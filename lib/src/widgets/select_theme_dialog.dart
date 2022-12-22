@@ -14,10 +14,10 @@ class SelectThemeDialog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AlertDialog(
-        title: const Text("テーマの選択"),
+        title: Text(selectThemeOptionGroup.title),
         content: Column(
             mainAxisSize: MainAxisSize.min,
-            children: selectThemeOptions
+            children: selectThemeOptionGroup.options
                 .map((e) => RadioListTile<ThemeMode>(
                     title: Text(e.label),
                     activeColor: Theme.of(context).colorScheme.primary,
