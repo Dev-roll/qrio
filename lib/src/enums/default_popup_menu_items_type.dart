@@ -1,5 +1,5 @@
 enum DefaultPopupMenuItemsType {
-  history,
+  // history,
   about,
   selectTheme,
 }
