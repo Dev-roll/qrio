@@ -3,13 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/widgets/bottom_snack_bar.dart';
+import 'package:qrio/src/widgets/custom_bottom_sheet.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../app.dart';
 import '../utils.dart';
-import '../widgets/config_items.dart';
 
 final FutureProvider futureProvider = FutureProvider<dynamic>((ref) async {
   final prefs = await SharedPreferences.getInstance();
@@ -185,7 +184,7 @@ class History extends ConsumerWidget {
                   if (await canLaunchUrl(Uri.parse(e))) {
                     launchURL(e);
                   } else {
-                    await Clipboard.setData(
+                    Clipboard.setData(
                       ClipboardData(text: e),
                     ).then((value) {
                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -225,10 +224,10 @@ class History extends ConsumerWidget {
                     Row(
                       children: [
                         IconButton(
-                          onPressed: () async {
-                            await Share.share(
+                          onPressed: () {
+                            Share.share(
                               e,
-                              subject: '読み取った文字列',
+                              subject: 'QR I/O の履歴共有',
                             );
                           },
                           icon: const Icon(Icons.share_rounded),
@@ -236,10 +235,13 @@ class History extends ConsumerWidget {
                         ),
                         IconButton(
                           onPressed: () {
-                            ref
-                                .read(qrImageConfigProvider.notifier)
-                                .editData(data: e);
-                            ConfigItems.updateTextFieldValue(e);
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return CustomBottomSheet(data: e, ref: ref);
+                              },
+                              backgroundColor: Colors.transparent,
+                            );
                           },
                           icon: const Icon(Icons.more_vert_rounded),
                           padding: const EdgeInsets.all(16.0),
