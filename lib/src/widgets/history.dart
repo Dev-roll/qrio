@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/widgets/bottom_snack_bar.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -209,7 +210,12 @@ class History extends ConsumerWidget {
                         '$i',
                         style: TextStyle(
                           fontSize: 16,
-                          color: Theme.of(context).colorScheme.onBackground,
+                          color: linkFormat.hasMatch(i.toString())
+                              ? Theme.of(context).colorScheme.secondary
+                              : Theme.of(context).colorScheme.onBackground,
+                          decoration: linkFormat.hasMatch(i.toString())
+                              ? TextDecoration.underline
+                              : TextDecoration.none,
                         ),
                         overflow: TextOverflow.fade,
                         maxLines: 1,
