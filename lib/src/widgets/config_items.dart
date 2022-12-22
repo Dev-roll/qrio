@@ -47,6 +47,7 @@ class ConfigItems extends ConsumerWidget {
             ],
           ),
           ConfigItem(
+            title: selectQrEyeShapeOptionGroup.title,
             label: selectQrEyeShapeOptionGroup
                 .getLabelFromValue(qrImageConfig.eyeShape),
             icon: selectQrEyeShapeOptionGroup.icon!,
@@ -62,6 +63,7 @@ class ConfigItems extends ConsumerWidget {
             )),
           ),
           ConfigItem(
+            title: selectQrDataModuleShapeOptionGroup.title,
             label: selectQrDataModuleShapeOptionGroup
                 .getLabelFromValue(qrImageConfig.dataModuleShape),
             icon: selectQrDataModuleShapeOptionGroup.icon!,
@@ -78,6 +80,7 @@ class ConfigItems extends ConsumerWidget {
             )),
           ),
           ConfigItem(
+            title: selectQrErrorCorrectLevelOptionGroup.title,
             label: selectQrErrorCorrectLevelOptionGroup
                 .getLabelFromValue(qrImageConfig.errorCorrectLevel),
             icon: selectQrErrorCorrectLevelOptionGroup.icon!,
@@ -93,6 +96,7 @@ class ConfigItems extends ConsumerWidget {
             )),
           ),
           ConfigItem(
+            title: selectQrSeedColorOptionGroup.title,
             label: selectQrSeedColorOptionGroup
                 .getLabelFromValue(qrImageConfig.qrSeedColor),
             icon: selectQrSeedColorOptionGroup.icon!,
@@ -110,8 +114,12 @@ class ConfigItems extends ConsumerWidget {
           ConfigItem(
             label: '色を反転する',
             icon: Icons.swap_horiz_rounded,
-            onTapListener: ((context) =>
-                ref.read(qrImageConfigProvider.notifier).toggleIsReversed()),
+            onTapListener: (context) =>
+                ref.read(qrImageConfigProvider.notifier).toggleIsReversed(),
+            switchValue: qrImageConfig.isReversed,
+            switchOnChangeHandler: (value) {
+              ref.read(qrImageConfigProvider.notifier).toggleIsReversed();
+            },
           )
         ].expand(
           (widget) => [
