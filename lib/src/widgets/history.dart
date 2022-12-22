@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/widgets/bottom_snack_bar.dart';
-import 'package:qrio/src/widgets/custom_bottom_sheet.dart';
+import 'package:qrio/src/widgets/data_bottom_sheet.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -238,7 +238,7 @@ class History extends ConsumerWidget {
                             showModalBottomSheet(
                               context: context,
                               builder: (BuildContext context) {
-                                return CustomBottomSheet(data: e, ref: ref);
+                                return DataBottomSheet(data: e, ref: ref);
                               },
                               backgroundColor: Colors.transparent,
                             );
