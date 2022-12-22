@@ -25,9 +25,9 @@ class DefaultPopupMenu extends StatelessWidget {
           case DefaultPopupMenuItemsType.selectTheme:
             openSelectThemeDialog(context);
             break;
-          case DefaultPopupMenuItemsType.history:
-            // TODO: Handle this case.
-            break;
+          // case DefaultPopupMenuItemsType.history:
+          //   // Handle this case.
+          //   break;
           case DefaultPopupMenuItemsType.about:
             // TODO: Handle this case.
             break;
@@ -37,8 +37,23 @@ class DefaultPopupMenu extends StatelessWidget {
         (e) {
           return PopupMenuItem<DefaultPopupMenuItemsType>(
             value: e['value'],
-            child: Text(
-              e['label'],
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  e['icon'],
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  e['label'],
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+                ),
+              ],
             ),
           );
         },

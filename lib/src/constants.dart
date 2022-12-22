@@ -9,9 +9,21 @@ const Color seedColor = Colors.blue;
 const defaultSheetHeight = 0.2;
 
 const List<Map<String, dynamic>> defaultPopupMenuItems = [
-  {'label': '履歴', 'value': DefaultPopupMenuItemsType.history},
-  {'label': 'このアプリについて', 'value': DefaultPopupMenuItemsType.about},
-  {'label': 'テーマの選択', 'value': DefaultPopupMenuItemsType.selectTheme},
+  // {
+  //   'label': '履歴',
+  //   'value': DefaultPopupMenuItemsType.history,
+  //   'icon': Icons.history_rounded,
+  // },
+  {
+    'label': 'このアプリについて',
+    'value': DefaultPopupMenuItemsType.about,
+    'icon': Icons.description_outlined,
+  },
+  {
+    'label': 'テーマの選択',
+    'value': DefaultPopupMenuItemsType.selectTheme,
+    'icon': Icons.brightness_medium_rounded,
+  },
 ];
 
 final SelectOptionGroup<ThemeMode> selectThemeOptionGroup = SelectOptionGroup(
