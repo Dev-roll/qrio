@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:qrio/src/widgets/bottom_snack_bar.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../app.dart';
@@ -88,117 +89,55 @@ class QrCodePreview extends ConsumerWidget {
                         padding: const EdgeInsets.all(20),
                       ),
                       IconButton(
-                        onPressed: () async {
-                          final bytes = await exportToImage(_qrKey);
-                          final widgetImageBytes = bytes?.buffer.asUint8List(
-                              bytes.offsetInBytes, bytes.lengthInBytes);
+                        onPressed: () {
                           String year = (DateTime.now().year % 100).toString();
                           String month =
                               (DateTime.now().month).toString().padLeft(2, '0');
                           String day =
                               (DateTime.now().day).toString().padLeft(2, '0');
-                          await ImageGallerySaver.saveImage(
-                            widgetImageBytes!,
-                            name: 'QRIO_$year$month$day',
-                          );
-                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              elevation: 20,
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.surfaceVariant,
-                              behavior: SnackBarBehavior.floating,
-                              clipBehavior: Clip.antiAlias,
-                              dismissDirection: DismissDirection.horizontal,
-                              margin: const EdgeInsets.only(
-                                left: 8,
-                                right: 8,
-                                bottom: 80,
-                              ),
-                              duration: const Duration(seconds: 2),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(28),
-                              ),
-                              content: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 0, 16, 0),
-                                    child:
-                                        Icon(Icons.file_download_done_rounded),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      'QRコードをダウンロードしました',
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurfaceVariant,
-                                          overflow: TextOverflow.fade),
+                          exportToImage(_qrKey)
+                              .then((value) => value?.buffer.asUint8List(
+                                  value.offsetInBytes, value.lengthInBytes))
+                              .then((value) => ImageGallerySaver.saveImage(
+                                    value!,
+                                    name: 'QRIO_$year$month$day',
+                                  ))
+                              .then((_) => ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar())
+                              .then(
+                                (_) =>
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                  BottomSnackBar(
+                                    context,
+                                    'QRコードをダウンロードしました',
+                                    icon: Icon(
+                                      Icons.file_download_done_rounded,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondary,
                                     ),
                                   ),
-                                ],
-                              ),
-                              action: SnackBarAction(
-                                label: 'OK',
-                                onPressed: () {},
-                              ),
-                            ),
-                          );
+                                ),
+                              );
                         },
                         icon: const Icon(Icons.save_alt_rounded),
                         padding: const EdgeInsets.all(20),
                       ),
                       IconButton(
-                        onPressed: () async {
-                          await Clipboard.setData(
+                        onPressed: () {
+                          Clipboard.setData(
                             ClipboardData(text: qrImageConfig.data),
                           ).then(
-                            (value) =>
-                                ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                elevation: 20,
-                                backgroundColor: Theme.of(context)
-                                    .colorScheme
-                                    .surfaceVariant,
-                                behavior: SnackBarBehavior.floating,
-                                clipBehavior: Clip.antiAlias,
-                                dismissDirection: DismissDirection.horizontal,
-                                margin: const EdgeInsets.only(
-                                  left: 8,
-                                  right: 8,
-                                  bottom: 80,
-                                ),
-                                duration: const Duration(seconds: 2),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(28),
-                                ),
-                                content: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 0, 16, 0),
-                                      child:
-                                          Icon(Icons.library_add_check_rounded),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        'クリップボードにコピーしました',
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSurfaceVariant,
-                                            overflow: TextOverflow.fade),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                action: SnackBarAction(
-                                  label: 'OK',
-                                  onPressed: () {},
-                                ),
+                            (value) => ScaffoldMessenger.of(context)
+                                .showSnackBar(BottomSnackBar(
+                              context,
+                              'クリップボードにコピーしました',
+                              icon: Icon(
+                                Icons.library_add_check_rounded,
+                                color:
+                                    Theme.of(context).colorScheme.onSecondary,
                               ),
-                            ),
+                            )),
                           );
                         },
                         icon: const Icon(Icons.copy_rounded),
