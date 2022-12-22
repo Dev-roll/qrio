@@ -39,10 +39,9 @@ class History extends ConsumerWidget {
           BottomSnackBar(
             context,
             'アプリを開けません',
-            icon: Icon(
-              Icons.error_outline_rounded,
-              color: Theme.of(context).colorScheme.onError,
-            ),
+            icon: Icons.error_outline_rounded,
+            background: Theme.of(context).colorScheme.error,
+            foreground: Theme.of(context).colorScheme.onError,
           ),
         );
       }
@@ -193,10 +192,7 @@ class History extends ConsumerWidget {
                         BottomSnackBar(
                           context,
                           'クリップボードにコピーしました',
-                          icon: Icon(
-                            Icons.library_add_check_rounded,
-                            color: Theme.of(context).colorScheme.onSecondary,
-                          ),
+                          icon: Icons.library_add_check_rounded,
                         ),
                       );
                     });

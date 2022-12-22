@@ -4,7 +4,7 @@ class BottomSnackBar extends SnackBar {
   BottomSnackBar(
     BuildContext context,
     String text, {
-    Icon? icon,
+    IconData? icon,
     SnackBarAction? bottomSnackbarAction,
     Color? background,
     Color? foreground,
@@ -36,7 +36,14 @@ class BottomSnackBar extends SnackBar {
               if (icon != null)
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
-                  child: icon,
+                  child: Icon(
+                    icon,
+                    color: foreground?.withOpacity(0.8) ??
+                        Theme.of(context)
+                            .colorScheme
+                            .onSecondary
+                            .withOpacity(0.8),
+                  ),
                 ),
               Expanded(
                 child: Text(

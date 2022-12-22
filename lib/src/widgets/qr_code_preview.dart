@@ -110,12 +110,7 @@ class QrCodePreview extends ConsumerWidget {
                                 BottomSnackBar(
                                   context,
                                   'QRコードをダウンロードしました',
-                                  icon: Icon(
-                                    Icons.file_download_done_rounded,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondary,
-                                  ),
+                                  icon: Icons.file_download_done_rounded,
                                 ),
                               );
                             },
@@ -129,16 +124,14 @@ class QrCodePreview extends ConsumerWidget {
                           Clipboard.setData(
                             ClipboardData(text: qrImageConfig.data),
                           ).then(
-                            (value) => ScaffoldMessenger.of(context)
-                                .showSnackBar(BottomSnackBar(
-                              context,
-                              'クリップボードにコピーしました',
-                              icon: Icon(
-                                Icons.library_add_check_rounded,
-                                color:
-                                    Theme.of(context).colorScheme.onSecondary,
+                            (value) =>
+                                ScaffoldMessenger.of(context).showSnackBar(
+                              BottomSnackBar(
+                                context,
+                                'クリップボードにコピーしました',
+                                icon: Icons.library_add_check_rounded,
                               ),
-                            )),
+                            ),
                           );
                         },
                         icon: const Icon(Icons.copy_rounded),
