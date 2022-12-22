@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../app.dart';
 import '../constants.dart';
@@ -7,11 +8,7 @@ import '../qr_image_config.dart';
 import '../utils.dart';
 import 'config_item.dart';
 import 'icon_box.dart';
-import 'select_qr_background_color_dialog.dart';
-import 'select_qr_data_module_shape_dialog.dart';
-import 'select_qr_error_correct_level_dialog.dart';
-import 'select_qr_eye_shape_dialog.dart';
-import 'select_qr_foreground_color_dialog.dart';
+import 'select_qr_config_dialog.dart';
 
 class ConfigItems extends ConsumerWidget {
   const ConfigItems({super.key});
@@ -59,7 +56,16 @@ class ConfigItems extends ConsumerWidget {
                     qrImageConfig.eyeShape, selectQrEyeShapeOptions)
                 .label,
             icon: Icons.all_out_rounded,
-            onTapListener: openDialogFactory(const SelectQrEyeShapeDialog()),
+            onTapListener: openDialogFactory(SelectQrConfigDialog<QrEyeShape>(
+              title: "EyeShape の選択",
+              options: selectQrEyeShapeOptions,
+              editConfigFunc: (QrEyeShape? value) {
+                ref
+                    .read(qrImageConfigProvider.notifier)
+                    .editEyeShape(eyeShape: value!);
+              },
+              groupValue: qrImageConfig.eyeShape,
+            )),
           ),
           ConfigItem(
             label: getOptionFromValue(qrImageConfig.dataModuleShape,
@@ -67,31 +73,64 @@ class ConfigItems extends ConsumerWidget {
                 .label,
             icon: Icons.apps_rounded,
             onTapListener:
-                openDialogFactory(const SelectQrDataModuleShapeDialog()),
+                openDialogFactory(SelectQrConfigDialog<QrDataModuleShape>(
+              title: "DataModuleShape の選択",
+              options: selectQrDataModuleShapeOptions,
+              editConfigFunc: (QrDataModuleShape? value) {
+                ref
+                    .read(qrImageConfigProvider.notifier)
+                    .editDataModuleShape(dataModuleShape: value!);
+              },
+              groupValue: qrImageConfig.dataModuleShape,
+            )),
           ),
           ConfigItem(
             label: getOptionFromValue(qrImageConfig.errorCorrectLevel,
                     selectQrErrorCorrectLevelOptions)
                 .label,
             icon: Icons.check_circle_outline,
-            onTapListener:
-                openDialogFactory(const SelectQrErrorCorrectLevelDialog()),
+            onTapListener: openDialogFactory(SelectQrConfigDialog<int>(
+              title: "ErrorCorrectLevel の選択",
+              options: selectQrErrorCorrectLevelOptions,
+              editConfigFunc: (int? value) {
+                ref
+                    .read(qrImageConfigProvider.notifier)
+                    .editErrorCorrectLevel(errorCorrectLevel: value!);
+              },
+              groupValue: qrImageConfig.errorCorrectLevel,
+            )),
           ),
           ConfigItem(
             label: getOptionFromValue(
                     qrImageConfig.backgroundColor, selectQrColorOptions)
                 .label,
             icon: Icons.format_color_fill_rounded,
-            onTapListener:
-                openDialogFactory(const SelectQrBackgroundColorDialog()),
+            onTapListener: openDialogFactory(SelectQrConfigDialog<Color>(
+              title: "背景色の選択",
+              options: selectQrColorOptions,
+              editConfigFunc: (Color? value) {
+                ref
+                    .read(qrImageConfigProvider.notifier)
+                    .editBackgroundColor(backgroundColor: value!);
+              },
+              groupValue: qrImageConfig.backgroundColor,
+            )),
           ),
           ConfigItem(
             label: getOptionFromValue(
                     qrImageConfig.foregroundColor, selectQrColorOptions)
                 .label,
             icon: Icons.border_color_rounded,
-            onTapListener:
-                openDialogFactory(const SelectQrForegroundColorDialog()),
+            onTapListener: openDialogFactory(SelectQrConfigDialog<Color>(
+              title: "QRコードの色の選択",
+              options: selectQrColorOptions,
+              editConfigFunc: (Color? value) {
+                ref
+                    .read(qrImageConfigProvider.notifier)
+                    .editForegroundColor(foregroundColor: value!);
+              },
+              groupValue: qrImageConfig.foregroundColor,
+            )),
           ),
         ].expand(
           (widget) => [
