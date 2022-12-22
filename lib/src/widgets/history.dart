@@ -179,14 +179,14 @@ class History extends ConsumerWidget {
                   ),
                 ],
               ),
-            for (var i in List.from(historyList.reversed))
+            for (var e in List.from(historyList.reversed))
               InkWell(
                 onTap: () async {
-                  if (await canLaunchUrl(Uri.parse(i))) {
-                    launchURL(i);
+                  if (await canLaunchUrl(Uri.parse(e))) {
+                    launchURL(e);
                   } else {
                     await Clipboard.setData(
-                      ClipboardData(text: i),
+                      ClipboardData(text: e),
                     ).then((value) {
                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -207,13 +207,13 @@ class History extends ConsumerWidget {
                     ),
                     Expanded(
                       child: Text(
-                        '$i',
+                        '$e',
                         style: TextStyle(
                           fontSize: 16,
-                          color: linkFormat.hasMatch(i.toString())
+                          color: linkFormat.hasMatch(e.toString())
                               ? Theme.of(context).colorScheme.secondary
                               : Theme.of(context).colorScheme.onBackground,
-                          decoration: linkFormat.hasMatch(i.toString())
+                          decoration: linkFormat.hasMatch(e.toString())
                               ? TextDecoration.underline
                               : TextDecoration.none,
                         ),
@@ -227,7 +227,7 @@ class History extends ConsumerWidget {
                         IconButton(
                           onPressed: () async {
                             await Share.share(
-                              i,
+                              e,
                               subject: '読み取った文字列',
                             );
                           },
@@ -238,8 +238,8 @@ class History extends ConsumerWidget {
                           onPressed: () {
                             ref
                                 .read(qrImageConfigProvider.notifier)
-                                .editData(data: i);
-                            ConfigItems.updateTextFieldValue(i);
+                                .editData(data: e);
+                            ConfigItems.updateTextFieldValue(e);
                           },
                           icon: const Icon(Icons.more_vert_rounded),
                           padding: const EdgeInsets.all(16.0),
