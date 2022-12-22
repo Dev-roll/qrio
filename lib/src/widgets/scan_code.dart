@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qrio/src/utils.dart';
+import 'package:qrio/src/widgets/bottom_snack_bar.dart';
 
 class ScanCode extends StatefulWidget {
   const ScanCode({super.key});
@@ -144,22 +145,9 @@ class _ScanCodeState extends State<ScanCode> {
     if (!p) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          elevation: 20,
-          backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
-          behavior: SnackBarBehavior.floating,
-          clipBehavior: Clip.antiAlias,
-          dismissDirection: DismissDirection.horizontal,
-          margin: const EdgeInsets.only(
-            left: 8,
-            right: 8,
-            bottom: 80,
-          ),
-          duration: const Duration(seconds: 2),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(28),
-          ),
-          content: const Text('権限がありません'),
+        BottomSnackBar(
+          context,
+          '権限がありません',
         ),
       );
     }
