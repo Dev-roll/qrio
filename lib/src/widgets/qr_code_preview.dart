@@ -102,23 +102,24 @@ class QrCodePreview extends ConsumerWidget {
                                     value!,
                                     name: 'QRIO_$year$month$day',
                                   ))
-                              .then((_) => ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar())
                               .then(
-                                (_) =>
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                  BottomSnackBar(
-                                    context,
-                                    'QRコードをダウンロードしました',
-                                    icon: Icon(
-                                      Icons.file_download_done_rounded,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSecondary,
-                                    ),
+                            (_) {
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                BottomSnackBar(
+                                  context,
+                                  'QRコードをダウンロードしました',
+                                  icon: Icon(
+                                    Icons.file_download_done_rounded,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondary,
                                   ),
                                 ),
                               );
+                            },
+                          );
                         },
                         icon: const Icon(Icons.save_alt_rounded),
                         padding: const EdgeInsets.all(20),

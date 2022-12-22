@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qrio/src/widgets/bottom_snack_bar.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -34,46 +35,16 @@ class History extends ConsumerWidget {
         );
       } else {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          elevation: 20,
-          backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
-          behavior: SnackBarBehavior.floating,
-          clipBehavior: Clip.antiAlias,
-          dismissDirection: DismissDirection.horizontal,
-          margin: const EdgeInsets.only(
-            left: 8,
-            right: 8,
-            bottom: 40,
+        ScaffoldMessenger.of(context).showSnackBar(
+          BottomSnackBar(
+            context,
+            'アプリを開けません',
+            icon: Icon(
+              Icons.error_outline_rounded,
+              color: Theme.of(context).colorScheme.onError,
+            ),
           ),
-          duration: const Duration(seconds: 2),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(28),
-          ),
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
-                child: Icon(
-                  Icons.error_outline_rounded,
-                  color: Theme.of(context).colorScheme.error,
-                ),
-              ),
-              Expanded(
-                child: Text(
-                  'アプリを開けません',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          action: SnackBarAction(
-            label: 'OK',
-            onPressed: () {},
-          ),
-        ));
+        );
       }
     }
 
@@ -219,44 +190,12 @@ class History extends ConsumerWidget {
                     ).then((value) {
                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          elevation: 20,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.surfaceVariant,
-                          behavior: SnackBarBehavior.floating,
-                          clipBehavior: Clip.antiAlias,
-                          dismissDirection: DismissDirection.horizontal,
-                          margin: const EdgeInsets.only(
-                            left: 8,
-                            right: 8,
-                            bottom: 80,
-                          ),
-                          duration: const Duration(seconds: 2),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(28),
-                          ),
-                          content: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.fromLTRB(0, 0, 16, 0),
-                                child: Icon(Icons.library_add_check_rounded),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  'クリップボードにコピーしました',
-                                  style: TextStyle(
-                                      overflow: TextOverflow.fade,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onBackground),
-                                ),
-                              ),
-                            ],
-                          ),
-                          action: SnackBarAction(
-                            label: 'OK',
-                            onPressed: () {},
+                        BottomSnackBar(
+                          context,
+                          'クリップボードにコピーしました',
+                          icon: Icon(
+                            Icons.library_add_check_rounded,
+                            color: Theme.of(context).colorScheme.onSecondary,
                           ),
                         ),
                       );
