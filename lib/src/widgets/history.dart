@@ -3,13 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/widgets/bottom_snack_bar.dart';
+import 'package:qrio/src/widgets/custom_bottom_sheet.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../app.dart';
 import '../utils.dart';
-import '../widgets/config_items.dart';
 
 final FutureProvider futureProvider = FutureProvider<dynamic>((ref) async {
   final prefs = await SharedPreferences.getInstance();
@@ -179,14 +178,14 @@ class History extends ConsumerWidget {
                   ),
                 ],
               ),
-            for (var i in List.from(historyList.reversed))
+            for (var e in List.from(historyList.reversed))
               InkWell(
                 onTap: () async {
-                  if (await canLaunchUrl(Uri.parse(i))) {
-                    launchURL(i);
+                  if (await canLaunchUrl(Uri.parse(e))) {
+                    launchURL(e);
                   } else {
-                    await Clipboard.setData(
-                      ClipboardData(text: i),
+                    Clipboard.setData(
+                      ClipboardData(text: e),
                     ).then((value) {
                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -207,13 +206,13 @@ class History extends ConsumerWidget {
                     ),
                     Expanded(
                       child: Text(
-                        '$i',
+                        '$e',
                         style: TextStyle(
                           fontSize: 16,
-                          color: linkFormat.hasMatch(i.toString())
+                          color: linkFormat.hasMatch(e.toString())
                               ? Theme.of(context).colorScheme.secondary
                               : Theme.of(context).colorScheme.onBackground,
-                          decoration: linkFormat.hasMatch(i.toString())
+                          decoration: linkFormat.hasMatch(e.toString())
                               ? TextDecoration.underline
                               : TextDecoration.none,
                         ),
@@ -225,10 +224,10 @@ class History extends ConsumerWidget {
                     Row(
                       children: [
                         IconButton(
-                          onPressed: () async {
-                            await Share.share(
-                              i,
-                              subject: '読み取った文字列',
+                          onPressed: () {
+                            Share.share(
+                              e,
+                              subject: 'QR I/O の履歴共有',
                             );
                           },
                           icon: const Icon(Icons.share_rounded),
@@ -236,10 +235,13 @@ class History extends ConsumerWidget {
                         ),
                         IconButton(
                           onPressed: () {
-                            ref
-                                .read(qrImageConfigProvider.notifier)
-                                .editData(data: i);
-                            ConfigItems.updateTextFieldValue(i);
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return CustomBottomSheet(data: e, ref: ref);
+                              },
+                              backgroundColor: Colors.transparent,
+                            );
                           },
                           icon: const Icon(Icons.more_vert_rounded),
                           padding: const EdgeInsets.all(16.0),

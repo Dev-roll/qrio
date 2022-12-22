@@ -44,6 +44,7 @@ class Home extends ConsumerWidget {
         ),
         centerTitle: true,
         surfaceTintColor: Colors.transparent,
+        automaticallyImplyLeading: false,
         actions: <Widget>[
           DefaultPopupMenu(),
         ],

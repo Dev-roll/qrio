@@ -142,7 +142,26 @@ class QrCodePreview extends ConsumerWidget {
                 ),
               ],
             )
-          : const SizedBox(child: Text('表示するプレビューがありません。')),
+          : Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.qr_code_2_rounded,
+                  size: 200,
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onBackground
+                      .withOpacity(0.3),
+                ),
+                Text(
+                  '表示するプレビューがありません',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+                ),
+                const SizedBox(height: 16),
+              ],
+            ),
     );
   }
 }
