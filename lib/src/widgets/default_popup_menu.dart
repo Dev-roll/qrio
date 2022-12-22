@@ -12,23 +12,36 @@ class DefaultPopupMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<DefaultPopupMenuItemsType>(
-        position: PopupMenuPosition.under,
-        onSelected: ((value) {
-          switch (value) {
-            case DefaultPopupMenuItemsType.selectTheme:
-              openSelectThemeDialog(context);
-              break;
-            case DefaultPopupMenuItemsType.history:
-              // TODO: Handle this case.
-              break;
-            case DefaultPopupMenuItemsType.about:
-              // TODO: Handle this case.
-              break;
-          }
-        }),
-        itemBuilder: (BuildContext context) => defaultPopupMenuItems
-            .map((e) => PopupMenuItem<DefaultPopupMenuItemsType>(
-                value: e['value'], child: Text(e['label'])))
-            .toList(growable: false));
+      color: alphaBlend(
+        Theme.of(context).colorScheme.primary.withOpacity(0.12),
+        Theme.of(context).colorScheme.surface,
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      splashRadius: 20,
+      position: PopupMenuPosition.under,
+      onSelected: ((value) {
+        switch (value) {
+          case DefaultPopupMenuItemsType.selectTheme:
+            openSelectThemeDialog(context);
+            break;
+          case DefaultPopupMenuItemsType.history:
+            // TODO: Handle this case.
+            break;
+          case DefaultPopupMenuItemsType.about:
+            // TODO: Handle this case.
+            break;
+        }
+      }),
+      itemBuilder: (BuildContext context) => defaultPopupMenuItems.map(
+        (e) {
+          return PopupMenuItem<DefaultPopupMenuItemsType>(
+            value: e['value'],
+            child: Text(
+              e['label'],
+            ),
+          );
+        },
+      ).toList(growable: false),
+    );
   }
 }
