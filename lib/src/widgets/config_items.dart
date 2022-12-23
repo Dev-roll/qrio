@@ -47,6 +47,32 @@ class ConfigItems extends ConsumerWidget {
             ],
           ),
           ConfigItem(
+            title: selectQrSeedColorOptionGroup.title,
+            label: selectQrSeedColorOptionGroup
+                .getLabelFromValue(qrImageConfig.qrSeedColor),
+            icon: selectQrSeedColorOptionGroup.icon!,
+            onTapListener: openDialogFactory(SelectQrConfigDialog<Color>(
+              title: selectQrSeedColorOptionGroup.title,
+              options: selectQrSeedColorOptionGroup.options,
+              editConfigFunc: (Color? value) {
+                ref
+                    .read(qrImageConfigProvider.notifier)
+                    .editQrSeedColor(qrSeedColor: value!);
+              },
+              groupValue: qrImageConfig.qrSeedColor,
+            )),
+          ),
+          ConfigItem(
+            title: '色を反転する',
+            icon: Icons.invert_colors_rounded,
+            onTapListener: (context) =>
+                ref.read(qrImageConfigProvider.notifier).toggleIsReversed(),
+            switchValue: qrImageConfig.isReversed,
+            switchOnChangeHandler: (value) {
+              ref.read(qrImageConfigProvider.notifier).toggleIsReversed();
+            },
+          ),
+          ConfigItem(
             title: selectQrEyeShapeOptionGroup.title,
             label: selectQrEyeShapeOptionGroup
                 .getLabelFromValue(qrImageConfig.eyeShape),
@@ -94,32 +120,6 @@ class ConfigItems extends ConsumerWidget {
               },
               groupValue: qrImageConfig.errorCorrectLevel,
             )),
-          ),
-          ConfigItem(
-            title: selectQrSeedColorOptionGroup.title,
-            label: selectQrSeedColorOptionGroup
-                .getLabelFromValue(qrImageConfig.qrSeedColor),
-            icon: selectQrSeedColorOptionGroup.icon!,
-            onTapListener: openDialogFactory(SelectQrConfigDialog<Color>(
-              title: selectQrSeedColorOptionGroup.title,
-              options: selectQrSeedColorOptionGroup.options,
-              editConfigFunc: (Color? value) {
-                ref
-                    .read(qrImageConfigProvider.notifier)
-                    .editQrSeedColor(qrSeedColor: value!);
-              },
-              groupValue: qrImageConfig.qrSeedColor,
-            )),
-          ),
-          ConfigItem(
-            label: '色を反転する',
-            icon: Icons.invert_colors_rounded,
-            onTapListener: (context) =>
-                ref.read(qrImageConfigProvider.notifier).toggleIsReversed(),
-            switchValue: qrImageConfig.isReversed,
-            switchOnChangeHandler: (value) {
-              ref.read(qrImageConfigProvider.notifier).toggleIsReversed();
-            },
           )
         ].expand(
           (widget) => [
