@@ -1,6 +1,5 @@
 # QR I/O
 
-![checks](https://img.shields.io/github/checks-status/Dev-roll/qrio/main)
 ![release](https://img.shields.io/github/v/release/Dev-roll/qrio)
 
 ## Supported Platforms
@@ -9,7 +8,6 @@ QR I/O has been built to support multiple platforms. These include:
 
 - Android <!-- ([Google Play]()) -->
 - iOS <!-- ([App Store]()) -->
-- Web <!-- ([]()) -->
 
 ## Development
 
