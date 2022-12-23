@@ -4,7 +4,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'enums/default_popup_menu_items_type.dart';
 import 'widgets/select_option.dart';
 
-const Color seedColor = Colors.blue;
+const Color seedColor = Color(0xFF30A3F0);
 
 const defaultSheetHeight = 0.2;
 
