@@ -113,7 +113,7 @@ class ConfigItems extends ConsumerWidget {
           ),
           ConfigItem(
             label: '色を反転する',
-            icon: Icons.swap_horiz_rounded,
+            icon: Icons.invert_colors_rounded,
             onTapListener: (context) =>
                 ref.read(qrImageConfigProvider.notifier).toggleIsReversed(),
             switchValue: qrImageConfig.isReversed,
