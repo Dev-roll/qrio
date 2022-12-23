@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:qrio/src/widgets/icon_box.dart';
 
 class ConfigItem extends StatelessWidget {
-  final String label;
-  final IconData icon;
-  final Function(BuildContext context) onTapListener;
+  final String? label;
   final String? title;
   final bool? switchValue;
   final Function(bool value)? switchOnChangeHandler;
+  final IconData icon;
+  final Function(BuildContext context) onTapListener;
 
   const ConfigItem({
-    required this.label,
-    required this.icon,
-    required this.onTapListener,
+    this.label,
     this.title,
     this.switchValue,
     this.switchOnChangeHandler,
+    required this.icon,
+    required this.onTapListener,
     super.key,
   });
 
@@ -33,17 +33,19 @@ class ConfigItem extends StatelessWidget {
                   fontSize: 13.0,
                   color: Theme.of(context).colorScheme.onSurfaceVariant),
             ),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.only(right: 16.0),
-              alignment:
-                  title != null ? Alignment.centerRight : Alignment.centerLeft,
-              child: Text(
-                label,
-                style: const TextStyle(fontSize: 16.0),
+          if (label != null)
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.only(right: 16.0),
+                alignment: title != null
+                    ? Alignment.centerRight
+                    : Alignment.centerLeft,
+                child: Text(
+                  label!,
+                  style: const TextStyle(fontSize: 16.0),
+                ),
               ),
             ),
-          ),
           if (switchValue != null)
             Expanded(
               child: Container(
