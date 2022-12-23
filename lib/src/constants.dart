@@ -60,7 +60,7 @@ final SelectOptionGroup<QrDataModuleShape> selectQrDataModuleShapeOptionGroup =
 final SelectOptionGroup<int> selectQrErrorCorrectLevelOptionGroup =
     SelectOptionGroup(
   title: '誤り訂正能力',
-  icon: Icons.check_circle_outline,
+  icon: Icons.check_circle_outline_rounded,
   options: [
     SelectOption<int>(label: 'レベル H', value: QrErrorCorrectLevel.H),
     SelectOption<int>(label: 'レベル L', value: QrErrorCorrectLevel.L),
