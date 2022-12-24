@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.qrio">
+    package="app.web.qrio">
     <queries>
         <!-- If your app opens https URLs -->
         <intent>
@@ -24,7 +24,7 @@
     </queries>
 
     <application
-        android:label="qrio"
+        android:label="QR I/O"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
         android:roundIcon="@mipmap/ic_launcher">
