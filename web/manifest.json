@@ -1,6 +1,6 @@
 {
-    "name": "qrio",
-    "short_name": "qrio",
+    "name": "QR I/O",
+    "short_name": "QR I/O",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#333333",
