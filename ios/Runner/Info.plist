@@ -50,6 +50,6 @@
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>This app needs camera access to scan QR codes</string>
+	<string>QRコードを読み取るにはカメラへのアクセスが必要です。</string>
 </dict>
 </plist>
