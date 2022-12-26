@@ -2,6 +2,10 @@
 
 ![release](https://img.shields.io/github/v/release/Dev-roll/qrio)
 
+Quickly read codes and create customizable QR codes in a single app.
+
+<img width="1600" alt="Thumbnail" src="https://user-images.githubusercontent.com/84573152/209532045-bf7131b6-a275-49d1-8f45-21a608cdfcbe.png">
+
 ## Supported Platforms
 
 QR I/O has been built to support multiple platforms. These include:
