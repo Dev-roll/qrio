@@ -4,6 +4,7 @@ class BottomSnackBar extends SnackBar {
   BottomSnackBar(
     BuildContext context,
     String text, {
+    super.key,
     IconData? icon,
     SnackBarAction? bottomSnackbarAction,
     Color? background,
