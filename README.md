@@ -10,8 +10,8 @@ Quickly read codes and create customizable QR codes in a single app.
 
 QR I/O has been built to support multiple platforms. These include:
 
-- Android <!-- ([Google Play]()) -->
-- iOS <!-- ([App Store]()) -->
+- Android [Google Play](https://play.google.com/store/apps/details?id=app.web.qrio)
+- iOS [App Store](https://apps.apple.com/us/app/qr-i-o-qr-%E3%82%B3%E3%83%BC%E3%83%89-%E8%AA%AD%E3%81%BF%E5%8F%96%E3%82%8A-%E4%BD%9C%E6%88%90%E3%82%A2%E3%83%97%E3%83%AA/id1661431115)
 
 ## Development
 
