@@ -8,11 +8,7 @@ class Editor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
+    return _Unfocus(
       child: Scaffold(
         body: Form(
           child: SingleChildScrollView(
@@ -25,6 +21,23 @@ class Editor extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _Unfocus extends StatelessWidget {
+  const _Unfocus({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: child,
     );
   }
 }
