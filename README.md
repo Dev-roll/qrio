@@ -6,6 +6,22 @@ Quickly read codes and create customizable QR codes in a single app.
 
 <img width="1600" alt="Thumbnail" src="https://user-images.githubusercontent.com/84573152/209532045-bf7131b6-a275-49d1-8f45-21a608cdfcbe.png">
 
+## Features
+
+- Read QR codes and barcodes
+  - Reads QR codes and barcodes
+  - Reads not only QR codes, but also barcodes and other types of codes
+  - The history of scanned links and other information is saved for convenient later use.
+  - The history of scanned links can be used to share links and create new QR codes.
+- Create a new QR code
+  - Create your own QR codes with high customizability
+  - Instant preview for intuitive editing
+  - Customize not only colors, but also shapes and error correction capabilities
+- Intuitive and beautiful UI
+  - Aiming to be the world's easiest-to-use QR code app, we provide a beautiful UI.
+  - Supports dark themes
+  - Dynamic color is supported for Android, so you can choose your favorite theme.
+
 ## Supported Platforms
 
 QR I/O has been built to support multiple platforms. These include:
