@@ -19,23 +19,61 @@ class SelectQrConfigDialog<T> extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return AlertDialog(
-      title: Text(title),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: options
-            .map((e) => RadioListTile<T>(
-                  title: Text(e.label),
-                  activeColor: Theme.of(context).colorScheme.primary,
-                  value: e.value,
-                  groupValue: groupValue,
-                  onChanged: (T? value) {
-                    editConfigFunc(value);
-                    Navigator.of(context).pop();
-                  },
-                ))
-            .toList(growable: false),
-      ),
-    );
+    if (title == 'QR コードの色') {
+      return AlertDialog(
+        title: Text(title),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: options
+              .map((e) => RadioListTile<T>(
+                    title: Row(
+                      children: [
+                        Stack(
+                          children: [
+                            Icon(
+                              Icons.circle_rounded,
+                              color: e.value as Color,
+                            ),
+                            const Icon(
+                              Icons.circle_outlined,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: 4.0),
+                        Text(e.label),
+                      ],
+                    ),
+                    activeColor: Theme.of(context).colorScheme.primary,
+                    value: e.value,
+                    groupValue: groupValue,
+                    onChanged: (T? value) {
+                      editConfigFunc(value);
+                      Navigator.of(context).pop();
+                    },
+                  ))
+              .toList(growable: false),
+        ),
+      );
+    } else {
+      return AlertDialog(
+        title: Text(title),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: options
+              .map((e) => RadioListTile<T>(
+                    title: Text(e.label),
+                    activeColor: Theme.of(context).colorScheme.primary,
+                    value: e.value,
+                    groupValue: groupValue,
+                    onChanged: (T? value) {
+                      editConfigFunc(value);
+                      Navigator.of(context).pop();
+                    },
+                  ))
+              .toList(growable: false),
+        ),
+      );
+    }
   }
 }
