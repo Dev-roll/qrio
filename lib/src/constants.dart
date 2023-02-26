@@ -6,7 +6,7 @@ import 'widgets/select_option.dart';
 
 const Color seedColor = Color(0xFF30A3F0);
 
-const defaultSheetHeight = 0.2;
+const defaultSheetHeight = 0.18;
 
 const List<Map<String, dynamic>> defaultPopupMenuItems = [
   // {

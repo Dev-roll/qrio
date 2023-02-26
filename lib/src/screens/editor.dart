@@ -10,13 +10,17 @@ class Editor extends StatelessWidget {
   Widget build(BuildContext context) {
     return _Unfocus(
       child: Scaffold(
-        body: Form(
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                QrCodePreview(),
-                const ConfigItems(),
-              ],
+        body: Padding(
+          padding:
+              EdgeInsets.only(top: MediaQuery.of(context).padding.top + 56),
+          child: Form(
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  QrCodePreview(),
+                  const ConfigItems(),
+                ],
+              ),
             ),
           ),
         ),
