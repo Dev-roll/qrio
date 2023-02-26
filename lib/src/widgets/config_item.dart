@@ -30,8 +30,9 @@ class ConfigItem extends StatelessWidget {
             Text(
               title!,
               style: TextStyle(
-                  fontSize: 13.0,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant),
+                fontSize: 13.0,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
           if (label != null)
             Expanded(
