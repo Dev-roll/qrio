@@ -50,7 +50,7 @@ class ConfigItem extends StatelessWidget {
           if (switchValue != null)
             Expanded(
               child: Container(
-                padding: const EdgeInsets.only(right: 8.0),
+                padding: const EdgeInsets.only(right: 12.0),
                 alignment: Alignment.centerRight,
                 child: Switch(
                   // This bool value toggles the switch.
