@@ -56,6 +56,17 @@ class ConfigItem extends StatelessWidget {
                   value: switchValue!,
                   activeColor: Theme.of(context).colorScheme.primary,
                   onChanged: switchOnChangeHandler,
+                  thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
+                    (Set<MaterialState> _) {
+                      if (switchValue ?? false) {
+                        return Icon(
+                          Icons.dark_mode_rounded,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        );
+                      }
+                      return null;
+                    },
+                  ),
                 ),
               ),
             )

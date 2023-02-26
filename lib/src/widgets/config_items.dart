@@ -124,9 +124,6 @@ class ConfigItems extends ConsumerWidget {
         ].expand(
           (widget) => [
             widget,
-            Divider(
-              color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
-            )
           ],
         )
       ],
