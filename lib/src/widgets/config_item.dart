@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qrio/src/widgets/icon_box.dart';
 
-class ConfigItem extends StatelessWidget {
+import '../app.dart';
+import '../qr_image_config.dart';
+
+class ConfigItem extends ConsumerWidget {
   final String? label;
   final String? title;
+  final String? option;
   final bool? switchValue;
   final Function(bool value)? switchOnChangeHandler;
   final IconData icon;
@@ -12,6 +17,7 @@ class ConfigItem extends StatelessWidget {
   const ConfigItem({
     this.label,
     this.title,
+    this.option,
     this.switchValue,
     this.switchOnChangeHandler,
     required this.icon,
@@ -20,7 +26,9 @@ class ConfigItem extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    QrImageConfig qrImageConfig = ref.watch(qrImageConfigProvider);
+
     return InkWell(
       onTap: () => onTapListener(context),
       child: Row(
@@ -37,12 +45,33 @@ class ConfigItem extends StatelessWidget {
             Expanded(
               child: Container(
                 padding: const EdgeInsets.only(right: 16.0),
-                alignment: title != null
-                    ? Alignment.centerRight
-                    : Alignment.centerLeft,
-                child: Text(
-                  label!,
-                  style: const TextStyle(fontSize: 16.0),
+                // alignment: title != null
+                //     ? Alignment.centerRight
+                //     : Alignment.centerLeft,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    if (title == "QR コードの色")
+                      Row(
+                        children: [
+                          Stack(
+                            children: [
+                              Icon(Icons.circle_rounded,
+                                  color: qrImageConfig.qrSeedColor),
+                              const Icon(
+                                Icons.circle_outlined,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(width: 4.0),
+                        ],
+                      ),
+                    Text(
+                      label!,
+                      style: const TextStyle(fontSize: 16.0),
+                    ),
+                  ],
                 ),
               ),
             ),
