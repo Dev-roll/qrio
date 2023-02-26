@@ -15,7 +15,7 @@ class IconBox extends StatelessWidget {
       height: 48.0,
       child: Icon(
         icon,
-        color: Theme.of(context).colorScheme.onSurfaceVariant,
+        color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.75),
         size: 24.0,
       ),
     );

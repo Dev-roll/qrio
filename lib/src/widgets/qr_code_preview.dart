@@ -38,12 +38,12 @@ class QrCodePreview extends ConsumerWidget {
 
     return Container(
       alignment: Alignment.center,
-      height: 284,
+      height: 272,
       child: qrImageConfig.data != ''
           ? Column(
               children: [
                 Container(
-                  margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  margin: const EdgeInsets.fromLTRB(20, 8, 20, 0),
                   height: 200,
                   child: FittedBox(
                     child: RepaintBoundary(

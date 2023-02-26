@@ -74,29 +74,33 @@ class _QrioState extends State<Qrio> with SingleTickerProviderStateMixin {
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(
-            height: 16,
+            height: 12,
           ),
           Theme(
             data: ThemeData(
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
             ),
-            child: TabBar(
-              tabs: tabs,
-              controller: _tabController,
-              labelColor: Theme.of(context).colorScheme.onPrimary,
-              unselectedLabelColor:
-                  Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
-              indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(40),
-                color: Theme.of(context).colorScheme.primary,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 300),
+              child: TabBar(
+                tabs: tabs,
+                controller: _tabController,
+                labelColor: Theme.of(context).colorScheme.onPrimary,
+                unselectedLabelColor:
+                    Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+                indicator: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40),
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                indicatorSize: TabBarIndicatorSize.label,
+                indicatorPadding: const EdgeInsets.fromLTRB(-8, 0, -8, 0),
               ),
-              indicatorSize: TabBarIndicatorSize.label,
-              indicatorPadding: const EdgeInsets.fromLTRB(-8, 0, -8, 0),
             ),
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * defaultSheetHeight - 8,
+            height:
+                MediaQuery.of(context).size.height * defaultSheetHeight + 10,
           ),
         ],
       ),

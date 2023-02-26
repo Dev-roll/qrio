@@ -30,56 +30,40 @@ class _ScanCodeState extends State<ScanCode> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Expanded(child: _buildQrView(context)),
-          ],
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Theme(
-        data: ThemeData(
-          colorSchemeSeed: Theme.of(context).colorScheme.primary,
-          brightness: Brightness.dark,
-          useMaterial3: true,
-        ),
-        child: FutureBuilder(
-          future: controller?.getFlashStatus(),
-          builder: (context, snapshot) {
-            if (snapshot.data != null && snapshot.data == true) {
-              return IconButton(
-                onPressed: () async {
-                  await controller?.toggleFlash();
-                  setState(() {});
-                },
-                icon: const Icon(Icons.flashlight_on_rounded),
-                padding: const EdgeInsets.all(20),
-                style: IconButton.styleFrom(
-                  foregroundColor:
-                      Theme.of(context).colorScheme.secondaryContainer,
-                  backgroundColor:
-                      Theme.of(context).colorScheme.onSecondaryContainer,
-                ),
-              );
-            } else {
-              return IconButton(
-                onPressed: () async {
-                  await controller?.toggleFlash();
-                  setState(() {});
-                },
-                icon: const Icon(Icons.flashlight_off_rounded),
-                padding: const EdgeInsets.all(20),
-                style: IconButton.styleFrom(
-                  foregroundColor:
-                      Theme.of(context).colorScheme.onSecondaryContainer,
-                  backgroundColor:
-                      Theme.of(context).colorScheme.secondaryContainer,
-                ),
-              );
-            }
-          },
-        ),
+      body: Stack(
+        alignment: Alignment.topLeft,
+        children: <Widget>[
+          Expanded(child: _buildQrView(context)),
+          Theme(
+            data: ThemeData(
+              colorSchemeSeed: Theme.of(context).colorScheme.primary,
+              brightness: Brightness.dark,
+              useMaterial3: true,
+            ),
+            child: FutureBuilder(
+              future: controller?.getFlashStatus(),
+              builder: (context, snapshot) {
+                return Transform.translate(
+                  offset: Offset(0, MediaQuery.of(context).padding.top),
+                  child: SizedBox(
+                    height: 56,
+                    width: 56,
+                    child: IconButton(
+                      onPressed: () async {
+                        await controller?.toggleFlash();
+                        setState(() {});
+                      },
+                      icon: (snapshot.data != null && snapshot.data == true)
+                          ? const Icon(Icons.flashlight_on_rounded)
+                          : const Icon(Icons.flashlight_off_rounded),
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

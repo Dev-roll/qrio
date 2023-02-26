@@ -30,18 +30,22 @@ class ConfigItems extends ConsumerWidget {
           Row(
             children: [
               const IconBox(icon: Icons.link_rounded),
-              Flexible(
-                child: TextField(
-                  controller: _controller,
-                  decoration: const InputDecoration(
-                    hintText: 'リンク',
-                    border: InputBorder.none,
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: TextField(
+                    controller: _controller,
+                    decoration: const InputDecoration(
+                      hintText: 'リンク',
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 12),
+                    ),
+                    onChanged: ((value) {
+                      ref
+                          .read(qrImageConfigProvider.notifier)
+                          .editData(data: value);
+                    }),
                   ),
-                  onChanged: ((value) {
-                    ref
-                        .read(qrImageConfigProvider.notifier)
-                        .editData(data: value);
-                  }),
                 ),
               ),
             ],

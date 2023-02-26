@@ -38,8 +38,9 @@ class ConfigItem extends ConsumerWidget {
             Text(
               title!,
               style: TextStyle(
-                  fontSize: 13.0,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant),
+                fontSize: 13.0,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
           if (label != null)
             Expanded(
@@ -78,7 +79,7 @@ class ConfigItem extends ConsumerWidget {
           if (switchValue != null)
             Expanded(
               child: Container(
-                padding: const EdgeInsets.only(right: 8.0),
+                padding: const EdgeInsets.only(right: 12.0),
                 alignment: Alignment.centerRight,
                 child: Switch(
                   // This bool value toggles the switch.
