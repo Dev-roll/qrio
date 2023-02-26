@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qrio/src/screens/share_app.dart';
 
 import '../constants.dart';
 import '../enums/default_popup_menu_items_type.dart';
@@ -29,7 +30,13 @@ class DefaultPopupMenu extends StatelessWidget {
           //   // Handle this case.
           //   break;
           case DefaultPopupMenuItemsType.about:
-            // TODO: Handle this case.
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) {
+                  return const ShareApp();
+                },
+              ),
+            );
             break;
         }
       }),
