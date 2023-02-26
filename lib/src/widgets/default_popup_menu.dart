@@ -14,11 +14,8 @@ class DefaultPopupMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<DefaultPopupMenuItemsType>(
-      color: alphaBlend(
-        Theme.of(context).colorScheme.primary.withOpacity(0.12),
-        Theme.of(context).colorScheme.surface,
-      ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      elevation: 20,
       splashRadius: 20,
       position: PopupMenuPosition.under,
       onSelected: ((value) {
