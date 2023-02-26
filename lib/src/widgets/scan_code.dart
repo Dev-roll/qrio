@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qrio/src/utils.dart';
 import 'package:qrio/src/widgets/bottom_snack_bar.dart';
@@ -17,6 +19,30 @@ class ScanCode extends StatefulWidget {
 class _ScanCodeState extends State<ScanCode> {
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+
+  Future<String?> scanSelectedImage() async {
+    try {
+      final inputImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (inputImage == null) return null;
+      final imageTemp = File(inputImage.path);
+      return await scanCode(imageTemp.path);
+    } on PlatformException catch (e) {
+      debugPrint('Failed to pick image: $e');
+      return null;
+    }
+  }
+
+  Future<String> scanCode(String filePath) async {
+    final InputImage inputImage = InputImage.fromFilePath(filePath);
+    final barcodeScanner = BarcodeScanner();
+    final barcodes = await barcodeScanner.processImage(inputImage);
+    if (inputImage.inputImageData?.size == null ||
+        inputImage.inputImageData?.imageRotation == null) {
+      return barcodes.first.rawValue ?? '';
+    }
+    return '';
+  }
 
   @override
   void reassemble() {
@@ -61,6 +87,33 @@ class _ScanCodeState extends State<ScanCode> {
                   ),
                 );
               },
+            ),
+          ),
+          Container(
+            height: double.infinity,
+            width: double.infinity,
+            alignment: Alignment.bottomCenter,
+            margin: const EdgeInsets.all(8),
+            child: IconButton(
+              onPressed: () async {
+                final String? data = await scanSelectedImage();
+                if (data != null) {
+                  await updateHistory(data);
+                } else {
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    BottomSnackBar(
+                      context,
+                      'QRコードを読み取れませんでした',
+                      foreground: Theme.of(context).colorScheme.onError,
+                    ),
+                  );
+                }
+              },
+              icon: const Icon(Icons.collections_rounded),
+              padding: const EdgeInsets.all(20),
+              color: Theme.of(context).colorScheme.onBackground,
             ),
           ),
         ],
