@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -20,7 +20,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.1+3
 
 environment:
-  sdk: '>=2.18.2 <3.0.0'
+  sdk: ">=2.18.2 <3.0.0"
   flutter: ">=3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
@@ -34,25 +34,25 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  flutter_riverpod: ^2.1.1
-
+  flutter_riverpod: ^2.2.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
-  shared_preferences: ^2.0.15
-  dynamic_color: ^1.5.4
+  cupertino_icons: ^1.0.5
+  shared_preferences: ^2.0.18
+  dynamic_color: ^1.6.2
   qr_code_scanner: ^1.0.1
-  url_launcher: ^6.1.7
-  share_plus: ^6.3.0
+  url_launcher: ^6.1.10
+  share_plus: ^6.3.1
   qr_flutter: ^4.0.0
   image_gallery_saver: ^1.7.1
-  flutter_svg: ^1.1.6
-  flutter_launcher_icons: ^0.11.0
-  path_provider: ^2.0.11
+  flutter_svg: ^2.0.2
+  flutter_launcher_icons: ^0.12.0
+  path_provider: ^2.0.13
   font_awesome_flutter: ^10.4.0
   google_mlkit_barcode_scanning: ^0.5.0
   image_picker: ^0.8.6+3
+  receive_sharing_intent: ^1.4.5
 
 dev_dependencies:
   flutter_test:
@@ -92,7 +92,6 @@ flutter_icons:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
