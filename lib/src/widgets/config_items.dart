@@ -27,18 +27,19 @@ class ConfigItems extends ConsumerWidget {
     return Column(
       children: <Widget>[
         ...[
-          Row(
-            children: [
-              const IconBox(icon: Icons.link_rounded),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 16),
+          Container(
+            padding: const EdgeInsets.fromLTRB(16, 0, 4, 0),
+            child: Row(
+              children: [
+                const IconBox(icon: Icons.link_rounded),
+                const SizedBox(width: 12),
+                Expanded(
                   child: TextField(
                     controller: _controller,
                     decoration: InputDecoration(
                       hintText: 'リンク',
                       border: InputBorder.none,
-                      contentPadding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
+                      contentPadding: const EdgeInsets.fromLTRB(0, 16, 0, 16),
                       suffixIcon: _controller.text != ''
                           ? IconButton(
                               onPressed: () {
@@ -58,8 +59,8 @@ class ConfigItems extends ConsumerWidget {
                     }),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           ConfigItem(
             title: selectQrSeedColorOptionGroup.title,
