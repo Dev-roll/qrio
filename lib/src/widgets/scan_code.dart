@@ -56,12 +56,6 @@ class _ScanCodeState extends State<ScanCode> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.dark,
-      ),
-    );
     return Scaffold(
       body: Stack(
         alignment: Alignment.topLeft,
