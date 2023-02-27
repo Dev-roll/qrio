@@ -100,6 +100,7 @@ class _ScanCodeState extends State<ScanCode> {
               Container(
                 margin: const EdgeInsets.all(8),
                 width: MediaQuery.of(context).size.width,
+                alignment: Alignment.bottomCenter,
                 child: IconButton(
                   onPressed: () async {
                     final String? data = await scanSelectedImage();
