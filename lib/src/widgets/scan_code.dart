@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/utils.dart';
 import 'package:qrio/src/widgets/bottom_snack_bar.dart';
 
@@ -55,66 +56,79 @@ class _ScanCodeState extends State<ScanCode> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
+      ),
+    );
     return Scaffold(
       body: Stack(
         alignment: Alignment.topLeft,
         children: <Widget>[
-          Expanded(child: _buildQrView(context)),
-          Theme(
-            data: ThemeData(
-              colorSchemeSeed: Theme.of(context).colorScheme.primary,
-              brightness: Brightness.dark,
-              useMaterial3: true,
-            ),
-            child: FutureBuilder(
-              future: controller?.getFlashStatus(),
-              builder: (context, snapshot) {
-                return Transform.translate(
-                  offset: Offset(0, MediaQuery.of(context).padding.top),
-                  child: SizedBox(
-                    height: 56,
-                    width: 56,
-                    child: IconButton(
-                      onPressed: () async {
-                        await controller?.toggleFlash();
-                        setState(() {});
-                      },
-                      icon: (snapshot.data != null && snapshot.data == true)
-                          ? const Icon(Icons.flashlight_on_rounded)
-                          : const Icon(Icons.flashlight_off_rounded),
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
-                  ),
-                );
-              },
+          Expanded(
+            child: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(16),
+                  bottomRight: Radius.circular(16),
+                ),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: _buildQrView(context),
             ),
           ),
-          Container(
-            height: double.infinity,
-            width: double.infinity,
-            alignment: Alignment.bottomCenter,
-            margin: const EdgeInsets.all(8),
-            child: IconButton(
-              onPressed: () async {
-                final String? data = await scanSelectedImage();
-                if (data != null) {
-                  await updateHistory(data);
-                } else {
-                  if (!mounted) return;
-                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    BottomSnackBar(
-                      context,
-                      'QRコードを読み取れませんでした',
-                      foreground: Theme.of(context).colorScheme.onError,
-                    ),
-                  );
-                }
-              },
-              icon: const Icon(Icons.collections_rounded),
-              padding: const EdgeInsets.all(20),
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
+          FutureBuilder(
+            future: controller?.getFlashStatus(),
+            builder: (context, snapshot) {
+              return Transform.translate(
+                offset: Offset(0, MediaQuery.of(context).padding.top),
+                child: SizedBox(
+                  height: 56,
+                  width: 56,
+                  child: IconButton(
+                    onPressed: () async {
+                      await controller?.toggleFlash();
+                      setState(() {});
+                    },
+                    icon: (snapshot.data != null && snapshot.data == true)
+                        ? const Icon(Icons.flashlight_on_rounded)
+                        : const Icon(Icons.flashlight_off_rounded),
+                    color: white,
+                  ),
+                ),
+              );
+            },
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                margin: const EdgeInsets.all(8),
+                width: MediaQuery.of(context).size.width,
+                child: IconButton(
+                  onPressed: () async {
+                    final String? data = await scanSelectedImage();
+                    if (data != null) {
+                      await updateHistory(data);
+                    } else {
+                      if (!mounted) return;
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        BottomSnackBar(
+                          context,
+                          'QRコードを読み取れませんでした',
+                          foreground: Theme.of(context).colorScheme.onError,
+                        ),
+                      );
+                    }
+                  },
+                  icon: const Icon(Icons.collections_rounded),
+                  padding: const EdgeInsets.all(20),
+                  color: white,
+                ),
+              ),
+            ],
           ),
         ],
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../utils.dart';
 import 'select_option.dart';
 
 class SelectQrConfigDialog<T> extends ConsumerWidget {
@@ -29,15 +30,35 @@ class SelectQrConfigDialog<T> extends ConsumerWidget {
                     title: Row(
                       children: [
                         Stack(
+                          alignment: Alignment.center,
                           children: [
+                            const SizedBox(width: 24, height: 24),
                             Icon(
                               Icons.circle_rounded,
                               color: e.value as Color,
+                              size: groupValue == e.value ? 24 : 20,
                             ),
-                            const Icon(
-                              Icons.circle_outlined,
-                              color: Colors.white,
-                            ),
+                            groupValue == e.value
+                                ? const Icon(
+                                    Icons.check_circle_outline_rounded,
+                                    color: Colors.white,
+                                  )
+                                : Icon(
+                                    Icons.circle_outlined,
+                                    color: alphaBlend(
+                                      const Color(0xa0ffffff),
+                                      e.value as Color,
+                                    ),
+                                    size: 20,
+                                  ),
+                            if (groupValue == e.value)
+                              Icon(
+                                Icons.circle_outlined,
+                                color: alphaBlend(
+                                  const Color(0xa0ffffff),
+                                  e.value as Color,
+                                ),
+                              )
                           ],
                         ),
                         const SizedBox(width: 4.0),

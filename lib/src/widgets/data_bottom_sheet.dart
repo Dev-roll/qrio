@@ -174,6 +174,9 @@ class DataBottomSheet extends StatelessWidget {
               Navigator.of(context).pop();
               ref.read(qrImageConfigProvider.notifier).editData(data: data);
               ConfigItems.updateTextFieldValue(data);
+              if (selectedIndex == 0) {
+                tabController.animateTo(selectedIndex = 1);
+              }
             },
             child: Row(
               children: [

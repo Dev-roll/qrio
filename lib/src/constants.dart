@@ -5,6 +5,8 @@ import 'enums/default_popup_menu_items_type.dart';
 import 'widgets/select_option.dart';
 
 const Color seedColor = Color(0xFF30A3F0);
+const Color white = Color(0xEEFFFFFF);
+const Color black = Color(0xEE000000);
 
 const defaultSheetHeight = 0.18;
 

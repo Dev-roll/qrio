@@ -35,10 +35,21 @@ class ConfigItems extends ConsumerWidget {
                   padding: const EdgeInsets.only(right: 16),
                   child: TextField(
                     controller: _controller,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'リンク',
                       border: InputBorder.none,
-                      contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 12),
+                      contentPadding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
+                      suffixIcon: _controller.text != ''
+                          ? IconButton(
+                              onPressed: () {
+                                ref
+                                    .read(qrImageConfigProvider.notifier)
+                                    .editData(data: '');
+                                updateTextFieldValue('');
+                              },
+                              icon: const Icon(Icons.highlight_off_rounded),
+                            )
+                          : null,
                     ),
                     onChanged: ((value) {
                       ref

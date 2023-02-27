@@ -18,6 +18,13 @@ class DefaultPopupMenu extends StatelessWidget {
       elevation: 20,
       splashRadius: 20,
       position: PopupMenuPosition.under,
+      icon: Icon(
+        Icons.more_vert_rounded,
+        color: Theme.of(context).brightness == Brightness.dark ||
+                selectedIndex == 0
+            ? white
+            : black,
+      ),
       onSelected: ((value) {
         switch (value) {
           case DefaultPopupMenuItemsType.selectTheme:

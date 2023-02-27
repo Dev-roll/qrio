@@ -6,6 +6,7 @@ import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 import '../constants.dart';
 import '../screens/editor.dart';
+import '../utils.dart';
 import 'scan_code.dart';
 
 class Qrio extends StatefulWidget {
@@ -59,12 +60,16 @@ class _QrioState extends State<Qrio> with SingleTickerProviderStateMixin {
       ),
     ),
   ];
-  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: tabs.length, vsync: this);
+    tabController = TabController(length: tabs.length, vsync: this);
+    tabController.addListener(() {
+      setState(() {
+        selectedIndex = tabController.index;
+      });
+    });
 
     // // For sharing images coming from outside the app while the app is in the memory
     // _intentDataStreamSubscription = ReceiveSharingIntent.getMediaStream()
@@ -120,7 +125,7 @@ class _QrioState extends State<Qrio> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       body: TabBarView(
-        controller: _tabController,
+        controller: tabController,
         children: const [
           ScanCode(),
           Editor(),
@@ -138,10 +143,11 @@ class _QrioState extends State<Qrio> with SingleTickerProviderStateMixin {
               highlightColor: Colors.transparent,
             ),
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 300),
+              constraints: const BoxConstraints(maxWidth: 280),
               child: TabBar(
                 tabs: tabs,
-                controller: _tabController,
+                controller: tabController,
+                isScrollable: true,
                 labelColor: Theme.of(context).colorScheme.onPrimary,
                 unselectedLabelColor:
                     Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
