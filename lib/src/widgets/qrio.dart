@@ -82,10 +82,11 @@ class _QrioState extends State<Qrio> with SingleTickerProviderStateMixin {
               highlightColor: Colors.transparent,
             ),
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 300),
+              constraints: const BoxConstraints(maxWidth: 280),
               child: TabBar(
                 tabs: tabs,
                 controller: _tabController,
+                isScrollable: true,
                 labelColor: Theme.of(context).colorScheme.onPrimary,
                 unselectedLabelColor:
                     Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
