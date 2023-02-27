@@ -42,6 +42,9 @@ class ConfigItems extends ConsumerWidget {
                       suffixIcon: _controller.text != ''
                           ? IconButton(
                               onPressed: () {
+                                ref
+                                    .read(qrImageConfigProvider.notifier)
+                                    .editData(data: '');
                                 updateTextFieldValue('');
                               },
                               icon: const Icon(Icons.highlight_off_rounded),
