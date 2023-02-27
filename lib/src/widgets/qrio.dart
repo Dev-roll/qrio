@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
-import '../constants.dart';
 import '../screens/editor.dart';
 import '../utils.dart';
 import 'scan_code.dart';
@@ -160,8 +159,9 @@ class _QrioState extends State<Qrio> with SingleTickerProviderStateMixin {
             ),
           ),
           SizedBox(
-            height:
-                MediaQuery.of(context).size.height * defaultSheetHeight + 10,
+            height: MediaQuery.of(context).size.height *
+                    defaultSheetHeight(context) +
+                10,
           ),
         ],
       ),
