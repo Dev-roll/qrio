@@ -33,6 +33,13 @@ class Home extends ConsumerWidget {
       body: Stack(
         alignment: AlignmentDirectional.topCenter,
         children: [
+          SizedBox(
+            height: MediaQuery.of(context).padding.top,
+            child: AppBar(
+              backgroundColor: Colors.transparent,
+              surfaceTintColor: Colors.transparent,
+            ),
+          ),
           const Qrio(),
           Transform.translate(
             offset: Offset(0, MediaQuery.of(context).padding.top),
