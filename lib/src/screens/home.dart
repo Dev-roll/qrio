@@ -42,19 +42,22 @@ class Home extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   SvgPicture.asset(
-                    Theme.of(context)
-                                .colorScheme
-                                .background
-                                .computeLuminance() <
-                            0.5
+                    Theme.of(context).brightness == Brightness.dark ||
+                            selectedIndex == 0
                         ? 'assets/svg/icon_dark.svg'
                         : 'assets/svg/icon_light.svg',
                     width: 24,
                   ),
                   const SizedBox(width: 8),
-                  const Text(
+                  Text(
                     'QR I/O',
-                    style: TextStyle(fontSize: 22),
+                    style: TextStyle(
+                      fontSize: 22,
+                      color: Theme.of(context).brightness == Brightness.dark ||
+                              selectedIndex == 0
+                          ? white
+                          : black,
+                    ),
                   ),
                 ],
               ),
@@ -98,7 +101,7 @@ class Home extends ConsumerWidget {
           ),
           Container(
             height: bottomPadding,
-            width: double.infinity,
+            width: MediaQuery.of(context).size.width,
             margin: EdgeInsets.only(
               top: MediaQuery.of(context).size.height - bottomPadding,
             ),
