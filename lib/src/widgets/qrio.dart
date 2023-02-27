@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:qrio/src/utils.dart';
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 import '../constants.dart';
 import '../screens/editor.dart';
@@ -12,6 +16,9 @@ class Qrio extends StatefulWidget {
 }
 
 class _QrioState extends State<Qrio> with SingleTickerProviderStateMixin {
+  late StreamSubscription _intentDataStreamSubscription;
+  // List<SharedMediaFile>? _sharedFiles;
+  String? _sharedText;
   final List<Tab> tabs = <Tab>[
     Tab(
       icon: Row(
@@ -58,6 +65,55 @@ class _QrioState extends State<Qrio> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _tabController = TabController(length: tabs.length, vsync: this);
+
+    // // For sharing images coming from outside the app while the app is in the memory
+    // _intentDataStreamSubscription = ReceiveSharingIntent.getMediaStream()
+    //     .listen((List<SharedMediaFile> value) {
+    //   setState(() {
+    //     _sharedFiles = value;
+    //     debugPrint(
+    //         "Shared:" + (_sharedFiles?.map((f) => f.path).join(",") ?? ""));
+    //   });
+    // }, onError: (err) {
+    //   debugPrint("getIntentDataStream error: $err");
+    // });
+
+    // // For sharing images coming from outside the app while the app is closed
+    // ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
+    //   setState(() {
+    //     _sharedFiles = value;
+    //     debugPrint(
+    //         "Shared:" + (_sharedFiles?.map((f) => f.path).join(",") ?? ""));
+    //   });
+    // });
+
+    // For sharing or opening urls/text coming from outside the app while the app is in the memory
+    _intentDataStreamSubscription =
+        ReceiveSharingIntent.getTextStream().listen((String value) {
+      setState(() {
+        _sharedText = value;
+        debugPrint("Shared: $_sharedText");
+        updateHistory(_sharedText!);
+      });
+    }, onError: (err) {
+      debugPrint("getLinkStream error: $err");
+    });
+
+    // For sharing or opening urls/text coming from outside the app while the app is closed
+    ReceiveSharingIntent.getInitialText().then((String? value) {
+      setState(() {
+        _sharedText = value;
+        debugPrint("Shared: $_sharedText");
+        updateHistory(_sharedText!);
+        const Editor();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _intentDataStreamSubscription.cancel();
+    super.dispose();
   }
 
   @override
