@@ -55,11 +55,28 @@ class _ScanCodeState extends State<ScanCode> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
+      ),
+    );
     return Scaffold(
       body: Stack(
         alignment: Alignment.topLeft,
         children: <Widget>[
-          Expanded(child: _buildQrView(context)),
+          Expanded(
+            child: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(16),
+                  bottomRight: Radius.circular(16),
+                ),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: _buildQrView(context),
+            ),
+          ),
           Theme(
             data: ThemeData(
               colorSchemeSeed: Theme.of(context).colorScheme.primary,
@@ -89,32 +106,47 @@ class _ScanCodeState extends State<ScanCode> {
               },
             ),
           ),
-          Container(
-            height: double.infinity,
-            width: double.infinity,
-            alignment: Alignment.bottomCenter,
-            margin: const EdgeInsets.all(8),
-            child: IconButton(
-              onPressed: () async {
-                final String? data = await scanSelectedImage();
-                if (data != null) {
-                  await updateHistory(data);
-                } else {
-                  if (!mounted) return;
-                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    BottomSnackBar(
-                      context,
-                      'QRコードを読み取れませんでした',
-                      foreground: Theme.of(context).colorScheme.onError,
-                    ),
-                  );
-                }
-              },
-              icon: const Icon(Icons.collections_rounded),
-              padding: const EdgeInsets.all(20),
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                margin: const EdgeInsets.all(8),
+                width: MediaQuery.of(context).size.width,
+                child: Theme(
+                  data: ThemeData(
+                    colorSchemeSeed: Theme.of(context).colorScheme.primary,
+                    brightness: Brightness.dark,
+                    useMaterial3: true,
+                  ),
+                  child: Builder(
+                    builder: (context) {
+                      return IconButton(
+                        onPressed: () async {
+                          final String? data = await scanSelectedImage();
+                          if (data != null) {
+                            await updateHistory(data);
+                          } else {
+                            if (!mounted) return;
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              BottomSnackBar(
+                                context,
+                                'QRコードを読み取れませんでした',
+                                foreground:
+                                    Theme.of(context).colorScheme.onError,
+                              ),
+                            );
+                          }
+                        },
+                        icon: const Icon(Icons.collections_rounded),
+                        padding: const EdgeInsets.all(20),
+                        color: Theme.of(context).colorScheme.onBackground,
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../utils.dart';
 import 'select_option.dart';
 
 class SelectQrConfigDialog<T> extends ConsumerWidget {
@@ -34,9 +35,12 @@ class SelectQrConfigDialog<T> extends ConsumerWidget {
                               Icons.circle_rounded,
                               color: e.value as Color,
                             ),
-                            const Icon(
+                            Icon(
                               Icons.circle_outlined,
-                              color: Colors.white,
+                              color: alphaBlend(
+                                const Color(0xa0ffffff),
+                                e.value as Color,
+                              ),
                             ),
                           ],
                         ),

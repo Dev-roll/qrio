@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qrio/src/utils.dart';
 import 'package:qrio/src/widgets/icon_box.dart';
 
 import '../app.dart';
@@ -46,9 +47,6 @@ class ConfigItem extends ConsumerWidget {
             Expanded(
               child: Container(
                 padding: const EdgeInsets.only(right: 16.0),
-                // alignment: title != null
-                //     ? Alignment.centerRight
-                //     : Alignment.centerLeft,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -57,11 +55,16 @@ class ConfigItem extends ConsumerWidget {
                         children: [
                           Stack(
                             children: [
-                              Icon(Icons.circle_rounded,
-                                  color: qrImageConfig.qrSeedColor),
-                              const Icon(
+                              Icon(
+                                Icons.circle_rounded,
+                                color: qrImageConfig.qrSeedColor,
+                              ),
+                              Icon(
                                 Icons.circle_outlined,
-                                color: Colors.white,
+                                color: alphaBlend(
+                                  const Color(0xa0ffffff),
+                                  qrImageConfig.qrSeedColor,
+                                ),
                               ),
                             ],
                           ),
