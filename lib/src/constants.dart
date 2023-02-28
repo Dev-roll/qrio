@@ -8,6 +8,8 @@ const Color seedColor = Color(0xFF30A3F0);
 const Color white = Color(0xEEFFFFFF);
 const Color black = Color(0xEE000000);
 
+const double appBarHeight = 56;
+const double qrCodeViewHeight = 272;
 const double bottomPadding = 16;
 const double sheetMinHeight = 152;
 

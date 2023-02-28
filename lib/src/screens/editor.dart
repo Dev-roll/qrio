@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qrio/src/constants.dart';
 
 import '../widgets/config_items.dart';
 import '../widgets/qr_code_preview.dart';
@@ -15,7 +16,7 @@ class Editor extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               SizedBox(
-                height: MediaQuery.of(context).padding.top + 56,
+                height: MediaQuery.of(context).padding.top + appBarHeight,
                 child: AppBar(
                   surfaceTintColor: Colors.transparent,
                 ),
