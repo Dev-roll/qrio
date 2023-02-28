@@ -48,8 +48,11 @@ class History extends ConsumerWidget {
     }
 
     var controller = ScrollController();
-    final scrollContentHight = MediaQuery.of(context).size.height -
-        (MediaQuery.of(context).padding.top + 133);
+    final scrollContentHeight = MediaQuery.of(context).size.height -
+        (MediaQuery.of(context).padding.top +
+            appBarHeight +
+            qrCodeViewHeight +
+            sheetHandleHeight);
     final _ = ref.refresh(futureProvider);
     final asyncValue = ref.watch(futureProvider);
     return asyncValue.when(
@@ -189,8 +192,8 @@ class History extends ConsumerWidget {
               ],
             ),
             Container(
-              margin: const EdgeInsets.only(top: 77),
-              height: scrollContentHight,
+              margin: const EdgeInsets.only(top: sheetHandleHeight),
+              height: scrollContentHeight,
               child: SingleChildScrollView(
                 controller: controller,
                 child: Column(
@@ -283,7 +286,7 @@ class History extends ConsumerWidget {
             ),
             Container(
               width: MediaQuery.of(context).size.width,
-              height: scrollContentHight + 48,
+              height: scrollContentHeight + 50,
               alignment: Alignment.bottomCenter,
               child: ElevatedButton.icon(
                 onPressed: () {

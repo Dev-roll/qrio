@@ -27,6 +27,7 @@ class Home extends ConsumerWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final topPadding = MediaQuery.of(context).padding.top;
+    const topContentHeight = appBarHeight + qrCodeViewHeight;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
@@ -81,7 +82,7 @@ class Home extends ConsumerWidget {
             child: DraggableScrollableSheet(
               initialChildSize: defaultSheetHeight(context),
               minChildSize: defaultSheetHeight(context),
-              maxChildSize: 1 - (topPadding + 56) / screenHeight,
+              maxChildSize: 1 - (topPadding + topContentHeight) / screenHeight,
               snap: true,
               builder:
                   (BuildContext context, ScrollController scrollController) {

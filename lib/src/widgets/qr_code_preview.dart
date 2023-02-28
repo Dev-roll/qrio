@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:qrio/src/constants.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../app.dart';
@@ -38,7 +39,7 @@ class QrCodePreview extends ConsumerWidget {
 
     return Container(
       alignment: Alignment.center,
-      height: 272,
+      height: qrCodeViewHeight,
       child: qrImageConfig.data != ''
           ? Column(
               children: [

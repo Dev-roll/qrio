@@ -79,8 +79,8 @@ class _ScanCodeState extends State<ScanCode> {
               return Transform.translate(
                 offset: Offset(0, MediaQuery.of(context).padding.top),
                 child: SizedBox(
-                  height: 56,
-                  width: 56,
+                  height: appBarHeight,
+                  width: appBarHeight,
                   child: IconButton(
                     onPressed: () async {
                       await controller?.toggleFlash();
