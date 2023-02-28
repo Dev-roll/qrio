@@ -8,7 +8,7 @@ const Color seedColor = Color(0xFF30A3F0);
 const Color white = Color(0xEEFFFFFF);
 const Color black = Color(0xEE000000);
 
-const double bottomPadding = 24;
+const double bottomPadding = 16;
 const double sheetMinHeight = 152;
 
 const List<Map<String, dynamic>> defaultPopupMenuItems = [
