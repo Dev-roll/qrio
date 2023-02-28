@@ -1,6 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,6 +69,30 @@ Color alphaBlend(Color foreground, Color background) {
       (foreground.green * alpha + background.green * backAlpha) ~/ outAlpha,
       (foreground.blue * alpha + background.blue * backAlpha) ~/ outAlpha,
     );
+  }
+}
+
+Future<String> scanCode(String filePath) async {
+  final InputImage inputImage = InputImage.fromFilePath(filePath);
+  final barcodeScanner = BarcodeScanner();
+  final barcodes = await barcodeScanner.processImage(inputImage);
+  if (inputImage.inputImageData?.size == null ||
+      inputImage.inputImageData?.imageRotation == null) {
+    return barcodes.first.rawValue ?? '';
+  }
+  return '';
+}
+
+Future<String?> scanSelectedImage() async {
+  try {
+    final inputImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (inputImage == null) return null;
+    final imageTemp = File(inputImage.path);
+    return await scanCode(imageTemp.path);
+  } on PlatformException catch (e) {
+    debugPrint('Failed to pick image: $e');
+    return null;
   }
 }
 
