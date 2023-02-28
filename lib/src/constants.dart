@@ -12,6 +12,7 @@ const double appBarHeight = 56;
 const double qrCodeViewHeight = 272;
 const double bottomPadding = 16;
 const double sheetMinHeight = 152;
+const double sheetHandleHeight = 77;
 
 const List<Map<String, dynamic>> defaultPopupMenuItems = [
   // {
