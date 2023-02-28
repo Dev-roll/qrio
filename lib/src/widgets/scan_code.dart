@@ -77,19 +77,33 @@ class _ScanCodeState extends State<ScanCode> {
                 alignment: Alignment.bottomCenter,
                 child: IconButton(
                   onPressed: () async {
-                    final String? data = await scanSelectedImage();
-                    if (data != null) {
-                      await updateHistory(data);
-                    } else {
+                    final List<String?> data = await selectAndScanImg();
+                    if (data.isEmpty) {
                       if (!mounted) return;
                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
                       ScaffoldMessenger.of(context).showSnackBar(
                         BottomSnackBar(
                           context,
-                          'QRコードを読み取れませんでした',
+                          '検出できませんでした',
                           foreground: Theme.of(context).colorScheme.onError,
                         ),
                       );
+                    } else if (data.contains(null)) {
+                      if (!mounted) return;
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        BottomSnackBar(
+                          context,
+                          '画像を選択してください',
+                          foreground: Theme.of(context).colorScheme.onError,
+                        ),
+                      );
+                    } else {
+                      for (var str in data) {
+                        if (str != null) {
+                          updateHistory(str);
+                        }
+                      }
                     }
                   },
                   icon: const Icon(Icons.collections_rounded),

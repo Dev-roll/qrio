@@ -72,44 +72,39 @@ Color alphaBlend(Color foreground, Color background) {
   }
 }
 
-Future<String> scanCode(String filePath) async {
+Future<List<String?>> selectAndScanImg() async {
+  try {
+    final inputImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (inputImage == null) return [null];
+    final imageTemp = File(inputImage.path);
+    return await scanImg(imageTemp.path);
+  } on PlatformException catch (e) {
+    debugPrint('Failed to pick image: $e');
+    return [];
+  }
+}
+
+Future<List<String>> scanImg(String filePath) async {
   final InputImage inputImage = InputImage.fromFilePath(filePath);
   final barcodeScanner = BarcodeScanner();
   final barcodes = await barcodeScanner.processImage(inputImage);
   if (inputImage.inputImageData?.size == null ||
       inputImage.inputImageData?.imageRotation == null) {
-    return barcodes.first.rawValue ?? '';
+    return barcodes.map((barcode) => barcode.rawValue.toString()).toList();
   }
-  return '';
+  return [];
 }
 
-Future<String?> scanSelectedImage() async {
-  try {
-    final inputImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (inputImage == null) return null;
-    final imageTemp = File(inputImage.path);
-    return await scanCode(imageTemp.path);
-  } on PlatformException catch (e) {
-    debugPrint('Failed to pick image: $e');
-    return null;
-  }
-}
-
-updateHistory(data) async {
+updateHistory(String data) async {
   final prefs = await SharedPreferences.getInstance();
   final List<String> historyList = prefs.getStringList('qrio_history') ?? [];
-  if (data == []) {
-    await prefs.setStringList('qrio_history', []);
-  } else if (historyList.isNotEmpty) {
-    if (historyList.last != data) {
-      historyList.add(data);
-      await prefs.setStringList('qrio_history', historyList);
-      return true;
-    }
-  } else {
-    historyList.add(data);
+  final String addStr = data.trim();
+  if (addStr.isNotEmpty &&
+      (historyList.isEmpty || historyList.last != addStr)) {
+    historyList.add(addStr);
     await prefs.setStringList('qrio_history', historyList);
+    return true;
   }
   // await prefs.setStringList('qrio_history', []);
   // final FutureProvider futureProvider = FutureProvider<dynamic>((ref) async {
