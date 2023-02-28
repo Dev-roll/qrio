@@ -11,7 +11,7 @@ class IconBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 48.0,
+      width: 24.0,
       height: 48.0,
       child: Icon(
         icon,

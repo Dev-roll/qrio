@@ -56,12 +56,6 @@ class _ScanCodeState extends State<ScanCode> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.dark,
-      ),
-    );
     return Scaffold(
       body: Stack(
         alignment: Alignment.topLeft,
@@ -106,6 +100,7 @@ class _ScanCodeState extends State<ScanCode> {
               Container(
                 margin: const EdgeInsets.all(8),
                 width: MediaQuery.of(context).size.width,
+                alignment: Alignment.bottomCenter,
                 child: IconButton(
                   onPressed: () async {
                     final String? data = await scanSelectedImage();

@@ -27,12 +27,18 @@ class Home extends ConsumerWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final topPadding = MediaQuery.of(context).padding.top;
-    const bottomPadding = 24.0;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
         alignment: AlignmentDirectional.topCenter,
         children: [
+          SizedBox(
+            height: MediaQuery.of(context).padding.top,
+            child: AppBar(
+              backgroundColor: Colors.transparent,
+              surfaceTintColor: Colors.transparent,
+            ),
+          ),
           const Qrio(),
           Transform.translate(
             offset: Offset(0, MediaQuery.of(context).padding.top),
@@ -73,8 +79,8 @@ class Home extends ConsumerWidget {
           ),
           SizedBox.expand(
             child: DraggableScrollableSheet(
-              initialChildSize: defaultSheetHeight,
-              minChildSize: defaultSheetHeight,
+              initialChildSize: defaultSheetHeight(context),
+              minChildSize: defaultSheetHeight(context),
               maxChildSize: 1 - (topPadding + 56) / screenHeight,
               snap: true,
               builder:

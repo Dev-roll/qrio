@@ -2,10 +2,16 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:qrio/src/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 late TabController tabController;
 int selectedIndex = 0;
+
+double defaultSheetHeight(BuildContext context) {
+  double screenHeight = MediaQuery.of(context).size.height;
+  return sheetMinHeight / screenHeight;
+}
 
 ThemeMode stringToThemeMode(String theme) {
   switch (theme) {

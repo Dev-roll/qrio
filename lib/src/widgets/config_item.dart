@@ -32,78 +32,81 @@ class ConfigItem extends ConsumerWidget {
 
     return InkWell(
       onTap: () => onTapListener(context),
-      child: Row(
-        children: <Widget>[
-          IconBox(icon: icon),
-          if (title != null)
-            Text(
-              title!,
-              style: TextStyle(
-                fontSize: 13.0,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
-            ),
-          if (label != null)
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    if (title == "QR コードの色")
-                      Row(
-                        children: [
-                          Stack(
-                            children: [
-                              Icon(
-                                Icons.circle_rounded,
-                                color: qrImageConfig.qrSeedColor,
-                              ),
-                              Icon(
-                                Icons.circle_outlined,
-                                color: alphaBlend(
-                                  const Color(0xa0ffffff),
-                                  qrImageConfig.qrSeedColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(width: 4.0),
-                        ],
-                      ),
-                    Text(
-                      label!,
-                      style: const TextStyle(fontSize: 16.0),
-                    ),
-                  ],
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(16, 6, 16, 6),
+        child: Row(
+          children: <Widget>[
+            IconBox(icon: icon),
+            const SizedBox(width: 12),
+            if (title != null)
+              Text(
+                title!,
+                style: TextStyle(
+                  fontSize: 13.0,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
-            ),
-          if (switchValue != null)
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.only(right: 12.0),
-                alignment: Alignment.centerRight,
-                child: Switch(
-                  // This bool value toggles the switch.
-                  value: switchValue!,
-                  activeColor: Theme.of(context).colorScheme.primary,
-                  onChanged: switchOnChangeHandler,
-                  thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
-                    (Set<MaterialState> _) {
-                      if (switchValue ?? false) {
-                        return Icon(
-                          Icons.dark_mode_rounded,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        );
-                      }
-                      return null;
-                    },
+            if (label != null)
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.only(right: 4),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      if (title == "QR コードの色")
+                        Row(
+                          children: [
+                            Stack(
+                              children: [
+                                Icon(
+                                  Icons.circle_rounded,
+                                  color: qrImageConfig.qrSeedColor,
+                                ),
+                                Icon(
+                                  Icons.circle_outlined,
+                                  color: alphaBlend(
+                                    const Color(0xa0ffffff),
+                                    qrImageConfig.qrSeedColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(width: 4.0),
+                          ],
+                        ),
+                      Text(
+                        label!,
+                        style: const TextStyle(fontSize: 16.0),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            )
-        ],
+            if (switchValue != null)
+              Expanded(
+                child: Container(
+                  alignment: Alignment.centerRight,
+                  child: Switch(
+                    // This bool value toggles the switch.
+                    value: switchValue!,
+                    activeColor: Theme.of(context).colorScheme.primary,
+                    onChanged: switchOnChangeHandler,
+                    thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
+                      (Set<MaterialState> _) {
+                        if (switchValue ?? false) {
+                          return Icon(
+                            Icons.dark_mode_rounded,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          );
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),
+              )
+          ],
+        ),
       ),
     );
   }
