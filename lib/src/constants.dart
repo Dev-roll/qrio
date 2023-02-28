@@ -34,6 +34,7 @@ const List<Map<String, dynamic>> defaultPopupMenuItems = [
 
 final SelectOptionGroup<ThemeMode> selectThemeOptionGroup = SelectOptionGroup(
   title: 'テーマの選択',
+  icon: Icons.brightness_medium_rounded,
   options: [
     SelectOption<ThemeMode>(label: 'ライト', value: ThemeMode.light),
     SelectOption<ThemeMode>(label: 'ダーク', value: ThemeMode.dark),

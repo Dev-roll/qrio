@@ -10,6 +10,7 @@ class SelectQrConfigDialog<T> extends ConsumerWidget {
     required this.options,
     required this.groupValue,
     required this.editConfigFunc,
+    this.icon,
     super.key,
   });
 
@@ -17,11 +18,13 @@ class SelectQrConfigDialog<T> extends ConsumerWidget {
   final List<SelectOption<T>> options;
   final T groupValue;
   final Function(T? value) editConfigFunc;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     if (title == 'QR コードの色') {
       return AlertDialog(
+        icon: Icon(icon),
         title: Text(title),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -78,6 +81,7 @@ class SelectQrConfigDialog<T> extends ConsumerWidget {
       );
     } else {
       return AlertDialog(
+        icon: Icon(icon),
         title: Text(title),
         content: Column(
           mainAxisSize: MainAxisSize.min,
