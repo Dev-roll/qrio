@@ -122,7 +122,8 @@ class History extends ConsumerWidget {
                                     context: context,
                                     builder: (context) => AlertDialog(
                                       icon: const Icon(
-                                          Icons.delete_outline_rounded),
+                                        Icons.delete_outline_rounded,
+                                      ),
                                       title: const Text('削除'),
                                       content: Text(
                                         'すべての履歴を削除しますか？',
@@ -134,17 +135,25 @@ class History extends ConsumerWidget {
                                       ),
                                       actions: [
                                         TextButton(
-                                            onPressed: () =>
-                                                {Navigator.pop(context)},
-                                            onLongPress: null,
-                                            child: const Text('キャンセル')),
+                                          onPressed: () =>
+                                              {Navigator.pop(context)},
+                                          onLongPress: null,
+                                          child: const Text('キャンセル'),
+                                        ),
                                         TextButton(
                                           onPressed: () async {
                                             Navigator.pop(context);
                                             deleteHistory();
                                           },
                                           onLongPress: null,
-                                          child: const Text('すべて削除'),
+                                          child: Text(
+                                            'すべて削除',
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .error,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),

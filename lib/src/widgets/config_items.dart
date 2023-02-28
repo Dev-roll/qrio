@@ -67,16 +67,19 @@ class ConfigItems extends ConsumerWidget {
             label: selectQrSeedColorOptionGroup
                 .getLabelFromValue(qrImageConfig.qrSeedColor),
             icon: selectQrSeedColorOptionGroup.icon!,
-            onTapListener: openDialogFactory(SelectQrConfigDialog<Color>(
-              title: selectQrSeedColorOptionGroup.title,
-              options: selectQrSeedColorOptionGroup.options,
-              editConfigFunc: (Color? value) {
-                ref
-                    .read(qrImageConfigProvider.notifier)
-                    .editQrSeedColor(qrSeedColor: value!);
-              },
-              groupValue: qrImageConfig.qrSeedColor,
-            )),
+            onTapListener: openDialogFactory(
+              SelectQrConfigDialog<Color>(
+                title: selectQrSeedColorOptionGroup.title,
+                icon: selectQrSeedColorOptionGroup.icon,
+                options: selectQrSeedColorOptionGroup.options,
+                editConfigFunc: (Color? value) {
+                  ref
+                      .read(qrImageConfigProvider.notifier)
+                      .editQrSeedColor(qrSeedColor: value!);
+                },
+                groupValue: qrImageConfig.qrSeedColor,
+              ),
+            ),
           ),
           ConfigItem(
             title: '色を反転する',
@@ -93,49 +96,57 @@ class ConfigItems extends ConsumerWidget {
             label: selectQrEyeShapeOptionGroup
                 .getLabelFromValue(qrImageConfig.eyeShape),
             icon: selectQrEyeShapeOptionGroup.icon!,
-            onTapListener: openDialogFactory(SelectQrConfigDialog<QrEyeShape>(
-              title: selectQrEyeShapeOptionGroup.title,
-              options: selectQrEyeShapeOptionGroup.options,
-              editConfigFunc: (QrEyeShape? value) {
-                ref
-                    .read(qrImageConfigProvider.notifier)
-                    .editEyeShape(eyeShape: value!);
-              },
-              groupValue: qrImageConfig.eyeShape,
-            )),
+            onTapListener: openDialogFactory(
+              SelectQrConfigDialog<QrEyeShape>(
+                title: selectQrEyeShapeOptionGroup.title,
+                icon: selectQrEyeShapeOptionGroup.icon,
+                options: selectQrEyeShapeOptionGroup.options,
+                editConfigFunc: (QrEyeShape? value) {
+                  ref
+                      .read(qrImageConfigProvider.notifier)
+                      .editEyeShape(eyeShape: value!);
+                },
+                groupValue: qrImageConfig.eyeShape,
+              ),
+            ),
           ),
           ConfigItem(
             title: selectQrDataModuleShapeOptionGroup.title,
             label: selectQrDataModuleShapeOptionGroup
                 .getLabelFromValue(qrImageConfig.dataModuleShape),
             icon: selectQrDataModuleShapeOptionGroup.icon!,
-            onTapListener:
-                openDialogFactory(SelectQrConfigDialog<QrDataModuleShape>(
-              title: selectQrDataModuleShapeOptionGroup.title,
-              options: selectQrDataModuleShapeOptionGroup.options,
-              editConfigFunc: (QrDataModuleShape? value) {
-                ref
-                    .read(qrImageConfigProvider.notifier)
-                    .editDataModuleShape(dataModuleShape: value!);
-              },
-              groupValue: qrImageConfig.dataModuleShape,
-            )),
+            onTapListener: openDialogFactory(
+              SelectQrConfigDialog<QrDataModuleShape>(
+                title: selectQrDataModuleShapeOptionGroup.title,
+                icon: selectQrDataModuleShapeOptionGroup.icon,
+                options: selectQrDataModuleShapeOptionGroup.options,
+                editConfigFunc: (QrDataModuleShape? value) {
+                  ref
+                      .read(qrImageConfigProvider.notifier)
+                      .editDataModuleShape(dataModuleShape: value!);
+                },
+                groupValue: qrImageConfig.dataModuleShape,
+              ),
+            ),
           ),
           ConfigItem(
             title: selectQrErrorCorrectLevelOptionGroup.title,
             label: selectQrErrorCorrectLevelOptionGroup
                 .getLabelFromValue(qrImageConfig.errorCorrectLevel),
             icon: selectQrErrorCorrectLevelOptionGroup.icon!,
-            onTapListener: openDialogFactory(SelectQrConfigDialog<int>(
-              title: selectQrErrorCorrectLevelOptionGroup.title,
-              options: selectQrErrorCorrectLevelOptionGroup.options,
-              editConfigFunc: (int? value) {
-                ref
-                    .read(qrImageConfigProvider.notifier)
-                    .editErrorCorrectLevel(errorCorrectLevel: value!);
-              },
-              groupValue: qrImageConfig.errorCorrectLevel,
-            )),
+            onTapListener: openDialogFactory(
+              SelectQrConfigDialog<int>(
+                title: selectQrErrorCorrectLevelOptionGroup.title,
+                icon: selectQrErrorCorrectLevelOptionGroup.icon,
+                options: selectQrErrorCorrectLevelOptionGroup.options,
+                editConfigFunc: (int? value) {
+                  ref
+                      .read(qrImageConfigProvider.notifier)
+                      .editErrorCorrectLevel(errorCorrectLevel: value!);
+                },
+                groupValue: qrImageConfig.errorCorrectLevel,
+              ),
+            ),
           )
         ].expand(
           (widget) => [
