@@ -47,6 +47,9 @@ class History extends ConsumerWidget {
       }
     }
 
+    var controller = ScrollController();
+    final scrollContentHight = MediaQuery.of(context).size.height -
+        (MediaQuery.of(context).padding.top + 133);
     final _ = ref.refresh(futureProvider);
     final asyncValue = ref.watch(futureProvider);
     return asyncValue.when(
@@ -54,6 +57,7 @@ class History extends ConsumerWidget {
       loading: () => const CircularProgressIndicator(), //読み込み時
       data: (historyList) {
         return Stack(
+          alignment: Alignment.topCenter,
           children: [
             Column(
               children: [
@@ -164,7 +168,7 @@ class History extends ConsumerWidget {
                 if (List.from(historyList).isEmpty)
                   Column(
                     children: [
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 32),
                       Icon(
                         Icons.update_disabled_rounded,
                         size: 120,
@@ -186,9 +190,9 @@ class History extends ConsumerWidget {
             ),
             Container(
               margin: const EdgeInsets.only(top: 77),
-              height: MediaQuery.of(context).size.height -
-                  (MediaQuery.of(context).padding.top + 133),
+              height: scrollContentHight,
               child: SingleChildScrollView(
+                controller: controller,
                 child: Column(
                   children: [
                     const SizedBox(height: 8),
@@ -272,14 +276,33 @@ class History extends ConsumerWidget {
                           ],
                         ),
                       ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 80),
                   ],
                 ),
               ),
-            )
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: scrollContentHight + 48,
+              alignment: Alignment.bottomCenter,
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  controller.animateTo(
+                    0,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.ease,
+                  );
+                },
+                icon: const Icon(Icons.arrow_upward_rounded),
+                label: const Text('履歴のトップ'),
+                style: ElevatedButton.styleFrom(
+                    elevation: 4,
+                    backgroundColor: Theme.of(context).colorScheme.onSecondary),
+              ),
+            ),
           ],
         );
-      }, //データ受け取り時
+      },
     );
   }
 }
