@@ -78,6 +78,7 @@ updateHistory(data) async {
     if (historyList.last != data) {
       historyList.add(data);
       await prefs.setStringList('qrio_history', historyList);
+      return true;
     }
   } else {
     historyList.add(data);
