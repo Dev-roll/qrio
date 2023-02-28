@@ -9,6 +9,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/utils.dart';
 import 'package:qrio/src/widgets/bottom_snack_bar.dart';
+import 'package:vibration/vibration.dart';
 
 class ScanCode extends StatefulWidget {
   const ScanCode({super.key});
@@ -176,9 +177,9 @@ class _ScanCodeState extends State<ScanCode> {
     controller.scannedDataStream.listen(
       (scanData) async {
         log(scanData.code.toString());
-        HapticFeedback.vibrate();
         if (scanData.code != null) {
-          await updateHistory(scanData.code.toString().trim());
+          bool? updated = await updateHistory(scanData.code.toString().trim());
+          if (updated ?? false) Vibration.vibrate(duration: 50);
         }
       },
     );
