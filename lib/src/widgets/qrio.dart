@@ -16,7 +16,7 @@ class Qrio extends StatefulWidget {
 
 class _QrioState extends State<Qrio> with SingleTickerProviderStateMixin {
   late StreamSubscription _intentDataStreamSubscription;
-  // List<SharedMediaFile>? _sharedFiles;
+  List<SharedMediaFile>? _sharedFiles;
   String? _sharedText;
   final List<Tab> tabs = <Tab>[
     Tab(
@@ -69,26 +69,42 @@ class _QrioState extends State<Qrio> with SingleTickerProviderStateMixin {
       });
     });
 
-    // // For sharing images coming from outside the app while the app is in the memory
-    // _intentDataStreamSubscription = ReceiveSharingIntent.getMediaStream()
-    //     .listen((List<SharedMediaFile> value) {
-    //   setState(() {
-    //     _sharedFiles = value;
-    //     debugPrint(
-    //         "Shared:" + (_sharedFiles?.map((f) => f.path).join(",") ?? ""));
-    //   });
-    // }, onError: (err) {
-    //   debugPrint("getIntentDataStream error: $err");
-    // });
+    // For sharing images coming from outside the app while the app is in the memory
+    _intentDataStreamSubscription = ReceiveSharingIntent.getMediaStream()
+        .listen((List<SharedMediaFile> value) {
+      setState(() {
+        _sharedFiles = value;
+        debugPrint(
+            "Shared:${_sharedFiles?.map((f) => f.path).join(",") ?? ""}");
+        _sharedFiles?.forEach((file) async {
+          final List<String?> data = await scanImg(file.path);
+          for (var str in data) {
+            if (str != null) {
+              updateHistory(str);
+            }
+          }
+        });
+      });
+    }, onError: (err) {
+      debugPrint("getIntentDataStream error: $err");
+    });
 
-    // // For sharing images coming from outside the app while the app is closed
-    // ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
-    //   setState(() {
-    //     _sharedFiles = value;
-    //     debugPrint(
-    //         "Shared:" + (_sharedFiles?.map((f) => f.path).join(",") ?? ""));
-    //   });
-    // });
+    // For sharing images coming from outside the app while the app is closed
+    ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
+      setState(() {
+        _sharedFiles = value;
+        debugPrint(
+            "Shared:${_sharedFiles?.map((f) => f.path).join(",") ?? ""}");
+        _sharedFiles?.forEach((file) async {
+          final List<String?> data = await scanImg(file.path);
+          for (var str in data) {
+            if (str != null) {
+              updateHistory(str);
+            }
+          }
+        });
+      });
+    });
 
     // For sharing or opening urls/text coming from outside the app while the app is in the memory
     _intentDataStreamSubscription =
@@ -108,7 +124,6 @@ class _QrioState extends State<Qrio> with SingleTickerProviderStateMixin {
         _sharedText = value;
         debugPrint("Shared: $_sharedText");
         updateHistory(_sharedText!);
-        const Editor();
       });
     });
   }
