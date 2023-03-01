@@ -69,10 +69,10 @@ final SelectOptionGroup<int> selectQrErrorCorrectLevelOptionGroup =
   title: '誤り訂正能力',
   icon: Icons.check_circle_outline_rounded,
   options: [
-    SelectOption<int>(label: 'レベル H', value: QrErrorCorrectLevel.H),
     SelectOption<int>(label: 'レベル L', value: QrErrorCorrectLevel.L),
     SelectOption<int>(label: 'レベル M', value: QrErrorCorrectLevel.M),
     SelectOption<int>(label: 'レベル Q', value: QrErrorCorrectLevel.Q),
+    SelectOption<int>(label: 'レベル H', value: QrErrorCorrectLevel.H),
   ],
 );
 
