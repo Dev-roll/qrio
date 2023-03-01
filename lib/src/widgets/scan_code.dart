@@ -34,7 +34,7 @@ class _ScanCodeState extends State<ScanCode> {
       body: Stack(
         alignment: Alignment.topLeft,
         children: <Widget>[
-          Expanded(
+          Positioned.fill(
             child: Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
