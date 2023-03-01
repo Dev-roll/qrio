@@ -18,6 +18,7 @@ class Editor extends StatelessWidget {
               SizedBox(
                 height: MediaQuery.of(context).padding.top + appBarHeight,
                 child: AppBar(
+                  automaticallyImplyLeading: false,
                   surfaceTintColor: Colors.transparent,
                 ),
               ),
