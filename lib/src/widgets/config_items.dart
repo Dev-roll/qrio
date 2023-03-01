@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:qrio/src/widgets/slider_qr_config_sheet.dart';
 
 import '../app.dart';
 import '../constants.dart';
@@ -134,17 +135,18 @@ class ConfigItems extends ConsumerWidget {
             label: selectQrErrorCorrectLevelOptionGroup
                 .getLabelFromValue(qrImageConfig.errorCorrectLevel),
             icon: selectQrErrorCorrectLevelOptionGroup.icon!,
-            onTapListener: openDialogFactory(
-              SelectQrConfigDialog<int>(
+            onTapListener: openSheetFactory(
+              SliderQrConfigSheet<int>(
                 title: selectQrErrorCorrectLevelOptionGroup.title,
                 icon: selectQrErrorCorrectLevelOptionGroup.icon,
                 options: selectQrErrorCorrectLevelOptionGroup.options,
-                editConfigFunc: (int? value) {
+                editConfigFunc: (int value) {
                   ref
                       .read(qrImageConfigProvider.notifier)
-                      .editErrorCorrectLevel(errorCorrectLevel: value!);
+                      .editErrorCorrectLevel(errorCorrectLevel: value);
                 },
                 groupValue: qrImageConfig.errorCorrectLevel,
+                ref: ref,
               ),
             ),
           )

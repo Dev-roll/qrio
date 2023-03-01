@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,6 +15,10 @@ int selectedIndex = 0;
 double defaultSheetHeight(BuildContext context) {
   double screenHeight = MediaQuery.of(context).size.height;
   return sheetMinHeight / screenHeight;
+}
+
+int qrErrorCorrectLevelToIndex(int level) {
+  return QrErrorCorrectLevel.levels.indexOf(level);
 }
 
 ThemeMode stringToThemeMode(String theme) {
@@ -136,6 +141,17 @@ void Function(BuildContext context) openDialogFactory(Widget dialogWidget) {
     showDialog<void>(
       context: context,
       builder: (context) => dialogWidget,
+    );
+  };
+}
+
+void Function(BuildContext context) openSheetFactory(Widget sheetWidget) {
+  return (BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => sheetWidget,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
     );
   };
 }
