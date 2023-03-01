@@ -36,6 +36,7 @@ class Home extends ConsumerWidget {
           SizedBox(
             height: MediaQuery.of(context).padding.top,
             child: AppBar(
+              automaticallyImplyLeading: false,
               backgroundColor: Colors.transparent,
               surfaceTintColor: Colors.transparent,
             ),
