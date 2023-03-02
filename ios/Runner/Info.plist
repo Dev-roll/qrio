@@ -65,5 +65,7 @@
 		<true />
 		<key>NSCameraUsageDescription</key>
 		<string>QRコードを読み取るにはカメラへのアクセスが必要です。</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>画像の選択によるQRコード読み取りおよびファイルの共有を有効にするには、ライブラリへのアクセスが必要です。</string>
 	</dict>
 </plist>
