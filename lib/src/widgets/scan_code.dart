@@ -52,6 +52,17 @@ class _ScanCodeState extends State<ScanCode> {
               child: _buildQrView(context),
             ),
           ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: double.infinity,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(16),
+                bottomRight: Radius.circular(16),
+              ),
+              color: Color(0x22000000),
+            ),
+          ),
           ValueListenableBuilder(
             valueListenable: controller.torchState,
             builder: (context, state, child) {
@@ -126,28 +137,26 @@ class _ScanCodeState extends State<ScanCode> {
 
   Widget _buildQrView(BuildContext context) {
     return Stack(
+      alignment: Alignment.center,
       children: [
         MobileScanner(
           key: qrKey,
           controller: controller,
           onDetect: _onDetect,
         ),
-        Align(
-          alignment: Alignment.center,
-          child: Container(
-            width: (MediaQuery.of(context).size.width <
-                    MediaQuery.of(context).size.height)
-                ? MediaQuery.of(context).size.width * 0.5
-                : MediaQuery.of(context).size.height * 0.5,
-            height: (MediaQuery.of(context).size.width <
-                    MediaQuery.of(context).size.height)
-                ? MediaQuery.of(context).size.width * 0.5
-                : MediaQuery.of(context).size.height * 0.5,
-            decoration: BoxDecoration(
-              color: const Color(0x22FFFFFF),
-              border: Border.all(color: const Color(0x88FFFFFF), width: 1),
-              borderRadius: BorderRadius.circular(12),
-            ),
+        Container(
+          width: (MediaQuery.of(context).size.width <
+                  MediaQuery.of(context).size.height)
+              ? MediaQuery.of(context).size.width * 0.5
+              : MediaQuery.of(context).size.height * 0.5,
+          height: (MediaQuery.of(context).size.width <
+                  MediaQuery.of(context).size.height)
+              ? MediaQuery.of(context).size.width * 0.5
+              : MediaQuery.of(context).size.height * 0.5,
+          decoration: BoxDecoration(
+            color: const Color(0x22FFFFFF),
+            border: Border.all(color: white.withOpacity(0.25), width: 2),
+            borderRadius: BorderRadius.circular(12),
           ),
         ),
       ],
