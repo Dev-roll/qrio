@@ -1,8 +1,7 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/utils.dart';
 import 'package:qrio/src/widgets/bottom_snack_bar.dart';
@@ -16,16 +15,23 @@ class ScanCode extends StatefulWidget {
 }
 
 class _ScanCodeState extends State<ScanCode> {
-  QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  final MobileScannerController controller = MobileScannerController(
+      // torchEnabled: false,
+      // formats: [BarcodeFormat.qrCode]
+      // facing: CameraFacing.front,
+      // detectionSpeed: DetectionSpeed.normal
+      // detectionTimeoutMs: 1000,
+      // returnImage: false,
+      );
 
   @override
   void reassemble() {
     super.reassemble();
     if (Platform.isAndroid) {
-      controller!.pauseCamera();
+      controller.stop();
     }
-    controller!.resumeCamera();
+    controller.start();
   }
 
   @override
@@ -46,9 +52,9 @@ class _ScanCodeState extends State<ScanCode> {
               child: _buildQrView(context),
             ),
           ),
-          FutureBuilder(
-            future: controller?.getFlashStatus(),
-            builder: (context, snapshot) {
+          ValueListenableBuilder(
+            valueListenable: controller.torchState,
+            builder: (context, state, child) {
               return Transform.translate(
                 offset: Offset(0, MediaQuery.of(context).padding.top),
                 child: SizedBox(
@@ -56,10 +62,10 @@ class _ScanCodeState extends State<ScanCode> {
                   width: appBarHeight,
                   child: IconButton(
                     onPressed: () async {
-                      await controller?.toggleFlash();
+                      await controller.toggleTorch();
                       setState(() {});
                     },
-                    icon: (snapshot.data != null && snapshot.data == true)
+                    icon: (state == TorchState.on)
                         ? const Icon(Icons.flashlight_on_rounded)
                         : const Icon(Icons.flashlight_off_rounded),
                     color: white,
@@ -119,35 +125,24 @@ class _ScanCodeState extends State<ScanCode> {
   }
 
   Widget _buildQrView(BuildContext context) {
-    var scanArea =
-        (MediaQuery.of(context).size.width < MediaQuery.of(context).size.height)
-            ? MediaQuery.of(context).size.width * 0.4
-            : MediaQuery.of(context).size.height * 0.4;
     return Stack(
       children: [
-        QRView(
+        MobileScanner(
           key: qrKey,
-          onQRViewCreated: _onQRViewCreated,
-          overlay: QrScannerOverlayShape(
-            borderColor: const Color(0xFFFFFFFF),
-            borderRadius: 12,
-            borderLength: 0,
-            borderWidth: 0,
-            cutOutSize: scanArea,
-          ),
-          onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
+          controller: controller,
+          onDetect: _onDetect,
         ),
         Align(
           alignment: Alignment.center,
           child: Container(
             width: (MediaQuery.of(context).size.width <
                     MediaQuery.of(context).size.height)
-                ? MediaQuery.of(context).size.width * 0.4
-                : MediaQuery.of(context).size.height * 0.4,
+                ? MediaQuery.of(context).size.width * 0.5
+                : MediaQuery.of(context).size.height * 0.5,
             height: (MediaQuery.of(context).size.width <
                     MediaQuery.of(context).size.height)
-                ? MediaQuery.of(context).size.width * 0.4
-                : MediaQuery.of(context).size.height * 0.4,
+                ? MediaQuery.of(context).size.width * 0.5
+                : MediaQuery.of(context).size.height * 0.5,
             decoration: BoxDecoration(
               color: const Color(0x22FFFFFF),
               border: Border.all(color: const Color(0x88FFFFFF), width: 1),
@@ -159,38 +154,18 @@ class _ScanCodeState extends State<ScanCode> {
     );
   }
 
-  void _onQRViewCreated(QRViewController controller) {
-    this.controller = controller;
-    controller.resumeCamera();
-    controller.scannedDataStream.listen(
-      (scanData) async {
-        log(scanData.code.toString());
-        if (scanData.code != null) {
-          bool? updated = await updateHistory(scanData.code.toString().trim());
-          if (updated ?? false) Vibration.vibrate(duration: 50);
-        }
-      },
-    );
-    this.controller!.pauseCamera();
-    this.controller!.resumeCamera();
-  }
+  void _onDetect(BarcodeCapture barcodeCapture) async {
+    final scannedData = barcodeCapture.barcodes.first.rawValue;
 
-  void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
-    log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
-    if (!p) {
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-      ScaffoldMessenger.of(context).showSnackBar(
-        BottomSnackBar(
-          context,
-          '権限がありません',
-        ),
-      );
+    if (scannedData != null) {
+      bool? updated = await updateHistory(scannedData.toString().trim());
+      if (updated ?? false) Vibration.vibrate(duration: 50);
     }
   }
 
   @override
   void dispose() {
-    controller?.dispose();
+    controller.dispose();
     super.dispose();
   }
 }

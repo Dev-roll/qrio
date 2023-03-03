@@ -54,6 +54,7 @@ dependencies:
   image_picker: ^0.8.6+3
   receive_sharing_intent: ^1.4.5
   vibration: ^1.7.6
+  mobile_scanner: ^3.0.0
 
 dev_dependencies:
   flutter_test:
