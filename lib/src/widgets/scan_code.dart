@@ -125,10 +125,6 @@ class _ScanCodeState extends State<ScanCode> {
   }
 
   Widget _buildQrView(BuildContext context) {
-    var scanArea =
-        (MediaQuery.of(context).size.width < MediaQuery.of(context).size.height)
-            ? MediaQuery.of(context).size.width * 0.4
-            : MediaQuery.of(context).size.height * 0.4;
     return Stack(
       children: [
         MobileScanner(
@@ -141,12 +137,12 @@ class _ScanCodeState extends State<ScanCode> {
           child: Container(
             width: (MediaQuery.of(context).size.width <
                     MediaQuery.of(context).size.height)
-                ? MediaQuery.of(context).size.width * 0.4
-                : MediaQuery.of(context).size.height * 0.4,
+                ? MediaQuery.of(context).size.width * 0.5
+                : MediaQuery.of(context).size.height * 0.5,
             height: (MediaQuery.of(context).size.width <
                     MediaQuery.of(context).size.height)
-                ? MediaQuery.of(context).size.width * 0.4
-                : MediaQuery.of(context).size.height * 0.4,
+                ? MediaQuery.of(context).size.width * 0.5
+                : MediaQuery.of(context).size.height * 0.5,
             decoration: BoxDecoration(
               color: const Color(0x22FFFFFF),
               border: Border.all(color: const Color(0x88FFFFFF), width: 1),
