@@ -4,11 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/widgets/bottom_snack_bar.dart';
 import 'package:qrio/src/widgets/data_bottom_sheet.dart';
+import 'package:qrio/src/widgets/history_menu_sheet.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../utils.dart';
 
 final FutureProvider futureProvider = FutureProvider<dynamic>((ref) async {
   final prefs = await SharedPreferences.getInstance();
@@ -119,49 +118,16 @@ class History extends ConsumerWidget {
                         IconButton(
                           onPressed: history.isEmpty
                               ? null
-                              : () async {
-                                  await showDialog(
+                              : () {
+                                  showModalBottomSheet(
                                     context: context,
-                                    builder: (context) => AlertDialog(
-                                      icon: const Icon(
-                                        Icons.delete_outline_rounded,
-                                      ),
-                                      title: const Text('削除'),
-                                      content: Text(
-                                        'すべての履歴を削除しますか？',
-                                        style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurfaceVariant,
-                                        ),
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              {Navigator.pop(context)},
-                                          onLongPress: null,
-                                          child: const Text('キャンセル'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () async {
-                                            Navigator.pop(context);
-                                            deleteHistory();
-                                          },
-                                          onLongPress: null,
-                                          child: Text(
-                                            'すべて削除',
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .error,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                    builder: (BuildContext context) {
+                                      return const HistoryMenuSheet();
+                                    },
+                                    backgroundColor: Colors.transparent,
                                   );
                                 },
-                          icon: const Icon(Icons.delete_outline_rounded),
+                          icon: const Icon(Icons.more_vert_rounded),
                           disabledColor: Theme.of(context)
                               .colorScheme
                               .onBackground
