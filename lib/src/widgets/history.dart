@@ -59,6 +59,8 @@ class History extends ConsumerWidget {
       error: (err, _) => Text(err.toString()), //エラー時
       loading: () => const CircularProgressIndicator(), //読み込み時
       data: (historyList) {
+        List<String> history = List.from(historyList);
+        int hisLen = history.length;
         return Stack(
           alignment: Alignment.topCenter,
           children: [
@@ -102,7 +104,7 @@ class History extends ConsumerWidget {
                           width: 24,
                         ),
                         Text(
-                          '${List.from(historyList).length} 件',
+                          '$hisLen 件',
                           style: TextStyle(
                             color: Theme.of(context)
                                 .colorScheme
@@ -115,7 +117,7 @@ class History extends ConsumerWidget {
                     Row(
                       children: [
                         IconButton(
-                          onPressed: List.from(historyList).isEmpty
+                          onPressed: history.isEmpty
                               ? null
                               : () async {
                                   await showDialog(
@@ -177,7 +179,7 @@ class History extends ConsumerWidget {
                   color:
                       Theme.of(context).colorScheme.outline.withOpacity(0.25),
                 ),
-                if (List.from(historyList).isEmpty)
+                if (history.isEmpty)
                   Column(
                     children: [
                       const SizedBox(height: 32),
@@ -203,94 +205,88 @@ class History extends ConsumerWidget {
             Container(
               margin: const EdgeInsets.only(top: sheetHandleHeight),
               height: scrollContentHeight,
-              child: SingleChildScrollView(
+              child: ListView.builder(
                 controller: controller,
-                child: Column(
-                  children: [
-                    const SizedBox(height: 8),
-                    for (var e in List.from(historyList.reversed))
-                      InkWell(
-                        onTap: () async {
-                          if (await canLaunchUrl(Uri.parse(e))) {
-                            launchURL(e);
-                          } else {
-                            Clipboard.setData(
-                              ClipboardData(text: e),
-                            ).then((value) {
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                BottomSnackBar(
-                                  context,
-                                  'クリップボードにコピーしました',
-                                  icon: Icons.library_add_check_rounded,
-                                ),
-                              );
-                            });
-                          }
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                padding: const EdgeInsets.fromLTRB(0, 8, 0, 80),
+                itemCount: hisLen,
+                itemBuilder: (context, index) {
+                  String e = history[hisLen - index - 1];
+                  return InkWell(
+                    onTap: () async {
+                      if (await canLaunchUrl(Uri.parse(e))) {
+                        launchURL(e);
+                      } else {
+                        Clipboard.setData(
+                          ClipboardData(text: e),
+                        ).then((value) {
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            BottomSnackBar(
+                              context,
+                              'クリップボードにコピーしました',
+                              icon: Icons.library_add_check_rounded,
+                            ),
+                          );
+                        });
+                      }
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          width: 28,
+                        ),
+                        Expanded(
+                          child: Text(
+                            e,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: linkFormat.hasMatch(e.toString())
+                                  ? Theme.of(context).colorScheme.secondary
+                                  : Theme.of(context).colorScheme.onBackground,
+                              decoration: linkFormat.hasMatch(e.toString())
+                                  ? TextDecoration.underline
+                                  : TextDecoration.none,
+                            ),
+                            overflow: TextOverflow.fade,
+                            maxLines: 1,
+                            softWrap: false,
+                          ),
+                        ),
+                        Row(
                           children: [
+                            IconButton(
+                              onPressed: () {
+                                Share.share(
+                                  e,
+                                  subject: 'QR I/O の履歴共有',
+                                );
+                              },
+                              icon: const Icon(Icons.share_rounded),
+                              padding: const EdgeInsets.all(16.0),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return DataBottomSheet(data: e, ref: ref);
+                                  },
+                                  backgroundColor: Colors.transparent,
+                                );
+                              },
+                              icon: const Icon(Icons.more_vert_rounded),
+                              padding: const EdgeInsets.all(16.0),
+                            ),
                             const SizedBox(
-                              width: 28,
-                            ),
-                            Expanded(
-                              child: Text(
-                                '$e',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: linkFormat.hasMatch(e.toString())
-                                      ? Theme.of(context).colorScheme.secondary
-                                      : Theme.of(context)
-                                          .colorScheme
-                                          .onBackground,
-                                  decoration: linkFormat.hasMatch(e.toString())
-                                      ? TextDecoration.underline
-                                      : TextDecoration.none,
-                                ),
-                                overflow: TextOverflow.fade,
-                                maxLines: 1,
-                                softWrap: false,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    Share.share(
-                                      e,
-                                      subject: 'QR I/O の履歴共有',
-                                    );
-                                  },
-                                  icon: const Icon(Icons.share_rounded),
-                                  padding: const EdgeInsets.all(16.0),
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return DataBottomSheet(
-                                            data: e, ref: ref);
-                                      },
-                                      backgroundColor: Colors.transparent,
-                                    );
-                                  },
-                                  icon: const Icon(Icons.more_vert_rounded),
-                                  padding: const EdgeInsets.all(16.0),
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                              ],
+                              width: 8,
                             ),
                           ],
                         ),
-                      ),
-                    const SizedBox(height: 80),
-                  ],
-                ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
             Container(
