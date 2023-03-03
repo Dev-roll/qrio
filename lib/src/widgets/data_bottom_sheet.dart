@@ -30,9 +30,7 @@ class DataBottomSheet extends StatelessWidget {
       ),
       child: Column(
         children: <Widget>[
-          const SizedBox(
-            height: 16,
-          ),
+          const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -64,9 +62,7 @@ class DataBottomSheet extends StatelessWidget {
             endIndent: 4,
             color: Theme.of(context).colorScheme.outline.withOpacity(0.25),
           ),
-          const SizedBox(
-            height: 14,
-          ),
+          const SizedBox(height: 14),
           Row(
             children: [
               const SizedBox(
@@ -78,9 +74,7 @@ class DataBottomSheet extends StatelessWidget {
                 color:
                     Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
               ),
-              const SizedBox(
-                width: 12,
-              ),
+              const SizedBox(width: 12),
               Text(
                 '${data.length}文字',
                 style: TextStyle(
@@ -93,9 +87,7 @@ class DataBottomSheet extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
           InkWell(
             onTap: () {
               Navigator.of(context).pop();
@@ -123,9 +115,7 @@ class DataBottomSheet extends StatelessWidget {
                   color:
                       Theme.of(context).colorScheme.secondary.withOpacity(0.8),
                 ),
-                const SizedBox(
-                  width: 12,
-                ),
+                const SizedBox(width: 12),
                 Text(
                   'クリップボードにコピー',
                   style: TextStyle(
@@ -135,9 +125,7 @@ class DataBottomSheet extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(
-            height: 8,
-          ),
+          const SizedBox(height: 8),
           InkWell(
             onTap: () {
               Navigator.of(context).pop();
@@ -154,9 +142,7 @@ class DataBottomSheet extends StatelessWidget {
                   color:
                       Theme.of(context).colorScheme.secondary.withOpacity(0.8),
                 ),
-                const SizedBox(
-                  width: 12,
-                ),
+                const SizedBox(width: 12),
                 Text(
                   '共有',
                   style: TextStyle(
@@ -166,9 +152,7 @@ class DataBottomSheet extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(
-            height: 8,
-          ),
+          const SizedBox(height: 8),
           InkWell(
             onTap: () {
               Navigator.of(context).pop();
@@ -189,9 +173,7 @@ class DataBottomSheet extends StatelessWidget {
                   color:
                       Theme.of(context).colorScheme.secondary.withOpacity(0.8),
                 ),
-                const SizedBox(
-                  width: 12,
-                ),
+                const SizedBox(width: 12),
                 Text(
                   'QRコードを作成',
                   style: TextStyle(
@@ -201,9 +183,7 @@ class DataBottomSheet extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(
-            height: 8,
-          ),
+          const SizedBox(height: 8),
           InkWell(
             onTap: () {
               Navigator.of(context).pop();
@@ -219,9 +199,7 @@ class DataBottomSheet extends StatelessWidget {
                   Icons.delete_outline_rounded,
                   color: Theme.of(context).colorScheme.error.withOpacity(0.8),
                 ),
-                const SizedBox(
-                  width: 12,
-                ),
+                const SizedBox(width: 12),
                 Text(
                   '削除',
                   style: TextStyle(
@@ -231,9 +209,7 @@ class DataBottomSheet extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
         ],
       ),
     );
