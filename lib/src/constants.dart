@@ -14,6 +14,14 @@ const double bottomPadding = 16;
 const double sheetMinHeight = 152;
 const double sheetHandleHeight = 77;
 
+const String qrioHistoryAsLis = 'qrio_history';
+const String qrioHistoryAsStr = 'qrio_history_str';
+
+const String historyTypeShareTxt = 'share_txt';
+const String historyTypeShareImg = 'share_img';
+const String historyTypeSelectImg = 'select_img';
+const String historyTypeOther = 'other';
+
 const List<Map<String, dynamic>> defaultPopupMenuItems = [
   // {
   //   'label': '履歴',

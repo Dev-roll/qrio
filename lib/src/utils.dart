@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:csv/csv.dart';
@@ -103,27 +104,51 @@ Future<List<String>> scanImg(String filePath) async {
   return [];
 }
 
-updateHistory(String data) async {
+updateHistory() async {
   final prefs = await SharedPreferences.getInstance();
-  final List<String> historyList = prefs.getStringList('qrio_history') ?? [];
+  final List<String> historyList = prefs.getStringList(qrioHistoryAsLis) ?? [];
+  final List<dynamic> historyObj = historyList.map((data) {
+    return {
+      'data': data.trim(),
+      'type': null,
+      'pinned': false,
+      'created_at': null,
+    };
+  }).toList();
+  prefs.setString(qrioHistoryAsStr, jsonEncode(historyObj));
+  prefs.remove(qrioHistoryAsLis);
+  debugPrint('*** remove list');
+}
+
+// createHistory() async {
+//   final prefs = await SharedPreferences.getInstance();
+//   prefs.setString(qrioHistoryAsStr, '');
+// }
+
+addHistoryData(String data, String type, String createdAt) async {
+  final prefs = await SharedPreferences.getInstance();
+  String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
+  if (historyList == '') historyList = '[]';
+  final List<dynamic> historyObj = jsonDecode(historyList);
   final String addStr = data.trim();
   if (addStr.isNotEmpty &&
-      (historyList.isEmpty || historyList.last != addStr)) {
-    historyList.add(addStr);
-    await prefs.setStringList('qrio_history', historyList);
+      (historyObj.isEmpty || historyObj.last['data'] != addStr)) {
+    final addObj = {
+      'data': addStr,
+      'type': type,
+      'pinned': false,
+      'created_at': createdAt,
+    };
+    historyObj.add(addObj);
+    await prefs.setString(qrioHistoryAsStr, jsonEncode(historyObj));
     return true;
   }
-  // await prefs.setStringList('qrio_history', []);
-  // final FutureProvider futureProvider = FutureProvider<dynamic>((ref) async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final List<String> historyList = prefs.getStringList('qrio_history') ?? [];
-  //   return historyList;
-  // });
 }
 
 deleteHistory() async {
   final prefs = await SharedPreferences.getInstance();
-  await prefs.setStringList('qrio_history', []);
+  await prefs.setString(qrioHistoryAsStr, '');
+  // prefs.remove(qrioHistoryAsStr);
 }
 
 Future<File> getApplicationDocumentsFile(

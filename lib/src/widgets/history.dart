@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,7 +13,17 @@ import 'package:url_launcher/url_launcher.dart';
 
 final FutureProvider futureProvider = FutureProvider<dynamic>((ref) async {
   final prefs = await SharedPreferences.getInstance();
-  final List<String> historyList = prefs.getStringList('qrio_history') ?? [];
+  if (prefs.containsKey(qrioHistoryAsLis) &&
+      !prefs.containsKey(qrioHistoryAsStr)) {
+    updateHistory();
+  }
+  // if (!prefs.containsKey(qrioHistoryAsLis) &&
+  //     !prefs.containsKey(qrioHistoryAsStr)) {
+  //   createHistory();
+  // }
+  String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
+  if (historyList.isEmpty) historyList = '[]';
+  debugPrint(historyList);
   return historyList;
 });
 
@@ -58,8 +70,9 @@ class History extends ConsumerWidget {
       error: (err, _) => Text(err.toString()), //エラー時
       loading: () => const CircularProgressIndicator(), //読み込み時
       data: (historyList) {
-        List<String> history = List.from(historyList);
-        int hisLen = history.length;
+        List<dynamic> historyObj = jsonDecode(historyList) as List<dynamic>;
+        if (historyList.toString() == '') historyObj = [];
+        int hisLen = historyObj.length;
         return Stack(
           alignment: Alignment.topCenter,
           children: [
@@ -116,7 +129,7 @@ class History extends ConsumerWidget {
                     Row(
                       children: [
                         IconButton(
-                          onPressed: history.isEmpty
+                          onPressed: historyObj.isEmpty
                               ? null
                               : () {
                                   showModalBottomSheet(
@@ -145,7 +158,7 @@ class History extends ConsumerWidget {
                   color:
                       Theme.of(context).colorScheme.outline.withOpacity(0.25),
                 ),
-                if (history.isEmpty)
+                if (historyObj.isEmpty)
                   Column(
                     children: [
                       const SizedBox(height: 32),
@@ -176,7 +189,7 @@ class History extends ConsumerWidget {
                 padding: const EdgeInsets.fromLTRB(0, 8, 0, 80),
                 itemCount: hisLen,
                 itemBuilder: (context, index) {
-                  String e = history[hisLen - index - 1];
+                  String e = historyObj[hisLen - index - 1]['data'];
                   return InkWell(
                     onTap: () async {
                       if (await canLaunchUrl(Uri.parse(e))) {
