@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
@@ -7,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qrio/src/constants.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 late TabController tabController;
@@ -154,4 +156,30 @@ void Function(BuildContext context) openSheetFactory(Widget sheetWidget) {
       isScrollControlled: true,
     );
   };
+}
+
+Future<int> exportStringListToCsv(List<String> list, String fileName) async {
+  List<List<dynamic>> rows = [];
+
+  for (var el in list) {
+    rows.add([el]);
+  }
+
+  String csv = const ListToCsvConverter().convert(rows);
+
+  final directory = await getApplicationDocumentsDirectory();
+  final path = directory.path;
+  final file = File('$path/$fileName.csv');
+
+  try {
+    await file.writeAsString(csv);
+    await Share.shareXFiles(
+      [XFile('$path/$fileName.csv')],
+      text: 'QR I/Oの履歴データ',
+      subject: 'QR I/Oの履歴データを共有',
+    );
+    return 0;
+  } catch (e) {
+    return 1;
+  }
 }

@@ -55,6 +55,7 @@ dependencies:
   receive_sharing_intent: ^1.4.5
   vibration: ^1.7.6
   mobile_scanner: ^3.0.0
+  csv: ^5.0.1
 
 dev_dependencies:
   flutter_test:
