@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:qrio/src/constants.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 import '../screens/editor.dart';
@@ -80,7 +81,8 @@ class _QrioState extends State<Qrio> with SingleTickerProviderStateMixin {
           final List<String?> data = await scanImg(file.path);
           for (var str in data) {
             if (str != null) {
-              updateHistory(str);
+              addHistoryData(
+                  str, historyTypeShareImg, DateTime.now().toString());
             }
           }
         });
@@ -99,7 +101,8 @@ class _QrioState extends State<Qrio> with SingleTickerProviderStateMixin {
           final List<String?> data = await scanImg(file.path);
           for (var str in data) {
             if (str != null) {
-              updateHistory(str);
+              addHistoryData(
+                  str, historyTypeShareImg, DateTime.now().toString());
             }
           }
         });
@@ -112,7 +115,8 @@ class _QrioState extends State<Qrio> with SingleTickerProviderStateMixin {
       setState(() {
         _sharedText = value;
         debugPrint("Shared: $_sharedText");
-        updateHistory(_sharedText!);
+        addHistoryData(
+            _sharedText!, historyTypeShareTxt, DateTime.now().toString());
       });
     }, onError: (err) {
       debugPrint("getLinkStream error: $err");
@@ -123,7 +127,8 @@ class _QrioState extends State<Qrio> with SingleTickerProviderStateMixin {
       setState(() {
         _sharedText = value;
         debugPrint("Shared: $_sharedText");
-        updateHistory(_sharedText!);
+        addHistoryData(
+            _sharedText!, historyTypeShareTxt, DateTime.now().toString());
       });
     });
   }

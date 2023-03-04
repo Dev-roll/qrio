@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../constants.dart';
 import '../utils.dart';
 
 class HistoryMenuSheet extends StatelessWidget {
@@ -65,8 +66,7 @@ class HistoryMenuSheet extends StatelessWidget {
             onTap: () async {
               Navigator.of(context).pop();
               final prefs = await SharedPreferences.getInstance();
-              final List<String>? historyList =
-                  prefs.getStringList('qrio_history');
+              String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
 
               if (historyList == null || historyList.isEmpty) {
                 return;
