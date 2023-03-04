@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils.dart';
 
@@ -61,9 +62,23 @@ class HistoryMenuSheet extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           InkWell(
-            onTap: () {
+            onTap: () async {
               Navigator.of(context).pop();
-              // TODO: @keigomichi データのエクスポート処理
+              final prefs = await SharedPreferences.getInstance();
+              final List<String>? historyList =
+                  prefs.getStringList('qrio_history');
+
+              if (historyList == null || historyList.isEmpty) {
+                return;
+              }
+
+              final responseStatus =
+                  await exportStringListToCsv(historyList, 'qrio_history');
+
+              if (responseStatus != 0) {
+                // TODO: エラー処理
+                throw Error();
+              }
             },
             child: Row(
               children: [
