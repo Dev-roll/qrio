@@ -183,14 +183,15 @@ void Function(BuildContext context) openSheetFactory(Widget sheetWidget) {
   };
 }
 
-Future<int> exportStringListToCsv(List<String> list, String fileName) async {
-  List<List<dynamic>> rows = [];
+Future<int> exportStringListToCsv(String jsonString, String fileName) async {
+  final List<dynamic> jsonData = jsonDecode(jsonString);
 
-  for (var el in list) {
-    rows.add([el]);
-  }
+  final List records = jsonData.map((item) => item.values.toList()).toList();
 
-  String csv = const ListToCsvConverter().convert(rows);
+  final header = jsonData.first.keys.toList();
+
+  String csv =
+      const ListToCsvConverter().convert(<List<dynamic>>[header, ...records]);
 
   final directory = await getApplicationDocumentsDirectory();
   final path = directory.path;
