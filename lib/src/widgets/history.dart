@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,6 +29,8 @@ final FutureProvider futureProvider = FutureProvider<dynamic>((ref) async {
   debugPrint(historyList);
   return historyList;
 });
+
+final scrollOffsetProvider = StateProvider<double>((ref) => 0.0);
 
 class History extends ConsumerWidget {
   const History({super.key});
@@ -61,6 +64,9 @@ class History extends ConsumerWidget {
     }
 
     var controller = ScrollController();
+    controller.addListener(() {
+      ref.read(scrollOffsetProvider.state).state = controller.offset;
+    });
     final scrollContentHeight = MediaQuery.of(context).size.height -
         (MediaQuery.of(context).padding.top +
             appBarHeight +
@@ -68,6 +74,7 @@ class History extends ConsumerWidget {
             sheetHandleHeight);
     final _ = ref.refresh(futureProvider);
     final asyncValue = ref.watch(futureProvider);
+    final offset = ref.watch(scrollOffsetProvider);
     return asyncValue.when(
       error: (err, _) => Text(err.toString()), //エラー時
       loading: () => const CircularProgressIndicator(), //読み込み時
@@ -270,23 +277,27 @@ class History extends ConsumerWidget {
                 },
               ),
             ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: scrollContentHeight + 50,
-              alignment: Alignment.bottomCenter,
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  controller.animateTo(
-                    0,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.ease,
-                  );
-                },
-                icon: const Icon(Icons.arrow_upward_rounded),
-                label: const Text('履歴のトップ'),
-                style: ElevatedButton.styleFrom(
-                    elevation: 4,
-                    backgroundColor: Theme.of(context).colorScheme.onSecondary),
+            Transform.translate(
+              offset: Offset(0, -1 * min(offset, 100)),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: scrollContentHeight + 150,
+                alignment: Alignment.bottomCenter,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    controller.animateTo(
+                      0,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.ease,
+                    );
+                  },
+                  icon: const Icon(Icons.arrow_upward_rounded),
+                  label: const Text('履歴のトップ'),
+                  style: ElevatedButton.styleFrom(
+                      elevation: 4,
+                      backgroundColor:
+                          Theme.of(context).colorScheme.onSecondary),
+                ),
               ),
             ),
           ],
