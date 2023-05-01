@@ -65,7 +65,7 @@ class History extends ConsumerWidget {
 
     var controller = ScrollController();
     controller.addListener(() {
-      ref.read(scrollOffsetProvider.state).state = controller.offset;
+      ref.read(scrollOffsetProvider.notifier).state = controller.offset;
     });
     final scrollContentHeight = MediaQuery.of(context).size.height -
         (MediaQuery.of(context).padding.top +
