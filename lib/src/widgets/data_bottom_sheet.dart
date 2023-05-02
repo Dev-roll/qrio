@@ -161,6 +161,11 @@ class DataBottomSheet extends StatelessWidget {
               if (selectedIndex == 0) {
                 tabController.animateTo(selectedIndex = 1);
               }
+              draggableScrollableController.animateTo(
+                0,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.ease,
+              );
             },
             child: Row(
               children: [
