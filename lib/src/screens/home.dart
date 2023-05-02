@@ -27,7 +27,7 @@ class Home extends ConsumerWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final topPadding = MediaQuery.of(context).padding.top;
-    const topContentHeight = appBarHeight + qrCodeViewHeight - 4;
+    const topContentHeight = appBarHeight + qrCodeViewHeight;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
