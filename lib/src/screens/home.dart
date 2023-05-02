@@ -81,6 +81,7 @@ class Home extends ConsumerWidget {
           ),
           SizedBox.expand(
             child: DraggableScrollableSheet(
+              controller: draggableScrollableController,
               initialChildSize: defaultSheetHeight(context),
               minChildSize: defaultSheetHeight(context),
               maxChildSize: 1 - (topPadding + topContentHeight) / screenHeight,

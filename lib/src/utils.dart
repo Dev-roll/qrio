@@ -14,6 +14,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 late TabController tabController;
 int selectedIndex = 0;
+final DraggableScrollableController draggableScrollableController =
+    DraggableScrollableController();
 
 double defaultSheetHeight(BuildContext context) {
   double screenHeight = MediaQuery.of(context).size.height;
