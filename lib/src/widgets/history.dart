@@ -67,11 +67,12 @@ class History extends ConsumerWidget {
     controller.addListener(() {
       ref.read(scrollOffsetProvider.notifier).state = controller.offset;
     });
-    final scrollContentHeight = MediaQuery.of(context).size.height -
-        (MediaQuery.of(context).padding.top +
-            appBarHeight +
-            qrCodeViewHeight +
-            sheetHandleHeight);
+    final screenHeight = MediaQuery.of(context).size.height;
+    final topPadding = MediaQuery.of(context).padding.top;
+    const topContentHeight = appBarHeight + qrCodeViewHeight;
+    final scrollContentHeight = screenHeight -
+        (topPadding + appBarHeight + qrCodeViewHeight + sheetHandleHeight);
+    const maxOffset = 76.0;
     final _ = ref.refresh(futureProvider);
     final asyncValue = ref.watch(futureProvider);
     final offset = ref.watch(scrollOffsetProvider);
@@ -82,225 +83,236 @@ class History extends ConsumerWidget {
         List<dynamic> historyObj = jsonDecode(historyList) as List<dynamic>;
         if (historyList.toString() == '') historyObj = [];
         int hisLen = historyObj.length;
-        return Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            Column(
-              children: [
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 32,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(2),
-                        color: Theme.of(context)
-                            .colorScheme
-                            .outline
-                            .withOpacity(0.8),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        const SizedBox(
-                          width: 28,
-                        ),
-                        Text(
-                          '履歴',
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onBackground
-                                .withOpacity(0.7),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 24,
-                        ),
-                        Text(
-                          '$hisLen 件',
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onBackground
-                                .withOpacity(0.7),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: historyObj.isEmpty
-                              ? null
-                              : () {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return const HistoryMenuSheet();
-                                    },
-                                    backgroundColor: Colors.transparent,
-                                  );
-                                },
-                          icon: const Icon(Icons.more_vert_rounded),
-                          disabledColor: Theme.of(context)
-                              .colorScheme
-                              .onBackground
-                              .withOpacity(0.3),
-                          padding: const EdgeInsets.all(16.0),
-                        ),
-                        const SizedBox(width: 8),
-                      ],
-                    ),
-                  ],
-                ),
-                Divider(
-                  height: 1,
-                  thickness: 1,
-                  color:
-                      Theme.of(context).colorScheme.outline.withOpacity(0.25),
-                ),
-                if (historyObj.isEmpty)
-                  Column(
+        return ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: screenHeight - (topPadding + topContentHeight),
+          ),
+          child: Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              Column(
+                children: [
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 32),
-                      Icon(
-                        Icons.update_disabled_rounded,
-                        size: 120,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onBackground
-                            .withOpacity(0.3),
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        '読み取り・作成の履歴はありません',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onBackground,
+                      Container(
+                        width: 32,
+                        height: 4,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(2),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .outline
+                              .withOpacity(0.8),
                         ),
                       ),
                     ],
                   ),
-              ],
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: sheetHandleHeight),
-              height: scrollContentHeight,
-              child: ListView.builder(
-                controller: controller,
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 80),
-                itemCount: hisLen,
-                itemBuilder: (context, index) {
-                  String e = historyObj[hisLen - index - 1]['data'];
-                  return InkWell(
-                    onTap: () async {
-                      if (await canLaunchUrl(Uri.parse(e))) {
-                        launchURL(e);
-                      } else {
-                        Clipboard.setData(
-                          ClipboardData(text: e),
-                        ).then((value) {
-                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            BottomSnackBar(
-                              context,
-                              'クリップボードにコピーしました',
-                              icon: Icons.library_add_check_rounded,
-                            ),
-                          );
-                        });
-                      }
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          width: 28,
-                        ),
-                        Expanded(
-                          child: Text(
-                            e,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: linkFormat.hasMatch(e.toString())
-                                  ? Theme.of(context).colorScheme.secondary
-                                  : Theme.of(context).colorScheme.onBackground,
-                              decoration: linkFormat.hasMatch(e.toString())
-                                  ? TextDecoration.underline
-                                  : TextDecoration.none,
-                            ),
-                            overflow: TextOverflow.fade,
-                            maxLines: 1,
-                            softWrap: false,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          const SizedBox(
+                            width: 28,
                           ),
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Share.share(
-                                  e,
-                                  subject: 'QR I/O の履歴共有',
-                                );
-                              },
-                              icon: const Icon(Icons.share_rounded),
-                              padding: const EdgeInsets.all(16.0),
+                          Text(
+                            '履歴',
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onBackground
+                                  .withOpacity(0.7),
                             ),
-                            IconButton(
-                              onPressed: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return DataBottomSheet(data: e, ref: ref);
+                          ),
+                          const SizedBox(
+                            width: 24,
+                          ),
+                          Text(
+                            '$hisLen 件',
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onBackground
+                                  .withOpacity(0.7),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: historyObj.isEmpty
+                                ? null
+                                : () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return const HistoryMenuSheet();
+                                      },
+                                      backgroundColor: Colors.transparent,
+                                    );
                                   },
-                                  backgroundColor: Colors.transparent,
-                                );
-                              },
-                              icon: const Icon(Icons.more_vert_rounded),
-                              padding: const EdgeInsets.all(16.0),
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                          ],
+                            icon: const Icon(Icons.more_vert_rounded),
+                            disabledColor: Theme.of(context)
+                                .colorScheme
+                                .onBackground
+                                .withOpacity(0.3),
+                            padding: const EdgeInsets.all(16.0),
+                          ),
+                          const SizedBox(width: 8),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Divider(
+                    height: 1,
+                    thickness: 1,
+                    color:
+                        Theme.of(context).colorScheme.outline.withOpacity(0.25),
+                  ),
+                  if (historyObj.isEmpty)
+                    Column(
+                      children: [
+                        const SizedBox(height: 32),
+                        Icon(
+                          Icons.update_disabled_rounded,
+                          size: 120,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onBackground
+                              .withOpacity(0.3),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          '読み取り・作成の履歴はありません',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onBackground,
+                          ),
                         ),
                       ],
                     ),
-                  );
-                },
+                ],
               ),
-            ),
-            Transform.translate(
-              offset: Offset(0, -1 * min(offset, 100)),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: scrollContentHeight + 150,
-                alignment: Alignment.bottomCenter,
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    controller.animateTo(
-                      0,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.ease,
+              Container(
+                margin: const EdgeInsets.only(top: sheetHandleHeight),
+                height: scrollContentHeight,
+                child: ListView.builder(
+                  controller: controller,
+                  padding: const EdgeInsets.fromLTRB(0, 8, 0, 80),
+                  itemCount: hisLen,
+                  itemBuilder: (context, index) {
+                    String e = historyObj[hisLen - index - 1]['data'];
+                    return InkWell(
+                      onTap: () async {
+                        if (await canLaunchUrl(Uri.parse(e))) {
+                          launchURL(e);
+                        } else {
+                          Clipboard.setData(
+                            ClipboardData(text: e),
+                          ).then((value) {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              BottomSnackBar(
+                                context,
+                                'クリップボードにコピーしました',
+                                icon: Icons.library_add_check_rounded,
+                              ),
+                            );
+                          });
+                        }
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            width: 28,
+                          ),
+                          Expanded(
+                            child: Text(
+                              e,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: linkFormat.hasMatch(e.toString())
+                                    ? Theme.of(context).colorScheme.secondary
+                                    : Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                decoration: linkFormat.hasMatch(e.toString())
+                                    ? TextDecoration.underline
+                                    : TextDecoration.none,
+                              ),
+                              overflow: TextOverflow.fade,
+                              maxLines: 1,
+                              softWrap: false,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  Share.share(
+                                    e,
+                                    subject: 'QR I/O の履歴共有',
+                                  );
+                                },
+                                icon: const Icon(Icons.share_rounded),
+                                padding: const EdgeInsets.all(16.0),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return DataBottomSheet(data: e, ref: ref);
+                                    },
+                                    backgroundColor: Colors.transparent,
+                                  );
+                                },
+                                icon: const Icon(Icons.more_vert_rounded),
+                                padding: const EdgeInsets.all(16.0),
+                              ),
+                              const SizedBox(
+                                width: 8,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     );
                   },
-                  icon: const Icon(Icons.arrow_upward_rounded),
-                  label: const Text('履歴のトップ'),
-                  style: ElevatedButton.styleFrom(
-                      elevation: 4,
-                      backgroundColor:
-                          Theme.of(context).colorScheme.onSecondary),
                 ),
               ),
-            ),
-          ],
+              Container(
+                alignment: Alignment.bottomCenter,
+                child: SizedBox(
+                  height: maxOffset,
+                  child: SingleChildScrollView(
+                    child: Transform.translate(
+                      offset:
+                          Offset(0, -1 * min(offset, maxOffset) + maxOffset),
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          controller.animateTo(
+                            0,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.ease,
+                          );
+                        },
+                        icon: const Icon(Icons.arrow_upward_rounded),
+                        label: const Text('履歴のトップ'),
+                        style: ElevatedButton.styleFrom(
+                            elevation: 4,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.onSecondary),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
