@@ -13,10 +13,6 @@ class DefaultPopupMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final topPadding = MediaQuery.of(context).padding.top;
-    const topContentHeight = appBarHeight + qrCodeViewHeight;
-    final sheetHeight = 1 - (topPadding + topContentHeight) / screenHeight;
     return PopupMenuButton<DefaultPopupMenuItemsType>(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       elevation: 20,
@@ -33,7 +29,7 @@ class DefaultPopupMenu extends StatelessWidget {
         switch (value) {
           case DefaultPopupMenuItemsType.history:
             draggableScrollableController.animateTo(
-              sheetHeight,
+              1,
               duration: const Duration(milliseconds: 300),
               curve: Curves.ease,
             );
