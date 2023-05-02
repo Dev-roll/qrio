@@ -23,11 +23,11 @@ const String historyTypeSelectImg = 'select_img';
 const String historyTypeOther = 'other';
 
 const List<Map<String, dynamic>> defaultPopupMenuItems = [
-  // {
-  //   'label': '履歴',
-  //   'value': DefaultPopupMenuItemsType.history,
-  //   'icon': Icons.history_rounded,
-  // },
+  {
+    'label': '履歴',
+    'value': DefaultPopupMenuItemsType.history,
+    'icon': Icons.history_rounded,
+  },
   {
     'label': 'このアプリについて',
     'value': DefaultPopupMenuItemsType.about,
