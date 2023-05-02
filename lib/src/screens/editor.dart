@@ -24,8 +24,11 @@ class Editor extends StatelessWidget {
               ),
               QrCodePreview(),
               const Expanded(
-                child: SingleChildScrollView(
-                  child: ConfigItems(),
+                child: Padding(
+                  padding: EdgeInsets.only(top: 4),
+                  child: SingleChildScrollView(
+                    child: ConfigItems(),
+                  ),
                 ),
               ),
             ],
