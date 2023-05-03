@@ -52,13 +52,18 @@ class History extends ConsumerWidget {
           mode: LaunchMode.externalApplication,
         );
       } else {
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
+          // ignore: use_build_context_synchronously
           BottomSnackBar(
             context,
             'アプリを開けません',
             icon: Icons.error_outline_rounded,
+            // ignore: use_build_context_synchronously
             background: Theme.of(context).colorScheme.error,
+            // ignore: use_build_context_synchronously
             foreground: Theme.of(context).colorScheme.onError,
           ),
         );
