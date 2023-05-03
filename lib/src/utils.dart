@@ -114,7 +114,7 @@ updateHistory() async {
       'data': data.trim(),
       'type': null,
       'pinned': false,
-      'created_at': null,
+      'created_at': DateTime.now(),
     };
   }).toList();
   prefs.setString(qrioHistoryAsStr, jsonEncode(historyObj));
@@ -127,7 +127,8 @@ updateHistory() async {
 //   prefs.setString(qrioHistoryAsStr, '');
 // }
 
-addHistoryData(String data, String type, String createdAt) async {
+addHistoryData(String data, String type, String createdAt,
+    {int index = -1}) async {
   final prefs = await SharedPreferences.getInstance();
   String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
   if (historyList == '') historyList = '[]';
@@ -141,13 +142,26 @@ addHistoryData(String data, String type, String createdAt) async {
       'pinned': false,
       'created_at': createdAt,
     };
-    historyObj.add(addObj);
+    if (index < historyObj.length && index >= 0) {
+      historyObj.insert(index, addObj);
+    } else {
+      historyObj.add(addObj);
+    }
     await prefs.setString(qrioHistoryAsStr, jsonEncode(historyObj));
     return true;
   }
 }
 
-deleteHistory() async {
+deleteHistoryData(int index) async {
+  final prefs = await SharedPreferences.getInstance();
+  String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
+  if (historyList == '') historyList = '[]';
+  final List<dynamic> historyObj = jsonDecode(historyList);
+  historyObj.removeAt(index);
+  await prefs.setString(qrioHistoryAsStr, jsonEncode(historyObj));
+}
+
+deleteAllHistory() async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString(qrioHistoryAsStr, '');
   // prefs.remove(qrioHistoryAsStr);

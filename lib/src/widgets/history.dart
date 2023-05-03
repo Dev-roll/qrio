@@ -99,6 +99,7 @@ class History extends ConsumerWidget {
       data: (historyList) {
         List<dynamic> historyObj = jsonDecode(historyList) as List<dynamic>;
         if (historyList.toString() == '') historyObj = [];
+        historyObj = historyObj.reversed.toList();
         int hisLen = historyObj.length;
         return ConstrainedBox(
           constraints: BoxConstraints(
@@ -220,15 +221,19 @@ class History extends ConsumerWidget {
                   physics: const CustomBouncingScrollPhysics(),
                   padding: const EdgeInsets.fromLTRB(0, 8, 0, 80),
                   itemCount: hisLen,
-                  itemBuilder: (context, index) {
-                    String e = historyObj[hisLen - index - 1]['data'];
+                  itemBuilder: (context, idx) {
+                    int index = hisLen - idx - 1;
+                    String data = historyObj[idx]['data'];
+                    String type = historyObj[idx]['type'] ?? "記録なし";
+                    bool pinned = historyObj[idx]['pinned'];
+                    String createdAt = historyObj[idx]['created_at'] ?? "記録なし";
                     return InkWell(
                       onTap: () async {
-                        if (await canLaunchUrl(Uri.parse(e))) {
-                          launchURL(e);
+                        if (await canLaunchUrl(Uri.parse(data))) {
+                          launchURL(data);
                         } else {
                           Clipboard.setData(
-                            ClipboardData(text: e),
+                            ClipboardData(text: data),
                           ).then((value) {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -249,15 +254,15 @@ class History extends ConsumerWidget {
                           ),
                           Expanded(
                             child: Text(
-                              e,
+                              data,
                               style: TextStyle(
                                 fontSize: 16,
-                                color: linkFormat.hasMatch(e.toString())
+                                color: linkFormat.hasMatch(data.toString())
                                     ? Theme.of(context).colorScheme.secondary
                                     : Theme.of(context)
                                         .colorScheme
                                         .onBackground,
-                                decoration: linkFormat.hasMatch(e.toString())
+                                decoration: linkFormat.hasMatch(data.toString())
                                     ? TextDecoration.underline
                                     : TextDecoration.none,
                               ),
@@ -271,7 +276,7 @@ class History extends ConsumerWidget {
                               IconButton(
                                 onPressed: () {
                                   Share.share(
-                                    e,
+                                    data,
                                     subject: 'QR I/O の履歴共有',
                                   );
                                 },
@@ -283,7 +288,14 @@ class History extends ConsumerWidget {
                                   showModalBottomSheet(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return DataBottomSheet(data: e, ref: ref);
+                                      return DataBottomSheet(
+                                        index: index,
+                                        data: data,
+                                        type: type,
+                                        pinned: pinned,
+                                        createdAt: createdAt,
+                                        ref: ref,
+                                      );
                                     },
                                     backgroundColor: Colors.transparent,
                                   );
