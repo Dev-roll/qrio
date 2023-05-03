@@ -9,8 +9,20 @@ import 'bottom_snack_bar.dart';
 import 'config_items.dart';
 
 class DataBottomSheet extends StatelessWidget {
-  const DataBottomSheet({super.key, required this.data, required this.ref});
+  const DataBottomSheet({
+    super.key,
+    required this.index,
+    required this.data,
+    required this.type,
+    required this.pinned,
+    required this.createdAt,
+    required this.ref,
+  });
+  final int index;
   final String data;
+  final String type;
+  final bool pinned;
+  final String createdAt;
   final WidgetRef ref;
 
   @override
@@ -192,7 +204,21 @@ class DataBottomSheet extends StatelessWidget {
           InkWell(
             onTap: () {
               Navigator.of(context).pop();
-              // TODO:delete
+              deleteHistoryData(index);
+              ScaffoldMessenger.of(context).showSnackBar(
+                BottomSnackBar(
+                  context,
+                  '削除しました',
+                  icon: Icons.done_rounded,
+                  seconds: 5,
+                  bottomSnackbarAction: SnackBarAction(
+                    label: '元に戻す',
+                    onPressed: () {
+                      addHistoryData(data, type, createdAt, index: index);
+                    },
+                  ),
+                ),
+              );
             },
             child: Row(
               children: [
