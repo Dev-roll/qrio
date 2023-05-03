@@ -40,7 +40,6 @@ class SelectThemeDialog extends ConsumerWidget {
             final SharedPreferences prefs =
                 await SharedPreferences.getInstance();
             await prefs.setString('theme', themeModeToString(selectedTheme));
-            // TODO: Refer to https://dart-lang.github.io/linter/lints/use_build_context_synchronously.html
             // ignore: use_build_context_synchronously
             Navigator.of(context).pop();
           },
