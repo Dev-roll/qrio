@@ -68,7 +68,7 @@ class HistoryMenuSheet extends StatelessWidget {
               final prefs = await SharedPreferences.getInstance();
               String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
 
-              if (historyList == null || historyList.isEmpty) {
+              if (historyList.isEmpty) {
                 return;
               }
 
