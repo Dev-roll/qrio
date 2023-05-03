@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qrio/src/constants.dart';
@@ -63,9 +64,19 @@ class History extends ConsumerWidget {
       }
     }
 
-    var controller = ScrollController();
+    final controller = ScrollController();
+    var isTop = false;
     controller.addListener(() {
       ref.read(scrollOffsetProvider.notifier).state = controller.offset;
+      if (isTop &&
+          controller.position.userScrollDirection == ScrollDirection.forward) {
+        draggableScrollableController.animateTo(
+          0,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.ease,
+        );
+      }
+      isTop = controller.offset <= 0;
     });
     final screenHeight = MediaQuery.of(context).size.height;
     final topPadding = MediaQuery.of(context).padding.top;
@@ -200,6 +211,9 @@ class History extends ConsumerWidget {
                 height: scrollContentHeight,
                 child: ListView.builder(
                   controller: controller,
+                  physics: const BouncingScrollPhysics(
+                    decelerationRate: ScrollDecelerationRate.fast,
+                  ),
                   padding: const EdgeInsets.fromLTRB(0, 8, 0, 80),
                   itemCount: hisLen,
                   itemBuilder: (context, index) {
