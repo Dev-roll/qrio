@@ -70,8 +70,8 @@ class History extends ConsumerWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final topPadding = MediaQuery.of(context).padding.top;
     const topContentHeight = appBarHeight + qrCodeViewHeight;
-    final scrollContentHeight = screenHeight -
-        (topPadding + appBarHeight + qrCodeViewHeight + sheetHandleHeight);
+    final scrollContentHeight =
+        screenHeight - (topPadding + topContentHeight + sheetHandleHeight);
     const maxOffset = 76.0;
     final _ = ref.refresh(futureProvider);
     final asyncValue = ref.watch(futureProvider);

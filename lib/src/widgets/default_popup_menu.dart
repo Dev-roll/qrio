@@ -27,6 +27,13 @@ class DefaultPopupMenu extends StatelessWidget {
       ),
       onSelected: ((value) {
         switch (value) {
+          case DefaultPopupMenuItemsType.history:
+            draggableScrollableController.animateTo(
+              1,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.ease,
+            );
+            break;
           case DefaultPopupMenuItemsType.selectTheme:
             openSelectThemeDialog(context);
             break;
