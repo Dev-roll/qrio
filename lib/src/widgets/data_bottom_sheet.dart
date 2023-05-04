@@ -28,6 +28,26 @@ class DataBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String displayInfo;
+    switch (type) {
+      case historyTypeShareTxt:
+        displayInfo = 'テキスト共有により追加';
+        break;
+      case historyTypeShareImg:
+        displayInfo = '画像共有により追加';
+        break;
+      case historyTypeSelectImg:
+        displayInfo = '画像選択により追加';
+        break;
+      case noData:
+        displayInfo = noData;
+        break;
+      case 'null':
+        displayInfo = noData;
+        break;
+      default:
+        displayInfo = 'カメラスキャン ・ $type';
+    }
     return Container(
       height: 600,
       padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
@@ -139,7 +159,9 @@ class DataBottomSheet extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Text(
-                type,
+                type == noData && createdAt != noData
+                    ? '上記は、アプリ更新時のデータ更新時刻'
+                    : displayInfo,
                 style: TextStyle(
                   fontSize: 13,
                   color: Theme.of(context)
@@ -298,8 +320,8 @@ class DataBottomSheet extends StatelessWidget {
                     onPressed: () {
                       addHistoryData(
                         data,
-                        type == noData ? 'null' : type,
-                        createdAt == noData ? 'null' : createdAt,
+                        [noData, 'null'].contains(type) ? null : type,
+                        [noData, 'null'].contains(createdAt) ? null : createdAt,
                         index: index,
                         pinned: pinned,
                       );

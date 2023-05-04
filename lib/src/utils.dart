@@ -109,7 +109,7 @@ Future<List<String>> scanImg(String filePath) async {
 updateHistory() async {
   final prefs = await SharedPreferences.getInstance();
   final List<String> historyList = prefs.getStringList(qrioHistoryAsLis) ?? [];
-  final List<dynamic> historyObj = historyList.map((data) {
+  final List<dynamic> historyObj = historyList.reversed.map((data) {
     return {
       'data': data.trim(),
       'type': null,
@@ -129,8 +129,8 @@ updateHistory() async {
 
 addHistoryData(
   String data,
-  String type,
-  String createdAt, {
+  String? type,
+  String? createdAt, {
   int index = -1,
   bool pinned = false,
 }) async {
