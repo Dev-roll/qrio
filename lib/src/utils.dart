@@ -230,3 +230,24 @@ Future<int> exportStringListToCsv(String jsonString, String fileName) async {
     return 1;
   }
 }
+
+Future<int> exportStringListToJson(String jsonString, String fileName) async {
+  final jsonData =
+      const JsonEncoder.withIndent('  ').convert(jsonDecode(jsonString));
+
+  final directory = await getApplicationDocumentsDirectory();
+  final path = directory.path;
+  final file = File('$path/$fileName.json');
+
+  try {
+    await file.writeAsString(jsonData);
+    await Share.shareXFiles(
+      [XFile('$path/$fileName.json')],
+      text: 'QR I/Oの履歴データ',
+      subject: 'QR I/Oの履歴データを共有',
+    );
+    return 0;
+  } catch (e) {
+    return 1;
+  }
+}

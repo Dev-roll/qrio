@@ -10,7 +10,7 @@ class HistoryMenuSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 220,
+      height: 300,
       padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
       decoration: BoxDecoration(
         color: alphaBlend(
@@ -81,10 +81,11 @@ class HistoryMenuSheet extends StatelessWidget {
               }
             },
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(
                   width: 16,
-                  height: 44,
+                  height: 52,
                 ),
                 Icon(
                   Icons.share_rounded,
@@ -93,15 +94,77 @@ class HistoryMenuSheet extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  '共有',
+                  'CSVで共有',
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
+                const Spacer(),
+                Text(
+                  'qrio_history.csv',
+                  style: TextStyle(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .secondary
+                        .withOpacity(0.5),
+                  ),
+                ),
+                const SizedBox(width: 16),
               ],
             ),
           ),
-          const SizedBox(height: 8),
+          InkWell(
+            onTap: () async {
+              Navigator.of(context).pop();
+              final prefs = await SharedPreferences.getInstance();
+              String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
+
+              if (historyList.isEmpty) {
+                return;
+              }
+
+              final responseStatus =
+                  await exportStringListToJson(historyList, 'qrio_history');
+
+              if (responseStatus != 0) {
+                // TODO: エラー処理
+                throw Error();
+              }
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  width: 16,
+                  height: 52,
+                ),
+                Icon(
+                  Icons.share_rounded,
+                  color:
+                      Theme.of(context).colorScheme.secondary.withOpacity(0.8),
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  'JSONで共有',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  'qrio_history.json',
+                  style: TextStyle(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .secondary
+                        .withOpacity(0.5),
+                  ),
+                ),
+                const SizedBox(width: 16),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
           InkWell(
             onTap: () async {
               Navigator.of(context).pop();
