@@ -10,7 +10,6 @@ import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/widgets/bottom_snack_bar.dart';
 import 'package:qrio/src/widgets/data_bottom_sheet.dart';
 import 'package:qrio/src/widgets/history_menu_sheet.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
