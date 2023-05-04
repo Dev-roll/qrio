@@ -99,6 +99,19 @@ class History extends ConsumerWidget {
         if (historyList.toString() == '') historyObj = [];
         historyObj = historyObj.reversed.toList();
         int hisLen = historyObj.length;
+        List<int> starredHistory = historyObj
+            .asMap()
+            .entries
+            .where((entry) => entry.value['pinned'])
+            .map((entry) => entry.key)
+            .toList();
+        List<int> unstarredHistory = historyObj
+            .asMap()
+            .entries
+            .where((entry) => !entry.value['pinned'])
+            .map((entry) => entry.key)
+            .toList();
+
         return ConstrainedBox(
           constraints: BoxConstraints(
             maxHeight: screenHeight - (topPadding + topContentHeight),
@@ -219,7 +232,12 @@ class History extends ConsumerWidget {
                   physics: const CustomBouncingScrollPhysics(),
                   padding: const EdgeInsets.fromLTRB(0, 8, 0, 80),
                   itemCount: hisLen,
-                  itemBuilder: (context, idx) {
+                  itemBuilder: (context, i) {
+                    List<int> combinedHistory = [
+                      ...starredHistory,
+                      ...unstarredHistory
+                    ];
+                    int idx = combinedHistory[i];
                     int index = hisLen - idx - 1;
                     String data = historyObj[idx]['data'];
                     String type = historyObj[idx]['type'] ?? noData;
