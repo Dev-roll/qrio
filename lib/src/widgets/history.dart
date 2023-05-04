@@ -132,7 +132,7 @@ class History extends ConsumerWidget {
                       Row(
                         children: [
                           const SizedBox(
-                            width: 28,
+                            width: 24,
                           ),
                           Text(
                             '履歴',
@@ -178,7 +178,7 @@ class History extends ConsumerWidget {
                                 .withOpacity(0.3),
                             padding: const EdgeInsets.all(16.0),
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: 4),
                         ],
                       ),
                     ],
@@ -224,7 +224,7 @@ class History extends ConsumerWidget {
                     int index = hisLen - idx - 1;
                     String data = historyObj[idx]['data'];
                     String type = historyObj[idx]['type'] ?? noData;
-                    bool starred = historyObj[idx]['starred'];
+                    bool starred = historyObj[idx]['pinned'];
                     String createdAt = historyObj[idx]['created_at'] ?? noData;
                     return InkWell(
                       onTap: () async {
@@ -248,9 +248,26 @@ class History extends ConsumerWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const SizedBox(
-                            width: 28,
+                          const SizedBox(width: 4),
+                          IconButton(
+                            onPressed: () async {
+                              await switchStarred(index);
+                              // ref.refresh(futureProvider);
+                            },
+                            icon: Icon(
+                              starred
+                                  ? Icons.star_rounded
+                                  : Icons.star_border_rounded,
+                              color: starred
+                                  ? Theme.of(context).colorScheme.primary
+                                  : Theme.of(context)
+                                      .colorScheme
+                                      .onBackground
+                                      .withOpacity(0.5),
+                            ),
+                            padding: const EdgeInsets.all(16.0),
                           ),
+                          const SizedBox(width: 0),
                           Expanded(
                             child: Text(
                               data,
@@ -274,16 +291,6 @@ class History extends ConsumerWidget {
                             children: [
                               IconButton(
                                 onPressed: () {
-                                  Share.share(
-                                    data,
-                                    subject: 'QR I/O の履歴共有',
-                                  );
-                                },
-                                icon: const Icon(Icons.share_rounded),
-                                padding: const EdgeInsets.all(16.0),
-                              ),
-                              IconButton(
-                                onPressed: () {
                                   showModalBottomSheet(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -303,9 +310,7 @@ class History extends ConsumerWidget {
                                 icon: const Icon(Icons.more_vert_rounded),
                                 padding: const EdgeInsets.all(16.0),
                               ),
-                              const SizedBox(
-                                width: 8,
-                              ),
+                              const SizedBox(width: 4),
                             ],
                           ),
                         ],
