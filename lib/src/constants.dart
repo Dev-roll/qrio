@@ -20,7 +20,8 @@ const String qrioHistoryAsStr = 'qrio_history_str';
 const String historyTypeShareTxt = 'share_txt';
 const String historyTypeShareImg = 'share_img';
 const String historyTypeSelectImg = 'select_img';
-const String historyTypeOther = 'other';
+
+const String noData = '記録なし';
 
 const List<Map<String, dynamic>> defaultPopupMenuItems = [
   {

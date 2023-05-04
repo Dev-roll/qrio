@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qrio/src/constants.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../app.dart';
@@ -28,7 +29,7 @@ class DataBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 440,
+      height: 600,
       padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
       decoration: BoxDecoration(
         color: alphaBlend(
@@ -79,10 +80,10 @@ class DataBottomSheet extends StatelessWidget {
             children: [
               const SizedBox(
                 width: 16,
-                height: 44,
+                height: 42,
               ),
               Icon(
-                Icons.info_outline_rounded,
+                Icons.straighten_rounded,
                 color:
                     Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
               ),
@@ -99,7 +100,90 @@ class DataBottomSheet extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          Row(
+            children: [
+              const SizedBox(
+                width: 16,
+                height: 42,
+              ),
+              Icon(
+                Icons.calendar_month_rounded,
+                color:
+                    Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                type == noData && createdAt != noData
+                    ? '$createdAt (更新時刻)'
+                    : createdAt,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onBackground
+                      .withOpacity(0.6),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              const SizedBox(
+                width: 16,
+                height: 42,
+              ),
+              Icon(
+                Icons.info_outline_rounded,
+                color:
+                    Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                type,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onBackground
+                      .withOpacity(0.6),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          Divider(
+            height: 1,
+            thickness: 1,
+            indent: 4,
+            endIndent: 4,
+            color: Theme.of(context).colorScheme.outline.withOpacity(0.25),
+          ),
+          const SizedBox(height: 16),
+          InkWell(
+            onTap: () {
+              // TODO: お気に入りの切り替え
+            },
+            child: Row(
+              children: [
+                const SizedBox(
+                  width: 16,
+                  height: 52,
+                ),
+                Icon(
+                  pinned ? Icons.star_rounded : Icons.star_border_rounded,
+                  color:
+                      Theme.of(context).colorScheme.secondary.withOpacity(0.8),
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  pinned ? 'お気に入り済み' : 'お気に入りに追加',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
           InkWell(
             onTap: () {
               Navigator.of(context).pop();
@@ -120,7 +204,7 @@ class DataBottomSheet extends StatelessWidget {
               children: [
                 const SizedBox(
                   width: 16,
-                  height: 44,
+                  height: 52,
                 ),
                 Icon(
                   Icons.copy_rounded,
@@ -137,7 +221,6 @@ class DataBottomSheet extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 8),
           InkWell(
             onTap: () {
               Navigator.of(context).pop();
@@ -147,7 +230,7 @@ class DataBottomSheet extends StatelessWidget {
               children: [
                 const SizedBox(
                   width: 16,
-                  height: 44,
+                  height: 52,
                 ),
                 Icon(
                   Icons.share_rounded,
@@ -164,7 +247,6 @@ class DataBottomSheet extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 8),
           InkWell(
             onTap: () {
               Navigator.of(context).pop();
@@ -183,7 +265,7 @@ class DataBottomSheet extends StatelessWidget {
               children: [
                 const SizedBox(
                   width: 16,
-                  height: 44,
+                  height: 52,
                 ),
                 Icon(
                   Icons.edit_rounded,
@@ -200,7 +282,7 @@ class DataBottomSheet extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
           InkWell(
             onTap: () {
               Navigator.of(context).pop();
@@ -216,8 +298,8 @@ class DataBottomSheet extends StatelessWidget {
                     onPressed: () {
                       addHistoryData(
                         data,
-                        type,
-                        createdAt,
+                        type == noData ? 'null' : type,
+                        createdAt == noData ? 'null' : createdAt,
                         index: index,
                         pinned: pinned,
                       );

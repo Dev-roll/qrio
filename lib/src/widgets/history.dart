@@ -223,9 +223,9 @@ class History extends ConsumerWidget {
                   itemBuilder: (context, idx) {
                     int index = hisLen - idx - 1;
                     String data = historyObj[idx]['data'];
-                    String type = historyObj[idx]['type'] ?? "記録なし";
+                    String type = historyObj[idx]['type'] ?? noData;
                     bool pinned = historyObj[idx]['pinned'];
-                    String createdAt = historyObj[idx]['created_at'] ?? "記録なし";
+                    String createdAt = historyObj[idx]['created_at'] ?? noData;
                     return InkWell(
                       onTap: () async {
                         if (await canLaunchUrl(Uri.parse(data))) {
@@ -297,6 +297,7 @@ class History extends ConsumerWidget {
                                       );
                                     },
                                     backgroundColor: Colors.transparent,
+                                    isScrollControlled: true,
                                   );
                                 },
                                 icon: const Icon(Icons.more_vert_rounded),
