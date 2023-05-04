@@ -10,7 +10,6 @@ import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/widgets/bottom_snack_bar.dart';
 import 'package:qrio/src/widgets/data_bottom_sheet.dart';
 import 'package:qrio/src/widgets/history_menu_sheet.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -132,7 +131,7 @@ class History extends ConsumerWidget {
                       Row(
                         children: [
                           const SizedBox(
-                            width: 28,
+                            width: 24,
                           ),
                           Text(
                             '履歴',
@@ -178,7 +177,7 @@ class History extends ConsumerWidget {
                                 .withOpacity(0.3),
                             padding: const EdgeInsets.all(16.0),
                           ),
-                          const SizedBox(width: 8),
+                          const SizedBox(width: 4),
                         ],
                       ),
                     ],
@@ -224,7 +223,7 @@ class History extends ConsumerWidget {
                     int index = hisLen - idx - 1;
                     String data = historyObj[idx]['data'];
                     String type = historyObj[idx]['type'] ?? noData;
-                    bool pinned = historyObj[idx]['pinned'];
+                    bool starred = historyObj[idx]['pinned'];
                     String createdAt = historyObj[idx]['created_at'] ?? noData;
                     return InkWell(
                       onTap: () async {
@@ -248,14 +247,30 @@ class History extends ConsumerWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const SizedBox(
-                            width: 28,
+                          const SizedBox(width: 4),
+                          IconButton(
+                            onPressed: () {
+                              switchStarred(index);
+                            },
+                            icon: Icon(
+                              starred
+                                  ? Icons.star_rounded
+                                  : Icons.star_border_rounded,
+                              color: starred
+                                  ? Theme.of(context).colorScheme.primary
+                                  : Theme.of(context)
+                                      .colorScheme
+                                      .onBackground
+                                      .withOpacity(0.5),
+                            ),
+                            padding: const EdgeInsets.all(16.0),
                           ),
+                          const SizedBox(width: 0),
                           Expanded(
                             child: Text(
                               data,
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 15,
                                 color: linkFormat.hasMatch(data.toString())
                                     ? Theme.of(context).colorScheme.secondary
                                     : Theme.of(context)
@@ -274,16 +289,6 @@ class History extends ConsumerWidget {
                             children: [
                               IconButton(
                                 onPressed: () {
-                                  Share.share(
-                                    data,
-                                    subject: 'QR I/O の履歴共有',
-                                  );
-                                },
-                                icon: const Icon(Icons.share_rounded),
-                                padding: const EdgeInsets.all(16.0),
-                              ),
-                              IconButton(
-                                onPressed: () {
                                   showModalBottomSheet(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -291,7 +296,7 @@ class History extends ConsumerWidget {
                                         index: index,
                                         data: data,
                                         type: type,
-                                        pinned: pinned,
+                                        starred: starred,
                                         createdAt: createdAt,
                                         ref: ref,
                                       );
@@ -303,9 +308,7 @@ class History extends ConsumerWidget {
                                 icon: const Icon(Icons.more_vert_rounded),
                                 padding: const EdgeInsets.all(16.0),
                               ),
-                              const SizedBox(
-                                width: 8,
-                              ),
+                              const SizedBox(width: 4),
                             ],
                           ),
                         ],

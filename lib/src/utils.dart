@@ -132,7 +132,7 @@ addHistoryData(
   String? type,
   String? createdAt, {
   int index = -1,
-  bool pinned = false,
+  bool starred = false,
 }) async {
   final prefs = await SharedPreferences.getInstance();
   String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
@@ -144,7 +144,7 @@ addHistoryData(
     final addObj = {
       'data': addStr,
       'type': type,
-      'pinned': pinned,
+      'pinned': starred,
       'created_at': createdAt,
     };
     if (index < historyObj.length && index >= 0) {
@@ -170,6 +170,15 @@ deleteAllHistory() async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString(qrioHistoryAsStr, '');
   // prefs.remove(qrioHistoryAsStr);
+}
+
+switchStarred(int index) async {
+  final prefs = await SharedPreferences.getInstance();
+  String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
+  if (historyList == '') historyList = '[]';
+  final List<dynamic> historyObj = jsonDecode(historyList);
+  historyObj[index]['pinned'] = !historyObj[index]['pinned'];
+  await prefs.setString(qrioHistoryAsStr, jsonEncode(historyObj));
 }
 
 Future<File> getApplicationDocumentsFile(

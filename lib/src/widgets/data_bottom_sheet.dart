@@ -9,27 +9,34 @@ import '../utils.dart';
 import 'bottom_snack_bar.dart';
 import 'config_items.dart';
 
-class DataBottomSheet extends StatelessWidget {
+class DataBottomSheet extends StatefulWidget {
   const DataBottomSheet({
     super.key,
     required this.index,
     required this.data,
     required this.type,
-    required this.pinned,
+    required this.starred,
     required this.createdAt,
     required this.ref,
   });
   final int index;
   final String data;
   final String type;
-  final bool pinned;
+  final bool starred;
   final String createdAt;
   final WidgetRef ref;
 
   @override
+  DataBottomSheetState createState() => DataBottomSheetState();
+}
+
+class DataBottomSheetState extends State<DataBottomSheet> {
+  late bool currentStarred = widget.starred;
+
+  @override
   Widget build(BuildContext context) {
     String displayInfo;
-    switch (type) {
+    switch (widget.type) {
       case historyTypeShareTxt:
         displayInfo = 'テキスト共有により追加';
         break;
@@ -46,8 +53,9 @@ class DataBottomSheet extends StatelessWidget {
         displayInfo = noData;
         break;
       default:
-        displayInfo = 'カメラスキャン ・ $type';
+        displayInfo = 'カメラスキャン ・ ${widget.type}';
     }
+
     return Container(
       height: 600,
       padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
@@ -84,7 +92,7 @@ class DataBottomSheet extends StatelessWidget {
             child: SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
-                child: Text(data),
+                child: Text(widget.data),
               ),
             ),
           ),
@@ -109,7 +117,7 @@ class DataBottomSheet extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Text(
-                '${data.length}文字',
+                '${widget.data.length}文字',
                 style: TextStyle(
                   fontSize: 13,
                   color: Theme.of(context)
@@ -133,9 +141,9 @@ class DataBottomSheet extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Text(
-                type == noData && createdAt != noData
-                    ? '$createdAt (更新時刻)'
-                    : createdAt,
+                widget.type == noData && widget.createdAt != noData
+                    ? '${widget.createdAt} (更新時刻)'
+                    : widget.createdAt,
                 style: TextStyle(
                   fontSize: 13,
                   color: Theme.of(context)
@@ -159,7 +167,7 @@ class DataBottomSheet extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Text(
-                type == noData && createdAt != noData
+                widget.type == noData && widget.createdAt != noData
                     ? '上記は、アプリ更新時のデータ更新時刻'
                     : displayInfo,
                 style: TextStyle(
@@ -183,7 +191,10 @@ class DataBottomSheet extends StatelessWidget {
           const SizedBox(height: 16),
           InkWell(
             onTap: () {
-              // TODO: お気に入りの切り替え
+              switchStarred(widget.index);
+              setState(() {
+                currentStarred = !currentStarred;
+              });
             },
             child: Row(
               children: [
@@ -192,13 +203,15 @@ class DataBottomSheet extends StatelessWidget {
                   height: 52,
                 ),
                 Icon(
-                  pinned ? Icons.star_rounded : Icons.star_border_rounded,
+                  currentStarred
+                      ? Icons.star_rounded
+                      : Icons.star_border_rounded,
                   color:
                       Theme.of(context).colorScheme.secondary.withOpacity(0.8),
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  pinned ? 'お気に入り済み' : 'お気に入りに追加',
+                  currentStarred ? 'お気に入りから削除' : 'お気に入りに追加',
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary,
                   ),
@@ -210,7 +223,7 @@ class DataBottomSheet extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pop();
               Clipboard.setData(
-                ClipboardData(text: data),
+                ClipboardData(text: widget.data),
               ).then((value) {
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -246,7 +259,7 @@ class DataBottomSheet extends StatelessWidget {
           InkWell(
             onTap: () {
               Navigator.of(context).pop();
-              Share.share(data, subject: 'QR I/O の履歴共有');
+              Share.share(widget.data, subject: 'QR I/O の履歴共有');
             },
             child: Row(
               children: [
@@ -272,8 +285,10 @@ class DataBottomSheet extends StatelessWidget {
           InkWell(
             onTap: () {
               Navigator.of(context).pop();
-              ref.read(qrImageConfigProvider.notifier).editData(data: data);
-              ConfigItems.updateTextFieldValue(data);
+              widget.ref
+                  .read(qrImageConfigProvider.notifier)
+                  .editData(data: widget.data);
+              ConfigItems.updateTextFieldValue(widget.data);
               if (selectedIndex == 0) {
                 tabController.animateTo(selectedIndex = 1);
               }
@@ -308,7 +323,7 @@ class DataBottomSheet extends StatelessWidget {
           InkWell(
             onTap: () {
               Navigator.of(context).pop();
-              deleteHistoryData(index);
+              deleteHistoryData(widget.index);
               ScaffoldMessenger.of(context).showSnackBar(
                 BottomSnackBar(
                   context,
@@ -319,11 +334,15 @@ class DataBottomSheet extends StatelessWidget {
                     label: '元に戻す',
                     onPressed: () {
                       addHistoryData(
-                        data,
-                        [noData, 'null'].contains(type) ? null : type,
-                        [noData, 'null'].contains(createdAt) ? null : createdAt,
-                        index: index,
-                        pinned: pinned,
+                        widget.data,
+                        [noData, 'null'].contains(widget.type)
+                            ? null
+                            : widget.type,
+                        [noData, 'null'].contains(widget.createdAt)
+                            ? null
+                            : widget.createdAt,
+                        index: widget.index,
+                        starred: currentStarred,
                       );
                     },
                   ),
