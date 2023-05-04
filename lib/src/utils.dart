@@ -109,7 +109,7 @@ Future<List<String>> scanImg(String filePath) async {
 updateHistory() async {
   final prefs = await SharedPreferences.getInstance();
   final List<String> historyList = prefs.getStringList(qrioHistoryAsLis) ?? [];
-  final List<dynamic> historyObj = historyList.map((data) {
+  final List<dynamic> historyObj = historyList.reversed.map((data) {
     return {
       'data': data.trim(),
       'type': null,
@@ -127,8 +127,13 @@ updateHistory() async {
 //   prefs.setString(qrioHistoryAsStr, '');
 // }
 
-addHistoryData(String data, String type, String createdAt,
-    {int index = -1}) async {
+addHistoryData(
+  String data,
+  String? type,
+  String? createdAt, {
+  int index = -1,
+  bool pinned = false,
+}) async {
   final prefs = await SharedPreferences.getInstance();
   String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
   if (historyList == '') historyList = '[]';
@@ -139,7 +144,7 @@ addHistoryData(String data, String type, String createdAt,
     final addObj = {
       'data': addStr,
       'type': type,
-      'pinned': false,
+      'pinned': pinned,
       'created_at': createdAt,
     };
     if (index < historyObj.length && index >= 0) {
@@ -217,6 +222,27 @@ Future<int> exportStringListToCsv(String jsonString, String fileName) async {
     await file.writeAsString(csv);
     await Share.shareXFiles(
       [XFile('$path/$fileName.csv')],
+      text: 'QR I/Oの履歴データ',
+      subject: 'QR I/Oの履歴データを共有',
+    );
+    return 0;
+  } catch (e) {
+    return 1;
+  }
+}
+
+Future<int> exportStringListToJson(String jsonString, String fileName) async {
+  final jsonData =
+      const JsonEncoder.withIndent('  ').convert(jsonDecode(jsonString));
+
+  final directory = await getApplicationDocumentsDirectory();
+  final path = directory.path;
+  final file = File('$path/$fileName.json');
+
+  try {
+    await file.writeAsString(jsonData);
+    await Share.shareXFiles(
+      [XFile('$path/$fileName.json')],
       text: 'QR I/Oの履歴データ',
       subject: 'QR I/Oの履歴データを共有',
     );

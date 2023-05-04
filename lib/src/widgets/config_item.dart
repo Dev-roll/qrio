@@ -53,7 +53,7 @@ class ConfigItem extends ConsumerWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      if (title == "QR コードの色")
+                      if (title == 'QR コードの色')
                         Row(
                           children: [
                             Stack(
