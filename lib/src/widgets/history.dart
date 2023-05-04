@@ -224,7 +224,7 @@ class History extends ConsumerWidget {
                     int index = hisLen - idx - 1;
                     String data = historyObj[idx]['data'];
                     String type = historyObj[idx]['type'] ?? noData;
-                    bool pinned = historyObj[idx]['pinned'];
+                    bool starred = historyObj[idx]['starred'];
                     String createdAt = historyObj[idx]['created_at'] ?? noData;
                     return InkWell(
                       onTap: () async {
@@ -291,7 +291,7 @@ class History extends ConsumerWidget {
                                         index: index,
                                         data: data,
                                         type: type,
-                                        pinned: pinned,
+                                        starred: starred,
                                         createdAt: createdAt,
                                         ref: ref,
                                       );

@@ -113,7 +113,7 @@ updateHistory() async {
     return {
       'data': data.trim(),
       'type': null,
-      'pinned': false,
+      'starred': false,
       'created_at': DateTime.now(),
     };
   }).toList();
@@ -132,7 +132,7 @@ addHistoryData(
   String? type,
   String? createdAt, {
   int index = -1,
-  bool pinned = false,
+  bool starred = false,
 }) async {
   final prefs = await SharedPreferences.getInstance();
   String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
@@ -144,7 +144,7 @@ addHistoryData(
     final addObj = {
       'data': addStr,
       'type': type,
-      'pinned': pinned,
+      'starred': starred,
       'created_at': createdAt,
     };
     if (index < historyObj.length && index >= 0) {

@@ -15,14 +15,14 @@ class DataBottomSheet extends StatelessWidget {
     required this.index,
     required this.data,
     required this.type,
-    required this.pinned,
+    required this.starred,
     required this.createdAt,
     required this.ref,
   });
   final int index;
   final String data;
   final String type;
-  final bool pinned;
+  final bool starred;
   final String createdAt;
   final WidgetRef ref;
 
@@ -192,13 +192,13 @@ class DataBottomSheet extends StatelessWidget {
                   height: 52,
                 ),
                 Icon(
-                  pinned ? Icons.star_rounded : Icons.star_border_rounded,
+                  starred ? Icons.star_rounded : Icons.star_border_rounded,
                   color:
                       Theme.of(context).colorScheme.secondary.withOpacity(0.8),
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  pinned ? 'お気に入り済み' : 'お気に入りに追加',
+                  starred ? 'お気に入り済み' : 'お気に入りに追加',
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary,
                   ),
@@ -323,7 +323,7 @@ class DataBottomSheet extends StatelessWidget {
                         [noData, 'null'].contains(type) ? null : type,
                         [noData, 'null'].contains(createdAt) ? null : createdAt,
                         index: index,
-                        pinned: pinned,
+                        starred: starred,
                       );
                     },
                   ),
