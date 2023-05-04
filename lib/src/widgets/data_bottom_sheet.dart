@@ -214,7 +214,13 @@ class DataBottomSheet extends StatelessWidget {
                   bottomSnackbarAction: SnackBarAction(
                     label: '元に戻す',
                     onPressed: () {
-                      addHistoryData(data, type, createdAt, index: index);
+                      addHistoryData(
+                        data,
+                        type,
+                        createdAt,
+                        index: index,
+                        pinned: pinned,
+                      );
                     },
                   ),
                 ),
