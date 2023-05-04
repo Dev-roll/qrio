@@ -272,7 +272,7 @@ class History extends ConsumerWidget {
                             child: Text(
                               data,
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 15,
                                 color: linkFormat.hasMatch(data.toString())
                                     ? Theme.of(context).colorScheme.secondary
                                     : Theme.of(context)
