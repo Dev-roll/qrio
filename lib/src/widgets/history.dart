@@ -142,10 +142,9 @@ class History extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const SizedBox(
-                            width: 24,
-                          ),
+                          const SizedBox(width: 24),
                           Text(
                             '履歴',
                             style: TextStyle(
@@ -155,9 +154,7 @@ class History extends ConsumerWidget {
                                   .withOpacity(0.7),
                             ),
                           ),
-                          const SizedBox(
-                            width: 24,
-                          ),
+                          const SizedBox(width: 24),
                           Text(
                             '$hisLen 件',
                             style: TextStyle(
@@ -171,6 +168,25 @@ class History extends ConsumerWidget {
                       ),
                       Row(
                         children: [
+                          if (DateTime.now()
+                                  .difference(DateTime.parse(
+                                      historyObj.first['created_at']))
+                                  .inSeconds <
+                              60)
+                            Container(
+                              padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Theme.of(context).colorScheme.error,
+                              ),
+                              child: Text(
+                                'NEW',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Theme.of(context).colorScheme.onError,
+                                ),
+                              ),
+                            ),
                           IconButton(
                             onPressed: historyObj.isEmpty
                                 ? null
@@ -243,6 +259,12 @@ class History extends ConsumerWidget {
                     String type = historyObj[idx]['type'] ?? noData;
                     bool starred = historyObj[idx]['pinned'];
                     String createdAt = historyObj[idx]['created_at'] ?? noData;
+
+                    DateTime createdDateTime = DateTime.parse(createdAt);
+                    DateTime now = DateTime.now();
+                    Duration diff = now.difference(createdDateTime);
+                    bool isRecent = diff.inSeconds < 60;
+
                     return InkWell(
                       onTap: () async {
                         if (await canLaunchUrl(Uri.parse(data))) {
@@ -305,6 +327,16 @@ class History extends ConsumerWidget {
                           ),
                           Row(
                             children: [
+                              if (isRecent)
+                                Container(
+                                  margin: const EdgeInsets.only(left: 8),
+                                  width: 8,
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    color: Theme.of(context).colorScheme.error,
+                                  ),
+                                ),
                               IconButton(
                                 onPressed: () {
                                   showModalBottomSheet(
