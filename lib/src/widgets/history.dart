@@ -28,7 +28,6 @@ final FutureProvider futureProvider = FutureProvider<dynamic>((ref) async {
   // }
   String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
   if (historyList.isEmpty) historyList = '[]';
-  debugPrint(historyList);
   return historyList;
 });
 
