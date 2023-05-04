@@ -250,9 +250,8 @@ class History extends ConsumerWidget {
                         children: [
                           const SizedBox(width: 4),
                           IconButton(
-                            onPressed: () async {
-                              await switchStarred(index);
-                              // ref.refresh(futureProvider);
+                            onPressed: () {
+                              switchStarred(index);
                             },
                             icon: Icon(
                               starred
