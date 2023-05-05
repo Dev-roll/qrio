@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qrio/src/constants.dart';
-import 'package:qrio/src/enums/history_key.dart';
+import 'package:qrio/src/models/history_model.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -119,12 +119,12 @@ updateHistory() async {
   final prefs = await SharedPreferences.getInstance();
   final List<String> historyList = prefs.getStringList(qrioHistoryAsLis) ?? [];
   final List<dynamic> historyObj = historyList.reversed.map((data) {
-    return {
-      HistoryKey.data.str: data.trim(),
-      HistoryKey.type.str: null,
-      HistoryKey.starred.str: false,
-      HistoryKey.createdAt.str: DateTime.now(),
-    };
+    return HistoryModel(
+      data: data.trim(),
+      type: null,
+      starred: false,
+      createdAt: DateTime.now().toString(),
+    ).toJson();
   }).toList();
   prefs.setString(qrioHistoryAsStr, jsonEncode(historyObj));
   prefs.remove(qrioHistoryAsLis);
@@ -147,15 +147,17 @@ addHistoryData(
   String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
   if (historyList == '') historyList = '[]';
   final List<dynamic> historyObj = jsonDecode(historyList);
+  final List<HistoryModel> historyModelList =
+      historyObj.map((e) => HistoryModel.fromJson(e)).toList();
   final String addStr = data.trim();
   if (addStr.isNotEmpty &&
-      (historyObj.isEmpty || historyObj.last[HistoryKey.data.str] != addStr)) {
-    final addObj = {
-      HistoryKey.data.str: addStr,
-      HistoryKey.type.str: type,
-      HistoryKey.starred.str: starred,
-      HistoryKey.createdAt.str: createdAt,
-    };
+      (historyModelList.isEmpty || historyModelList.last.data != addStr)) {
+    final addObj = HistoryModel(
+      data: addStr,
+      type: type,
+      starred: starred,
+      createdAt: createdAt,
+    ).toJson();
     if (index < historyObj.length && index >= 0) {
       historyObj.insert(index, addObj);
     } else {
@@ -186,8 +188,10 @@ switchStarred(int index) async {
   String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
   if (historyList == '') historyList = '[]';
   final List<dynamic> historyObj = jsonDecode(historyList);
-  historyObj[index][HistoryKey.starred.str] =
-      !historyObj[index][HistoryKey.starred.str];
+  HistoryModel targetModel = HistoryModel.fromJson(historyObj[index]);
+  HistoryModel updatedModel =
+      targetModel.copyWith(starred: !targetModel.starred);
+  historyObj[index] = updatedModel.toJson();
   await prefs.setString(qrioHistoryAsStr, jsonEncode(historyObj));
 }
 
