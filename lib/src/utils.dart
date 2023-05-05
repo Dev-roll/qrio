@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qrio/src/constants.dart';
+import 'package:qrio/src/enums/history_key.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -119,10 +120,10 @@ updateHistory() async {
   final List<String> historyList = prefs.getStringList(qrioHistoryAsLis) ?? [];
   final List<dynamic> historyObj = historyList.reversed.map((data) {
     return {
-      'data': data.trim(),
-      'type': null,
-      'pinned': false,
-      'created_at': DateTime.now(),
+      HistoryKey.data.str: data.trim(),
+      HistoryKey.type.str: null,
+      HistoryKey.starred.str: false,
+      HistoryKey.createdAt.str: DateTime.now(),
     };
   }).toList();
   prefs.setString(qrioHistoryAsStr, jsonEncode(historyObj));
@@ -148,12 +149,12 @@ addHistoryData(
   final List<dynamic> historyObj = jsonDecode(historyList);
   final String addStr = data.trim();
   if (addStr.isNotEmpty &&
-      (historyObj.isEmpty || historyObj.last['data'] != addStr)) {
+      (historyObj.isEmpty || historyObj.last[HistoryKey.data.str] != addStr)) {
     final addObj = {
-      'data': addStr,
-      'type': type,
-      'pinned': starred,
-      'created_at': createdAt,
+      HistoryKey.data.str: addStr,
+      HistoryKey.type.str: type,
+      HistoryKey.starred.str: starred,
+      HistoryKey.createdAt.str: createdAt,
     };
     if (index < historyObj.length && index >= 0) {
       historyObj.insert(index, addObj);
@@ -185,7 +186,8 @@ switchStarred(int index) async {
   String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
   if (historyList == '') historyList = '[]';
   final List<dynamic> historyObj = jsonDecode(historyList);
-  historyObj[index]['pinned'] = !historyObj[index]['pinned'];
+  historyObj[index][HistoryKey.starred.str] =
+      !historyObj[index][HistoryKey.starred.str];
   await prefs.setString(qrioHistoryAsStr, jsonEncode(historyObj));
 }
 

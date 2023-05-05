@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qrio/src/constants.dart';
+import 'package:qrio/src/enums/history_key.dart';
 import 'package:qrio/src/widgets/bottom_snack_bar.dart';
 import 'package:qrio/src/widgets/data_bottom_sheet.dart';
 import 'package:qrio/src/widgets/history_menu_sheet.dart';
@@ -104,7 +105,8 @@ class History extends ConsumerWidget {
             .entries
             .where((entry) =>
                 DateTime.now()
-                    .difference(parseDate(entry.value['created_at']))
+                    .difference(
+                        parseDate(entry.value[HistoryKey.createdAt.str]))
                     .inSeconds <
                 historyDurationSeconds)
             .map((entry) => entry.key)
@@ -113,14 +115,16 @@ class History extends ConsumerWidget {
             .asMap()
             .entries
             .where((entry) =>
-                entry.value['pinned'] && !newHistory.contains(entry.key))
+                entry.value[HistoryKey.starred.str] &&
+                !newHistory.contains(entry.key))
             .map((entry) => entry.key)
             .toList();
         List<int> unstarredHistory = historyObj
             .asMap()
             .entries
             .where((entry) =>
-                !entry.value['pinned'] && !newHistory.contains(entry.key))
+                !entry.value[HistoryKey.starred.str] &&
+                !newHistory.contains(entry.key))
             .map((entry) => entry.key)
             .toList();
         bool isShort = newHistory.length < 10;
@@ -183,8 +187,8 @@ class History extends ConsumerWidget {
                         children: [
                           if (hisLen != 0 &&
                               DateTime.now()
-                                      .difference(parseDate(
-                                          historyObj.first['created_at']))
+                                      .difference(parseDate(historyObj
+                                          .first[HistoryKey.createdAt.str]))
                                       .inSeconds <
                                   historyDurationSeconds)
                             Container(
@@ -282,10 +286,12 @@ class History extends ConsumerWidget {
                     ];
                     int idx = combinedHistory[i];
                     int index = hisLen - idx - 1;
-                    String data = historyObj[idx]['data'];
-                    String type = historyObj[idx]['type'] ?? noData;
-                    bool starred = historyObj[idx]['pinned'];
-                    String createdAt = historyObj[idx]['created_at'] ?? noData;
+                    String data = historyObj[idx][HistoryKey.data.str];
+                    String type =
+                        historyObj[idx][HistoryKey.type.str] ?? noData;
+                    bool starred = historyObj[idx][HistoryKey.starred.str];
+                    String createdAt =
+                        historyObj[idx][HistoryKey.createdAt.str] ?? noData;
 
                     bool isRecent = false;
                     if (createdAt != noData) {
