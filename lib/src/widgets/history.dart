@@ -99,16 +99,28 @@ class History extends ConsumerWidget {
         if (historyList.toString() == '') historyObj = [];
         historyObj = historyObj.reversed.toList();
         int hisLen = historyObj.length;
+        List<int> newHistory = historyObj
+            .asMap()
+            .entries
+            .where((entry) =>
+                DateTime.now()
+                    .difference(parseDate(entry.value['created_at']))
+                    .inSeconds <
+                historyDurationSeconds)
+            .map((entry) => entry.key)
+            .toList();
         List<int> starredHistory = historyObj
             .asMap()
             .entries
-            .where((entry) => entry.value['pinned'])
+            .where((entry) =>
+                entry.value['pinned'] && !newHistory.contains(entry.key))
             .map((entry) => entry.key)
             .toList();
         List<int> unstarredHistory = historyObj
             .asMap()
             .entries
-            .where((entry) => !entry.value['pinned'])
+            .where((entry) =>
+                !entry.value['pinned'] && !newHistory.contains(entry.key))
             .map((entry) => entry.key)
             .toList();
 
@@ -181,7 +193,7 @@ class History extends ConsumerWidget {
                                 color: Theme.of(context).colorScheme.error,
                               ),
                               child: Text(
-                                'NEW',
+                                '${newHistory.length}',
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w500,
@@ -252,6 +264,7 @@ class History extends ConsumerWidget {
                   itemCount: hisLen,
                   itemBuilder: (context, i) {
                     List<int> combinedHistory = [
+                      ...newHistory,
                       ...starredHistory,
                       ...unstarredHistory
                     ];
