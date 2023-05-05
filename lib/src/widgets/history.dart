@@ -99,18 +99,31 @@ class History extends ConsumerWidget {
         if (historyList.toString() == '') historyObj = [];
         historyObj = historyObj.reversed.toList();
         int hisLen = historyObj.length;
+        List<int> newHistory = historyObj
+            .asMap()
+            .entries
+            .where((entry) =>
+                DateTime.now()
+                    .difference(parseDate(entry.value['created_at']))
+                    .inSeconds <
+                historyDurationSeconds)
+            .map((entry) => entry.key)
+            .toList();
         List<int> starredHistory = historyObj
             .asMap()
             .entries
-            .where((entry) => entry.value['pinned'])
+            .where((entry) =>
+                entry.value['pinned'] && !newHistory.contains(entry.key))
             .map((entry) => entry.key)
             .toList();
         List<int> unstarredHistory = historyObj
             .asMap()
             .entries
-            .where((entry) => !entry.value['pinned'])
+            .where((entry) =>
+                !entry.value['pinned'] && !newHistory.contains(entry.key))
             .map((entry) => entry.key)
             .toList();
+        bool isShort = newHistory.length < 10;
 
         return ConstrainedBox(
           constraints: BoxConstraints(
@@ -142,10 +155,9 @@ class History extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const SizedBox(
-                            width: 24,
-                          ),
+                          const SizedBox(width: 24),
                           Text(
                             '履歴',
                             style: TextStyle(
@@ -155,9 +167,7 @@ class History extends ConsumerWidget {
                                   .withOpacity(0.7),
                             ),
                           ),
-                          const SizedBox(
-                            width: 24,
-                          ),
+                          const SizedBox(width: 24),
                           Text(
                             '$hisLen 件',
                             style: TextStyle(
@@ -171,6 +181,38 @@ class History extends ConsumerWidget {
                       ),
                       Row(
                         children: [
+                          if (hisLen != 0 &&
+                              DateTime.now()
+                                      .difference(parseDate(
+                                          historyObj.first['created_at']))
+                                      .inSeconds <
+                                  historyDurationSeconds)
+                            Container(
+                              alignment: Alignment.center,
+                              constraints: BoxConstraints(
+                                minWidth: isShort ? badgeSize : 0,
+                                minHeight: badgeSize,
+                                maxWidth: isShort ? badgeSize : double.infinity,
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: isShort ? 0 : 5),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(badgeSize),
+                                color: Theme.of(context).colorScheme.error,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '${newHistory.length}',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w500,
+                                    height: 1,
+                                    color:
+                                        Theme.of(context).colorScheme.onError,
+                                  ),
+                                ),
+                              ),
+                            ),
                           IconButton(
                             onPressed: historyObj.isEmpty
                                 ? null
@@ -234,6 +276,7 @@ class History extends ConsumerWidget {
                   itemCount: hisLen,
                   itemBuilder: (context, i) {
                     List<int> combinedHistory = [
+                      ...newHistory,
                       ...starredHistory,
                       ...unstarredHistory
                     ];
@@ -243,6 +286,15 @@ class History extends ConsumerWidget {
                     String type = historyObj[idx]['type'] ?? noData;
                     bool starred = historyObj[idx]['pinned'];
                     String createdAt = historyObj[idx]['created_at'] ?? noData;
+
+                    bool isRecent = false;
+                    if (createdAt != noData) {
+                      isRecent = DateTime.now()
+                              .difference(parseDate(createdAt))
+                              .inSeconds <
+                          historyDurationSeconds;
+                    }
+
                     return InkWell(
                       onTap: () async {
                         if (await canLaunchUrl(Uri.parse(data))) {
@@ -305,6 +357,16 @@ class History extends ConsumerWidget {
                           ),
                           Row(
                             children: [
+                              if (isRecent)
+                                Container(
+                                  margin: const EdgeInsets.only(left: 8),
+                                  width: 8,
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    color: Theme.of(context).colorScheme.error,
+                                  ),
+                                ),
                               IconButton(
                                 onPressed: () {
                                   showModalBottomSheet(

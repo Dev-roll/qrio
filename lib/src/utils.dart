@@ -106,6 +106,14 @@ Future<List<String>> scanImg(String filePath) async {
   return [];
 }
 
+DateTime parseDate(String? dateStr) {
+  try {
+    return DateTime.parse(dateStr ?? '');
+  } catch (e) {
+    return DateTime.now().subtract(const Duration(days: 1));
+  }
+}
+
 updateHistory() async {
   final prefs = await SharedPreferences.getInstance();
   final List<String> historyList = prefs.getStringList(qrioHistoryAsLis) ?? [];
