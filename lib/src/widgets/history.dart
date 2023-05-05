@@ -123,6 +123,7 @@ class History extends ConsumerWidget {
                 !entry.value['pinned'] && !newHistory.contains(entry.key))
             .map((entry) => entry.key)
             .toList();
+        bool isShort = newHistory.length < 10;
 
         return ConstrainedBox(
           constraints: BoxConstraints(
@@ -187,17 +188,28 @@ class History extends ConsumerWidget {
                                       .inSeconds <
                                   historyDurationSeconds)
                             Container(
-                              padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
+                              alignment: Alignment.center,
+                              constraints: BoxConstraints(
+                                minWidth: isShort ? badgeSize : 0,
+                                minHeight: badgeSize,
+                                maxWidth: isShort ? badgeSize : double.infinity,
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: isShort ? 0 : 5),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(badgeSize),
                                 color: Theme.of(context).colorScheme.error,
                               ),
-                              child: Text(
-                                '${newHistory.length}',
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w500,
-                                  color: Theme.of(context).colorScheme.onError,
+                              child: Center(
+                                child: Text(
+                                  '${newHistory.length}',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w500,
+                                    height: 1,
+                                    color:
+                                        Theme.of(context).colorScheme.onError,
+                                  ),
                                 ),
                               ),
                             ),
