@@ -168,11 +168,12 @@ class History extends ConsumerWidget {
                       ),
                       Row(
                         children: [
-                          if (DateTime.now()
-                                  .difference(DateTime.parse(
-                                      historyObj.first['created_at']))
-                                  .inSeconds <
-                              60)
+                          if (hisLen != 0 &&
+                              DateTime.now()
+                                      .difference(parseDate(
+                                          historyObj.first['created_at']))
+                                      .inSeconds <
+                                  historyDurationSeconds)
                             Container(
                               padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
                               decoration: BoxDecoration(
@@ -183,6 +184,7 @@ class History extends ConsumerWidget {
                                 'NEW',
                                 style: TextStyle(
                                   fontSize: 10,
+                                  fontWeight: FontWeight.w500,
                                   color: Theme.of(context).colorScheme.onError,
                                 ),
                               ),
@@ -260,10 +262,13 @@ class History extends ConsumerWidget {
                     bool starred = historyObj[idx]['pinned'];
                     String createdAt = historyObj[idx]['created_at'] ?? noData;
 
-                    DateTime createdDateTime = DateTime.parse(createdAt);
-                    DateTime now = DateTime.now();
-                    Duration diff = now.difference(createdDateTime);
-                    bool isRecent = diff.inSeconds < 60;
+                    bool isRecent = false;
+                    if (createdAt != noData) {
+                      isRecent = DateTime.now()
+                              .difference(parseDate(createdAt))
+                              .inSeconds <
+                          historyDurationSeconds;
+                    }
 
                     return InkWell(
                       onTap: () async {
