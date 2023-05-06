@@ -1,0 +1,32 @@
+name: Test
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions: read-all
+
+jobs:
+  unit-test:
+    name: Unit tests on ubuntu-latest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Flutter repository with master channel
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+      - run: flutter doctor -v
+
+      - name: Checkout this project
+        uses: actions/checkout@v3
+      - run: flutter pub get
+
+      - name: Analyzes the project's Dart code
+        run: flutter analyze
+      - name: Ensure the Dart code is formatted correctly
+        run: dart format --set-exit-if-changed .
+      - name: Run Flutter unit tests
+        run: flutter test
