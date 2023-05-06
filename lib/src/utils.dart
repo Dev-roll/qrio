@@ -118,7 +118,7 @@ DateTime parseDate(String? dateStr) {
 updateHistory() async {
   final prefs = await SharedPreferences.getInstance();
   final List<String> historyList = prefs.getStringList(qrioHistoryAsLis) ?? [];
-  final List<dynamic> historyObj = historyList.reversed.map((data) {
+  final List<dynamic> historyObj = historyList.map((data) {
     return HistoryModel(
       data: data.trim(),
       type: null,
@@ -131,10 +131,10 @@ updateHistory() async {
   debugPrint('*** remove list');
 }
 
-// createHistory() async {
-//   final prefs = await SharedPreferences.getInstance();
-//   prefs.setString(qrioHistoryAsStr, '');
-// }
+createHistory() async {
+  final prefs = await SharedPreferences.getInstance();
+  prefs.setString(qrioHistoryAsStr, '[]');
+}
 
 addHistoryData(
   String data,
@@ -179,8 +179,7 @@ deleteHistoryData(int index) async {
 
 deleteAllHistory() async {
   final prefs = await SharedPreferences.getInstance();
-  await prefs.setString(qrioHistoryAsStr, '');
-  // prefs.remove(qrioHistoryAsStr);
+  await prefs.setString(qrioHistoryAsStr, '[]');
 }
 
 switchStarred(int index) async {

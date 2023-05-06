@@ -21,11 +21,21 @@ final FutureProvider futureProvider = FutureProvider<dynamic>((ref) async {
   if (prefs.containsKey(qrioHistoryAsLis) &&
       !prefs.containsKey(qrioHistoryAsStr)) {
     updateHistory();
+    debugPrint('''
+============================================================
+    UPDATED HISTORY
+============================================================
+''');
   }
-  // if (!prefs.containsKey(qrioHistoryAsLis) &&
-  //     !prefs.containsKey(qrioHistoryAsStr)) {
-  //   createHistory();
-  // }
+  if (!prefs.containsKey(qrioHistoryAsLis) &&
+      !prefs.containsKey(qrioHistoryAsStr)) {
+    createHistory();
+    debugPrint('''
+============================================================
+    CREATED HISTORY
+============================================================
+''');
+  }
   String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
   if (historyList.isEmpty) historyList = '[]';
   return historyList;
