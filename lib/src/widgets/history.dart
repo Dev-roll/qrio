@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qrio/src/constants.dart';
+import 'package:qrio/src/models/history_model.dart';
 import 'package:qrio/src/widgets/bottom_snack_bar.dart';
 import 'package:qrio/src/widgets/data_bottom_sheet.dart';
 import 'package:qrio/src/widgets/history_menu_sheet.dart';
@@ -102,25 +103,31 @@ class History extends ConsumerWidget {
         List<int> newHistory = historyObj
             .asMap()
             .entries
-            .where((entry) =>
-                DateTime.now()
-                    .difference(parseDate(entry.value['created_at']))
-                    .inSeconds <
-                historyDurationSeconds)
+            .where((entry) {
+              final model = HistoryModel.fromJson(entry.value);
+              return DateTime.now()
+                      .difference(parseDate(model.createdAt!))
+                      .inSeconds <
+                  historyDurationSeconds;
+            })
             .map((entry) => entry.key)
             .toList();
         List<int> starredHistory = historyObj
             .asMap()
             .entries
-            .where((entry) =>
-                entry.value['pinned'] && !newHistory.contains(entry.key))
+            .where((entry) {
+              final model = HistoryModel.fromJson(entry.value);
+              return model.starred && !newHistory.contains(entry.key);
+            })
             .map((entry) => entry.key)
             .toList();
         List<int> unstarredHistory = historyObj
             .asMap()
             .entries
-            .where((entry) =>
-                !entry.value['pinned'] && !newHistory.contains(entry.key))
+            .where((entry) {
+              final model = HistoryModel.fromJson(entry.value);
+              return !model.starred && !newHistory.contains(entry.key);
+            })
             .map((entry) => entry.key)
             .toList();
         bool isShort = newHistory.length < 10;
@@ -184,7 +191,9 @@ class History extends ConsumerWidget {
                           if (hisLen != 0 &&
                               DateTime.now()
                                       .difference(parseDate(
-                                          historyObj.first['created_at']))
+                                          HistoryModel.fromJson(
+                                                  historyObj.first)
+                                              .createdAt!))
                                       .inSeconds <
                                   historyDurationSeconds)
                             Container(
@@ -282,10 +291,11 @@ class History extends ConsumerWidget {
                     ];
                     int idx = combinedHistory[i];
                     int index = hisLen - idx - 1;
-                    String data = historyObj[idx]['data'];
-                    String type = historyObj[idx]['type'] ?? noData;
-                    bool starred = historyObj[idx]['pinned'];
-                    String createdAt = historyObj[idx]['created_at'] ?? noData;
+                    HistoryModel model = HistoryModel.fromJson(historyObj[idx]);
+                    String data = model.data;
+                    String type = model.type ?? noData;
+                    bool starred = model.starred;
+                    String createdAt = model.createdAt ?? noData;
 
                     bool isRecent = false;
                     if (createdAt != noData) {
