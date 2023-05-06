@@ -86,10 +86,15 @@ class ShareApp extends StatelessWidget {
                                 text:
                                     "https://play.google.com/store/apps/details?id=app.web.qrio"),
                           ).then(
-                            (value) => {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  BottomSnackBar(context, 'クリップボードにコピーしました',
-                                      icon: Icons.library_add_check_rounded)),
+                            (_) {
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(BottomSnackBar(
+                                context,
+                                'クリップボードにコピーしました',
+                                icon: Icons.library_add_check_rounded,
+                              ));
                             },
                           );
                         },
@@ -181,10 +186,16 @@ class ShareApp extends StatelessWidget {
                                 text:
                                     "https://apps.apple.com/us/app/qr-i-o-qr-%E3%82%B3%E3%83%BC%E3%83%89-%E8%AA%AD%E3%81%BF%E5%8F%96%E3%82%8A-%E4%BD%9C%E6%88%90%E3%82%A2%E3%83%97%E3%83%AA/id1661431115"),
                           ).then(
-                            (value) => {
+                            (_) {
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  BottomSnackBar(context, 'クリップボードにコピーしました',
-                                      icon: Icons.library_add_check_rounded)),
+                                BottomSnackBar(
+                                  context,
+                                  'クリップボードにコピーしました',
+                                  icon: Icons.library_add_check_rounded,
+                                ),
+                              );
                             },
                           );
                         },

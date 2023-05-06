@@ -302,7 +302,7 @@ class History extends ConsumerWidget {
                         } else {
                           Clipboard.setData(
                             ClipboardData(text: data),
-                          ).then((value) {
+                          ).then((_) {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                             ScaffoldMessenger.of(context).showSnackBar(
                               BottomSnackBar(

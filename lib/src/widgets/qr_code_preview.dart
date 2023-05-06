@@ -119,16 +119,16 @@ class QrCodePreview extends ConsumerWidget {
                         onPressed: () {
                           Clipboard.setData(
                             ClipboardData(text: qrImageConfig.data),
-                          ).then(
-                            (value) =>
-                                ScaffoldMessenger.of(context).showSnackBar(
+                          ).then((_) {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            ScaffoldMessenger.of(context).showSnackBar(
                               BottomSnackBar(
                                 context,
                                 'クリップボードにコピーしました',
                                 icon: Icons.library_add_check_rounded,
                               ),
-                            ),
-                          );
+                            );
+                          });
                         },
                         icon: const Icon(Icons.copy_rounded),
                         padding: const EdgeInsets.all(20),
