@@ -47,37 +47,6 @@ class History extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Future launchURL(String url, {String? secondUrl}) async {
-      if (await canLaunchUrl(Uri.parse(url))) {
-        await launchUrl(
-          Uri.parse(url),
-          mode: LaunchMode.externalApplication,
-        );
-      } else if (secondUrl != null &&
-          await canLaunchUrl(Uri.parse(secondUrl))) {
-        await launchUrl(
-          Uri.parse(secondUrl),
-          mode: LaunchMode.externalApplication,
-        );
-      } else {
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
-          // ignore: use_build_context_synchronously
-          BottomSnackBar(
-            context,
-            'アプリを開けません',
-            icon: Icons.error_outline_rounded,
-            // ignore: use_build_context_synchronously
-            background: Theme.of(context).colorScheme.error,
-            // ignore: use_build_context_synchronously
-            foreground: Theme.of(context).colorScheme.onError,
-          ),
-        );
-      }
-    }
-
     final controller = ScrollController();
     var isTop = false;
     controller.addListener(() {
@@ -317,15 +286,16 @@ class History extends ConsumerWidget {
                     return InkWell(
                       onTap: () async {
                         if (await canLaunchUrl(Uri.parse(data))) {
-                          launchURL(data);
+                          // ignore: use_build_context_synchronously
+                          launchURL(context, data);
                         } else {
                           Clipboard.setData(
                             ClipboardData(text: data),
                           ).then((_) {
                             showBottomSnackBar(
-                                context,
-                                'クリップボードにコピーしました',
-                                icon: Icons.library_add_check_rounded,
+                              context,
+                              'クリップボードにコピーしました',
+                              icon: Icons.library_add_check_rounded,
                             );
                           });
                         }
