@@ -224,7 +224,7 @@ class DataBottomSheetState extends State<DataBottomSheet> {
               Navigator.of(context).pop();
               Clipboard.setData(
                 ClipboardData(text: widget.data),
-              ).then((value) {
+              ).then((_) {
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(
                   BottomSnackBar(
@@ -324,6 +324,7 @@ class DataBottomSheetState extends State<DataBottomSheet> {
             onTap: () {
               Navigator.of(context).pop();
               deleteHistoryData(widget.index);
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(
                 BottomSnackBar(
                   context,
