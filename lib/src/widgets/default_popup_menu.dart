@@ -37,9 +37,6 @@ class DefaultPopupMenu extends StatelessWidget {
           case DefaultPopupMenuItemsType.selectTheme:
             openSelectThemeDialog(context);
             break;
-          // case DefaultPopupMenuItemsType.history:
-          //   // Handle this case.
-          //   break;
           case DefaultPopupMenuItemsType.about:
             Navigator.of(context).push(
               MaterialPageRoute(
