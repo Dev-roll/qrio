@@ -118,7 +118,7 @@ DateTime parseDate(String? dateStr) {
 updateHistory() async {
   final prefs = await SharedPreferences.getInstance();
   final List<String> historyList = prefs.getStringList(qrioHistoryAsLis) ?? [];
-  final List<dynamic> historyObj = historyList.reversed.map((data) {
+  final List<dynamic> historyObj = historyList.map((data) {
     return HistoryModel(
       data: data.trim(),
       type: null,
