@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/utils.dart';
-import 'package:qrio/src/widgets/bottom_snack_bar.dart';
 import 'package:vibration/vibration.dart';
 
 class ScanCode extends StatefulWidget {
@@ -97,23 +96,17 @@ class _ScanCodeState extends State<ScanCode> {
                     final List<String?> data = await selectAndScanImg();
                     if (data.isEmpty) {
                       if (!mounted) return;
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        BottomSnackBar(
-                          context,
-                          '検出できませんでした',
-                          foreground: Theme.of(context).colorScheme.onError,
-                        ),
+                      showBottomSnackBar(
+                        context,
+                        '検出できませんでした',
+                        foreground: Theme.of(context).colorScheme.onError,
                       );
                     } else if (data.contains(null)) {
                       if (!mounted) return;
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        BottomSnackBar(
-                          context,
-                          '画像を選択してください',
-                          foreground: Theme.of(context).colorScheme.onError,
-                        ),
+                      showBottomSnackBar(
+                        context,
+                        '画像を選択してください',
+                        foreground: Theme.of(context).colorScheme.onError,
                       );
                     } else {
                       for (var str in data) {

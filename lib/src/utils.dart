@@ -10,8 +10,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/models/history_model.dart';
+import 'package:qrio/src/widgets/bottom_snack_bar.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 late TabController tabController;
 int selectedIndex = 0;
@@ -226,6 +228,29 @@ void Function(BuildContext context) openSheetFactory(Widget sheetWidget) {
   };
 }
 
+showBottomSnackBar(
+  BuildContext context,
+  String text, {
+  Key? key,
+  IconData? icon,
+  SnackBarAction? bottomSnackbarAction,
+  Color? background,
+  Color? foreground,
+  int? seconds,
+}) {
+  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  ScaffoldMessenger.of(context).showSnackBar(BottomSnackBar(
+    context,
+    text,
+    key: key,
+    icon: icon,
+    bottomSnackbarAction: bottomSnackbarAction,
+    background: background,
+    foreground: foreground,
+    seconds: seconds,
+  ));
+}
+
 Future<int> exportStringListToCsv(String jsonString, String fileName) async {
   final List<dynamic> jsonData = jsonDecode(jsonString);
 
@@ -271,5 +296,30 @@ Future<int> exportStringListToJson(String jsonString, String fileName) async {
     return 0;
   } catch (e) {
     return 1;
+  }
+}
+
+Future launchURL(BuildContext context, String url, {String? secondUrl}) async {
+  if (await canLaunchUrl(Uri.parse(url))) {
+    await launchUrl(
+      Uri.parse(url),
+      mode: LaunchMode.externalApplication,
+    );
+  } else if (secondUrl != null && await canLaunchUrl(Uri.parse(secondUrl))) {
+    await launchUrl(
+      Uri.parse(secondUrl),
+      mode: LaunchMode.externalApplication,
+    );
+  } else {
+    // ignore: use_build_context_synchronously
+    showBottomSnackBar(
+      context,
+      'アプリを開けません',
+      icon: Icons.error_outline_rounded,
+      // ignore: use_build_context_synchronously
+      background: Theme.of(context).colorScheme.error,
+      // ignore: use_build_context_synchronously
+      foreground: Theme.of(context).colorScheme.onError,
+    );
   }
 }

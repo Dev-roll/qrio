@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/models/history_model.dart';
-import 'package:qrio/src/widgets/bottom_snack_bar.dart';
 import 'package:qrio/src/widgets/data_bottom_sheet.dart';
 import 'package:qrio/src/widgets/history_menu_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -48,37 +47,6 @@ class History extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Future launchURL(String url, {String? secondUrl}) async {
-      if (await canLaunchUrl(Uri.parse(url))) {
-        await launchUrl(
-          Uri.parse(url),
-          mode: LaunchMode.externalApplication,
-        );
-      } else if (secondUrl != null &&
-          await canLaunchUrl(Uri.parse(secondUrl))) {
-        await launchUrl(
-          Uri.parse(secondUrl),
-          mode: LaunchMode.externalApplication,
-        );
-      } else {
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
-          // ignore: use_build_context_synchronously
-          BottomSnackBar(
-            context,
-            'アプリを開けません',
-            icon: Icons.error_outline_rounded,
-            // ignore: use_build_context_synchronously
-            background: Theme.of(context).colorScheme.error,
-            // ignore: use_build_context_synchronously
-            foreground: Theme.of(context).colorScheme.onError,
-          ),
-        );
-      }
-    }
-
     final controller = ScrollController();
     var isTop = false;
     controller.addListener(() {
@@ -318,18 +286,16 @@ class History extends ConsumerWidget {
                     return InkWell(
                       onTap: () async {
                         if (await canLaunchUrl(Uri.parse(data))) {
-                          launchURL(data);
+                          // ignore: use_build_context_synchronously
+                          launchURL(context, data);
                         } else {
                           Clipboard.setData(
                             ClipboardData(text: data),
                           ).then((_) {
-                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              BottomSnackBar(
-                                context,
-                                'クリップボードにコピーしました',
-                                icon: Icons.library_add_check_rounded,
-                              ),
+                            showBottomSnackBar(
+                              context,
+                              'クリップボードにコピーしました',
+                              icon: Icons.library_add_check_rounded,
                             );
                           });
                         }

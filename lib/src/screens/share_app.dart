@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:qrio/src/widgets/bottom_snack_bar.dart';
+import 'package:qrio/src/utils.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ShareApp extends StatelessWidget {
@@ -87,14 +87,11 @@ class ShareApp extends StatelessWidget {
                                     "https://play.google.com/store/apps/details?id=app.web.qrio"),
                           ).then(
                             (_) {
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar();
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(BottomSnackBar(
+                              showBottomSnackBar(
                                 context,
                                 'クリップボードにコピーしました',
                                 icon: Icons.library_add_check_rounded,
-                              ));
+                              );
                             },
                           );
                         },
@@ -187,14 +184,10 @@ class ShareApp extends StatelessWidget {
                                     "https://apps.apple.com/us/app/qr-i-o-qr-%E3%82%B3%E3%83%BC%E3%83%89-%E8%AA%AD%E3%81%BF%E5%8F%96%E3%82%8A-%E4%BD%9C%E6%88%90%E3%82%A2%E3%83%97%E3%83%AA/id1661431115"),
                           ).then(
                             (_) {
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                BottomSnackBar(
-                                  context,
-                                  'クリップボードにコピーしました',
-                                  icon: Icons.library_add_check_rounded,
-                                ),
+                              showBottomSnackBar(
+                                context,
+                                'クリップボードにコピーしました',
+                                icon: Icons.library_add_check_rounded,
                               );
                             },
                           );

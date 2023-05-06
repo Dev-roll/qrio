@@ -11,7 +11,6 @@ import 'package:share_plus/share_plus.dart';
 import '../app.dart';
 import '../qr_image_config.dart';
 import '../utils.dart';
-import 'bottom_snack_bar.dart';
 import 'custom_qr_image.dart';
 
 class QrCodePreview extends ConsumerWidget {
@@ -100,14 +99,10 @@ class QrCodePreview extends ConsumerWidget {
                                   ))
                               .then(
                             (_) {
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                BottomSnackBar(
-                                  context,
-                                  'QRコードをダウンロードしました',
-                                  icon: Icons.file_download_done_rounded,
-                                ),
+                              showBottomSnackBar(
+                                context,
+                                'QRコードをダウンロードしました',
+                                icon: Icons.file_download_done_rounded,
                               );
                             },
                           );
@@ -120,13 +115,10 @@ class QrCodePreview extends ConsumerWidget {
                           Clipboard.setData(
                             ClipboardData(text: qrImageConfig.data),
                           ).then((_) {
-                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              BottomSnackBar(
-                                context,
-                                'クリップボードにコピーしました',
-                                icon: Icons.library_add_check_rounded,
-                              ),
+                            showBottomSnackBar(
+                              context,
+                              'クリップボードにコピーしました',
+                              icon: Icons.library_add_check_rounded,
                             );
                           });
                         },

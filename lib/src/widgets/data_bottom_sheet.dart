@@ -6,7 +6,6 @@ import 'package:share_plus/share_plus.dart';
 
 import '../app.dart';
 import '../utils.dart';
-import 'bottom_snack_bar.dart';
 import 'config_items.dart';
 
 class DataBottomSheet extends StatefulWidget {
@@ -225,13 +224,10 @@ class DataBottomSheetState extends State<DataBottomSheet> {
               Clipboard.setData(
                 ClipboardData(text: widget.data),
               ).then((_) {
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  BottomSnackBar(
-                    context,
-                    'クリップボードにコピーしました',
-                    icon: Icons.library_add_check_rounded,
-                  ),
+                showBottomSnackBar(
+                  context,
+                  'クリップボードにコピーしました',
+                  icon: Icons.library_add_check_rounded,
                 );
               });
             },
@@ -324,29 +320,26 @@ class DataBottomSheetState extends State<DataBottomSheet> {
             onTap: () {
               Navigator.of(context).pop();
               deleteHistoryData(widget.index);
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              ScaffoldMessenger.of(context).showSnackBar(
-                BottomSnackBar(
-                  context,
-                  '削除しました',
-                  icon: Icons.done_rounded,
-                  seconds: 5,
-                  bottomSnackbarAction: SnackBarAction(
-                    label: '元に戻す',
-                    onPressed: () {
-                      addHistoryData(
-                        widget.data,
-                        [noData, 'null'].contains(widget.type)
-                            ? null
-                            : widget.type,
-                        [noData, 'null'].contains(widget.createdAt)
-                            ? null
-                            : widget.createdAt,
-                        index: widget.index,
-                        starred: currentStarred,
-                      );
-                    },
-                  ),
+              showBottomSnackBar(
+                context,
+                '削除しました',
+                icon: Icons.done_rounded,
+                seconds: 5,
+                bottomSnackbarAction: SnackBarAction(
+                  label: '元に戻す',
+                  onPressed: () {
+                    addHistoryData(
+                      widget.data,
+                      [noData, 'null'].contains(widget.type)
+                          ? null
+                          : widget.type,
+                      [noData, 'null'].contains(widget.createdAt)
+                          ? null
+                          : widget.createdAt,
+                      index: widget.index,
+                      starred: currentStarred,
+                    );
+                  },
                 ),
               );
             },
