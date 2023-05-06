@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/models/history_model.dart';
+import 'package:qrio/src/widgets/bottom_snack_bar.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -224,6 +225,29 @@ void Function(BuildContext context) openSheetFactory(Widget sheetWidget) {
       isScrollControlled: true,
     );
   };
+}
+
+showBottomSnackBar(
+  BuildContext context,
+  String text, {
+  Key? key,
+  IconData? icon,
+  SnackBarAction? bottomSnackbarAction,
+  Color? background,
+  Color? foreground,
+  int? seconds,
+}) {
+  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  ScaffoldMessenger.of(context).showSnackBar(BottomSnackBar(
+    context,
+    text,
+    key: key,
+    icon: icon,
+    bottomSnackbarAction: bottomSnackbarAction,
+    background: background,
+    foreground: foreground,
+    seconds: seconds,
+  ));
 }
 
 Future<int> exportStringListToCsv(String jsonString, String fileName) async {

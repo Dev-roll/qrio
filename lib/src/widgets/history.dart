@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/models/history_model.dart';
-import 'package:qrio/src/widgets/bottom_snack_bar.dart';
 import 'package:qrio/src/widgets/data_bottom_sheet.dart';
 import 'package:qrio/src/widgets/history_menu_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -323,13 +322,10 @@ class History extends ConsumerWidget {
                           Clipboard.setData(
                             ClipboardData(text: data),
                           ).then((_) {
-                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              BottomSnackBar(
+                            showBottomSnackBar(
                                 context,
                                 'クリップボードにコピーしました',
                                 icon: Icons.library_add_check_rounded,
-                              ),
                             );
                           });
                         }
