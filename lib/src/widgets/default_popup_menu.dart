@@ -13,21 +13,41 @@ class DefaultPopupMenu extends StatefulWidget {
   State<DefaultPopupMenu> createState() => _DefaultPopupMenuState();
 }
 
-class _DefaultPopupMenuState extends State<DefaultPopupMenu> {
+class _DefaultPopupMenuState extends State<DefaultPopupMenu>
+    with SingleTickerProviderStateMixin {
   OverlayEntry? _overlayEntry;
   bool _isMenuOpen = false;
   final openSelectThemeDialog = openDialogFactory(SelectThemeDialog());
+  late final AnimationController _animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   void _openMenu() {
     _overlayEntry ??= _buildOverlayEntry();
 
     Overlay.of(context).insert(_overlayEntry!);
     _isMenuOpen = true;
+    _animationController.forward();
   }
 
   void _closeMenu() {
-    _overlayEntry?.remove();
-    _isMenuOpen = false;
+    _animationController.reverse().then((_) {
+      _overlayEntry?.remove();
+      _isMenuOpen = false;
+    });
   }
 
   OverlayEntry _buildOverlayEntry() {
@@ -47,73 +67,96 @@ class _DefaultPopupMenuState extends State<DefaultPopupMenu> {
             ),
             Positioned(
               right: 8,
-              top: iconButtonPosition.dy + renderBox!.size.height - 4,
-              child: Card(
-                elevation: 16,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Column(
-                    children: defaultPopupMenuItems.map(
-                      (e) {
-                        return InkWell(
-                          onTap: () {
-                            _closeMenu();
-                            switch (e['value']) {
-                              case DefaultPopupMenuItemsType.history:
-                                draggableScrollableController.animateTo(
-                                  1,
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.ease,
-                                );
-                                break;
-                              case DefaultPopupMenuItemsType.selectTheme:
-                                openSelectThemeDialog(context);
-                                break;
-                              case DefaultPopupMenuItemsType.about:
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return const ShareApp();
-                                    },
-                                  ),
-                                );
-                                break;
-                            }
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: SizedBox(
-                              height: 48,
-                              width: 200,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    e['icon'],
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurfaceVariant
-                                        .withOpacity(0.75),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Text(
-                                    e['label'],
-                                    style: TextStyle(
+              top: iconButtonPosition.dy + renderBox!.size.height - 16,
+              child: AnimatedBuilder(
+                animation: _animationController,
+                builder: (context, child) {
+                  final offsetY = _animationController.value * 12;
+                  final opacity = _animationController.value;
+                  final height = _animationController.value *
+                      (48 * defaultPopupMenuItems.length + 24);
+                  return Transform.translate(
+                    offset: Offset(0, offsetY),
+                    child: Opacity(
+                      opacity: opacity,
+                      child: SizedBox(
+                        height: height,
+                        child: SingleChildScrollView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          child: child,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: Card(
+                  elevation: 16,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Column(
+                      children: defaultPopupMenuItems.map(
+                        (e) {
+                          return InkWell(
+                            onTap: () {
+                              _closeMenu();
+                              switch (e['value']) {
+                                case DefaultPopupMenuItemsType.history:
+                                  draggableScrollableController.animateTo(
+                                    1,
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.ease,
+                                  );
+                                  break;
+                                case DefaultPopupMenuItemsType.selectTheme:
+                                  openSelectThemeDialog(context);
+                                  break;
+                                case DefaultPopupMenuItemsType.about:
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return const ShareApp();
+                                      },
+                                    ),
+                                  );
+                                  break;
+                              }
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: SizedBox(
+                                height: 48,
+                                width: 200,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      e['icon'],
                                       color: Theme.of(context)
                                           .colorScheme
-                                          .onBackground,
+                                          .onSurfaceVariant
+                                          .withOpacity(0.75),
                                     ),
-                                  ),
-                                ],
+                                    const SizedBox(width: 12),
+                                    Text(
+                                      e['label'],
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    ).toList(growable: false),
+                          );
+                        },
+                      ).toList(growable: false),
+                    ),
                   ),
                 ),
               ),
