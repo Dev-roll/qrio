@@ -285,8 +285,8 @@ class DataBottomSheetState extends State<DataBottomSheet> {
                   .read(qrImageConfigProvider.notifier)
                   .editData(data: widget.data);
               ConfigItems.updateTextFieldValue(widget.data);
-              if (selectedIndex == 0) {
-                tabController.animateTo(selectedIndex = 1);
+              if (tabController.index != 1) {
+                tabController.animateTo(1);
               }
               draggableScrollableController.animateTo(
                 0,

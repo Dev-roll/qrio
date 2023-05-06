@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:qrio/src/app.dart';
 
 import '../constants.dart';
 import '../utils.dart';
@@ -28,6 +29,7 @@ class Home extends ConsumerWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final topPadding = MediaQuery.of(context).padding.top;
     const topContentHeight = appBarHeight + qrCodeViewHeight;
+    int selectedIndex = ref.watch(selectedIndexProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(

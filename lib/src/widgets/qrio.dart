@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qrio/src/app.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
@@ -8,14 +10,15 @@ import '../screens/editor.dart';
 import '../utils.dart';
 import 'scan_code.dart';
 
-class Qrio extends StatefulWidget {
+class Qrio extends ConsumerStatefulWidget {
   const Qrio({super.key});
 
   @override
-  State<Qrio> createState() => _QrioState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _QrioState();
 }
 
-class _QrioState extends State<Qrio> with SingleTickerProviderStateMixin {
+class _QrioState extends ConsumerState<Qrio>
+    with SingleTickerProviderStateMixin {
   late StreamSubscription _intentDataStreamSubscription;
   List<SharedMediaFile>? _sharedFiles;
   String? _sharedText;
@@ -66,7 +69,8 @@ class _QrioState extends State<Qrio> with SingleTickerProviderStateMixin {
     tabController = TabController(length: tabs.length, vsync: this);
     tabController.addListener(() {
       setState(() {
-        selectedIndex = tabController.index;
+        ref.watch(selectedIndexProvider.notifier).state = tabController.index;
+        // selectedIndex = tabController.index;
       });
     });
 

@@ -21,7 +21,7 @@ class DefaultPopupMenu extends StatelessWidget {
       icon: Icon(
         Icons.more_vert_rounded,
         color: Theme.of(context).brightness == Brightness.dark ||
-                selectedIndex == 0
+                tabController.index == 0
             ? white
             : black,
       ),
@@ -37,9 +37,6 @@ class DefaultPopupMenu extends StatelessWidget {
           case DefaultPopupMenuItemsType.selectTheme:
             openSelectThemeDialog(context);
             break;
-          // case DefaultPopupMenuItemsType.history:
-          //   // Handle this case.
-          //   break;
           case DefaultPopupMenuItemsType.about:
             Navigator.of(context).push(
               MaterialPageRoute(

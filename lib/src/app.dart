@@ -12,6 +12,7 @@ final qrImageConfigProvider =
     StateNotifierProvider<QrImageConfigNotifier, QrImageConfig>(
   (ref) => QrImageConfigNotifier(),
 );
+final selectedIndexProvider = StateProvider<int>((ref) => 0);
 
 class App extends ConsumerWidget {
   const App({super.key});
