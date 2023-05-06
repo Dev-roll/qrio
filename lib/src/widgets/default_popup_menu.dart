@@ -21,7 +21,7 @@ class DefaultPopupMenu extends StatelessWidget {
       icon: Icon(
         Icons.more_vert_rounded,
         color: Theme.of(context).brightness == Brightness.dark ||
-                selectedIndex == 0
+                tabController.index == 0
             ? white
             : black,
       ),
