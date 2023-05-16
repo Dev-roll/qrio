@@ -16,7 +16,7 @@ const double sheetHandleHeight = 77;
 
 const double badgeSize = 18;
 
-const int historyDurationSeconds = 60;
+const int historyDurationSeconds = 15;
 
 const String qrioHistoryAsLis = 'qrio_history';
 const String qrioHistoryAsStr = 'qrio_history_str';
