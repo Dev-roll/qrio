@@ -11,7 +11,14 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final theme = prefs.getString('theme') ?? 'system';
-  runApp(ProviderScope(overrides: [
-    themeModeProvider.overrideWith((ref) => stringToThemeMode(theme))
-  ], child: const App()));
+  runApp(
+    ProviderScope(
+      overrides: [
+        themeModeProvider.overrideWith((ref) {
+          return ThemeMode.values.byName(theme);
+        })
+      ],
+      child: const App(),
+    ),
+  );
 }

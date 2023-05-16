@@ -31,7 +31,11 @@ class SelectThemeDialog extends ConsumerWidget {
       actions: <Widget>[
         TextButton(
             child: const Text('キャンセル'),
-            onPressed: () => Navigator.of(context).pop()),
+            onPressed: () {
+              Navigator.of(context).pop();
+              ref.read(temporaryThemeModeProvider.notifier).state =
+                  ref.watch(themeModeProvider);
+            }),
         TextButton(
           child: const Text('OK'),
           onPressed: () async {
@@ -39,7 +43,7 @@ class SelectThemeDialog extends ConsumerWidget {
             ref.read(themeModeProvider.notifier).state = selectedTheme;
             final SharedPreferences prefs =
                 await SharedPreferences.getInstance();
-            await prefs.setString('theme', themeModeToString(selectedTheme));
+            await prefs.setString('theme', selectedTheme.name);
             // ignore: use_build_context_synchronously
             Navigator.of(context).pop();
           },
