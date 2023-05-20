@@ -74,7 +74,7 @@ class Home extends ConsumerWidget {
           ),
           Transform.translate(
             offset: Offset(screenWidth / 2 - 28, topPadding),
-            child: SizedBox(
+            child: const SizedBox(
               height: 56,
               width: 56,
               child: DefaultPopupMenu(),
