@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qrio/main.dart';
+import 'package:qrio/src/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../main.dart';
-import '../constants.dart';
-import '../utils.dart';
 
 class SelectThemeDialog extends ConsumerWidget {
   SelectThemeDialog({Key? key}) : super(key: key);

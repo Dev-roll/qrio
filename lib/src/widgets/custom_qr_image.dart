@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-
-import '../qr_image_config.dart';
+import 'package:qrio/src/qr_image_config.dart';
 
 class CustomQrImage extends StatelessWidget {
   const CustomQrImage({

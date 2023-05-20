@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../utils.dart';
-import 'select_option.dart';
+import 'package:qrio/src/utils.dart';
+import 'package:qrio/src/widgets/select_option.dart';
 
 class SelectQrConfigDialog<T> extends ConsumerWidget {
   const SelectQrConfigDialog({

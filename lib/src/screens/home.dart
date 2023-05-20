@@ -3,12 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:qrio/src/app.dart';
-
-import '../constants.dart';
-import '../utils.dart';
-import '../widgets/default_popup_menu.dart';
-import '../widgets/history.dart';
-import '../widgets/qrio.dart';
+import 'package:qrio/src/constants.dart';
+import 'package:qrio/src/utils.dart';
+import 'package:qrio/src/widgets/default_popup_menu.dart';
+import 'package:qrio/src/widgets/history.dart';
+import 'package:qrio/src/widgets/qrio.dart';
 
 class Home extends ConsumerWidget {
   const Home({super.key});

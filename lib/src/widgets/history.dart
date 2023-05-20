@@ -8,12 +8,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/models/history_model.dart';
+import 'package:qrio/src/utils.dart';
 import 'package:qrio/src/widgets/data_bottom_sheet.dart';
 import 'package:qrio/src/widgets/history_menu_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../utils.dart';
 
 final FutureProvider futureProvider = FutureProvider<dynamic>((ref) async {
   final prefs = await SharedPreferences.getInstance();

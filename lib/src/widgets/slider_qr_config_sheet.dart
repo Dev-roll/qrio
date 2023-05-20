@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:qrio/src/app.dart';
 import 'package:qrio/src/constants.dart';
-
-import '../app.dart';
-import '../qr_image_config.dart';
-import '../utils.dart';
-import 'select_option.dart';
+import 'package:qrio/src/qr_image_config.dart';
+import 'package:qrio/src/utils.dart';
+import 'package:qrio/src/widgets/select_option.dart';
 
 class SliderQrConfigSheet<T> extends ConsumerWidget {
   const SliderQrConfigSheet({

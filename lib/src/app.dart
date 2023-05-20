@@ -2,11 +2,10 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../main.dart';
-import 'constants.dart';
-import 'qr_image_config.dart';
-import 'screens/home.dart';
+import 'package:qrio/main.dart';
+import 'package:qrio/src/constants.dart';
+import 'package:qrio/src/qr_image_config.dart';
+import 'package:qrio/src/screens/home.dart';
 
 final qrImageConfigProvider =
     StateNotifierProvider<QrImageConfigNotifier, QrImageConfig>(
@@ -22,8 +21,8 @@ class App extends ConsumerWidget {
     final themeMode = ref.watch(themeModeProvider);
 
     return DynamicColorBuilder(
-        builder: ((ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-      return MaterialApp(
+      builder: ((ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+        return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'QR I/O',
           localizationsDelegates: const [
@@ -44,7 +43,9 @@ class App extends ConsumerWidget {
                 ColorScheme.fromSeed(seedColor: seedColor).harmonized(),
             brightness: Brightness.dark,
           ),
-          home: const Home());
-    }));
+          home: const Home(),
+        );
+      }),
+    );
   }
 }

@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qrio/src/app.dart';
 import 'package:qrio/src/constants.dart';
+import 'package:qrio/src/screens/editor.dart';
+import 'package:qrio/src/utils.dart';
+import 'package:qrio/src/widgets/scan_code.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
-
-import '../screens/editor.dart';
-import '../utils.dart';
-import 'scan_code.dart';
 
 class Qrio extends ConsumerStatefulWidget {
   const Qrio({super.key});
