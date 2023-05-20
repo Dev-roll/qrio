@@ -91,7 +91,7 @@ class _QrioState extends ConsumerState<Qrio>
         });
       });
     }, onError: (err) {
-      debugPrint("getIntentDataStream error: $err");
+      debugPrint('getIntentDataStream error: $err');
     });
 
     // For sharing images coming from outside the app while the app is closed
@@ -117,19 +117,19 @@ class _QrioState extends ConsumerState<Qrio>
         ReceiveSharingIntent.getTextStream().listen((value) {
       setState(() {
         _sharedText = value;
-        debugPrint("Shared: $_sharedText");
+        debugPrint('Shared: $_sharedText');
         addHistoryData(
             _sharedText!, historyTypeShareTxt, DateTime.now().toString());
       });
     }, onError: (err) {
-      debugPrint("getLinkStream error: $err");
+      debugPrint('getLinkStream error: $err');
     });
 
     // For sharing or opening urls/text coming from outside the app while the app is closed
     ReceiveSharingIntent.getInitialText().then((value) {
       setState(() {
         _sharedText = value;
-        debugPrint("Shared: $_sharedText");
+        debugPrint('Shared: $_sharedText');
         addHistoryData(
             _sharedText!, historyTypeShareTxt, DateTime.now().toString());
       });
