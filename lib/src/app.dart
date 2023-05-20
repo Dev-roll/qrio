@@ -21,7 +21,7 @@ class App extends ConsumerWidget {
     final themeMode = ref.watch(themeModeProvider);
 
     return DynamicColorBuilder(
-      builder: ((ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+      builder: ((lightDynamic, darkDynamic) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'QR I/O',

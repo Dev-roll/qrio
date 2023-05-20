@@ -74,8 +74,8 @@ class _QrioState extends ConsumerState<Qrio>
     });
 
     // For sharing images coming from outside the app while the app is in the memory
-    _intentDataStreamSubscription = ReceiveSharingIntent.getMediaStream()
-        .listen((List<SharedMediaFile> value) {
+    _intentDataStreamSubscription =
+        ReceiveSharingIntent.getMediaStream().listen((value) {
       setState(() {
         _sharedFiles = value;
         debugPrint(
@@ -84,7 +84,7 @@ class _QrioState extends ConsumerState<Qrio>
           final List<String?> data = await scanImg(file.path);
           for (var str in data) {
             if (str != null) {
-              addHistoryData(
+              await addHistoryData(
                   str, historyTypeShareImg, DateTime.now().toString());
             }
           }
@@ -95,7 +95,7 @@ class _QrioState extends ConsumerState<Qrio>
     });
 
     // For sharing images coming from outside the app while the app is closed
-    ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
+    ReceiveSharingIntent.getInitialMedia().then((value) {
       setState(() {
         _sharedFiles = value;
         debugPrint(
@@ -104,7 +104,7 @@ class _QrioState extends ConsumerState<Qrio>
           final List<String?> data = await scanImg(file.path);
           for (var str in data) {
             if (str != null) {
-              addHistoryData(
+              await addHistoryData(
                   str, historyTypeShareImg, DateTime.now().toString());
             }
           }
@@ -114,7 +114,7 @@ class _QrioState extends ConsumerState<Qrio>
 
     // For sharing or opening urls/text coming from outside the app while the app is in the memory
     _intentDataStreamSubscription =
-        ReceiveSharingIntent.getTextStream().listen((String value) {
+        ReceiveSharingIntent.getTextStream().listen((value) {
       setState(() {
         _sharedText = value;
         debugPrint("Shared: $_sharedText");
@@ -126,7 +126,7 @@ class _QrioState extends ConsumerState<Qrio>
     });
 
     // For sharing or opening urls/text coming from outside the app while the app is closed
-    ReceiveSharingIntent.getInitialText().then((String? value) {
+    ReceiveSharingIntent.getInitialText().then((value) {
       setState(() {
         _sharedText = value;
         debugPrint("Shared: $_sharedText");

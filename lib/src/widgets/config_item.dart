@@ -91,7 +91,7 @@ class ConfigItem extends ConsumerWidget {
                     activeColor: Theme.of(context).colorScheme.primary,
                     onChanged: switchOnChangeHandler,
                     thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
-                      (Set<MaterialState> _) {
+                      (_) {
                         if (switchValue ?? false) {
                           return Icon(
                             Icons.dark_mode_rounded,

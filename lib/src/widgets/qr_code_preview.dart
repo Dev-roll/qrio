@@ -77,7 +77,7 @@ class QrCodePreview extends ConsumerWidget {
                             text: qrImageConfig.data,
                             subject: 'QR I/O で作成したQRコードの共有',
                           );
-                          applicationDocumentsFile.delete();
+                          await applicationDocumentsFile.delete();
                         },
                         icon: const Icon(Icons.share_rounded),
                         padding: const EdgeInsets.all(20),

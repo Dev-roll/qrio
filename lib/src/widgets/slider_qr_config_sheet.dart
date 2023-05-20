@@ -115,7 +115,7 @@ class SliderQrConfigSheet<T> extends ConsumerWidget {
             min: 0,
             max: 3,
             divisions: 3,
-            onChanged: (double value) {
+            onChanged: (value) {
               int i = value.toInt();
               editConfigFunc(QrErrorCorrectLevel.levels[i]);
             },

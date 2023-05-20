@@ -87,8 +87,7 @@ class Home extends ConsumerWidget {
               minChildSize: defaultSheetHeight(context),
               maxChildSize: 1 - (topPadding + topContentHeight) / screenHeight,
               snap: true,
-              builder:
-                  (BuildContext context, ScrollController scrollController) {
+              builder: (context, scrollController) {
                 return Container(
                   margin: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                   decoration: BoxDecoration(

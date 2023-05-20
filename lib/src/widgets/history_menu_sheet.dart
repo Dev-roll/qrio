@@ -187,7 +187,7 @@ class HistoryMenuSheet extends StatelessWidget {
                       child: const Text('キャンセル'),
                     ),
                     TextButton(
-                      onPressed: () async {
+                      onPressed: () {
                         Navigator.pop(context);
                         deleteAllHistory();
                       },

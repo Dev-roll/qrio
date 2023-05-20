@@ -18,7 +18,7 @@ final FutureProvider futureProvider = FutureProvider<dynamic>((ref) async {
   final prefs = await SharedPreferences.getInstance();
   if (prefs.containsKey(qrioHistoryAsLis) &&
       !prefs.containsKey(qrioHistoryAsStr)) {
-    updateHistory();
+    await updateHistory();
     debugPrint('''
 ============================================================
     UPDATED HISTORY
@@ -27,7 +27,7 @@ final FutureProvider futureProvider = FutureProvider<dynamic>((ref) async {
   }
   if (!prefs.containsKey(qrioHistoryAsLis) &&
       !prefs.containsKey(qrioHistoryAsStr)) {
-    createHistory();
+    await createHistory();
     debugPrint('''
 ============================================================
     CREATED HISTORY
@@ -205,7 +205,7 @@ class History extends ConsumerWidget {
                                 : () {
                                     showModalBottomSheet(
                                       context: context,
-                                      builder: (BuildContext context) {
+                                      builder: (context) {
                                         return const HistoryMenuSheet();
                                       },
                                       backgroundColor: Colors.transparent,
@@ -286,9 +286,9 @@ class History extends ConsumerWidget {
                       onTap: () async {
                         if (await canLaunchUrl(Uri.parse(data))) {
                           // ignore: use_build_context_synchronously
-                          launchURL(context, data);
+                          await launchURL(context, data);
                         } else {
-                          Clipboard.setData(
+                          await Clipboard.setData(
                             ClipboardData(text: data),
                           ).then((_) {
                             showBottomSnackBar(
@@ -356,7 +356,7 @@ class History extends ConsumerWidget {
                                 onPressed: () {
                                   showModalBottomSheet(
                                     context: context,
-                                    builder: (BuildContext context) {
+                                    builder: (context) {
                                       return DataBottomSheet(
                                         index: index,
                                         data: data,

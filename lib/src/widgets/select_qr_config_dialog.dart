@@ -70,7 +70,7 @@ class SelectQrConfigDialog<T> extends ConsumerWidget {
                     activeColor: Theme.of(context).colorScheme.primary,
                     value: e.value,
                     groupValue: groupValue,
-                    onChanged: (T? value) {
+                    onChanged: (value) {
                       editConfigFunc(value);
                       Navigator.of(context).pop();
                     },
@@ -90,7 +90,7 @@ class SelectQrConfigDialog<T> extends ConsumerWidget {
                     activeColor: Theme.of(context).colorScheme.primary,
                     value: e.value,
                     groupValue: groupValue,
-                    onChanged: (T? value) {
+                    onChanged: (value) {
                       editConfigFunc(value);
                       Navigator.of(context).pop();
                     },

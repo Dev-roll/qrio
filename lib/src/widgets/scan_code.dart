@@ -111,7 +111,7 @@ class _ScanCodeState extends State<ScanCode> {
                     } else {
                       for (var str in data) {
                         if (str != null) {
-                          addHistoryData(str, historyTypeSelectImg,
+                          await addHistoryData(str, historyTypeSelectImg,
                               DateTime.now().toString());
                         }
                       }
@@ -157,13 +157,13 @@ class _ScanCodeState extends State<ScanCode> {
     );
   }
 
-  void _onDetect(BarcodeCapture barcodeCapture) async {
+  Future<void> _onDetect(BarcodeCapture barcodeCapture) async {
     final scannedData = barcodeCapture.barcodes.first.rawValue;
 
     if (scannedData != null) {
       bool? updated = await addHistoryData(scannedData.toString(),
           barcodeCapture.barcodes.first.format.name, DateTime.now().toString());
-      if (updated ?? false) Vibration.vibrate(duration: 50);
+      if (updated ?? false) await Vibration.vibrate(duration: 50);
     }
   }
 

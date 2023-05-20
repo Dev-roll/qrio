@@ -4,9 +4,9 @@ import 'package:qrio/src/qr_image_config.dart';
 
 class CustomQrImage extends StatelessWidget {
   const CustomQrImage({
-    Key? key,
+    super.key,
     required this.qrImageConfig,
-  }) : super(key: key);
+  });
 
   final QrImageConfig qrImageConfig;
 
