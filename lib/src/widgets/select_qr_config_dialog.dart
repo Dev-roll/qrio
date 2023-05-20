@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../utils.dart';
-import 'select_option.dart';
+import 'package:qrio/src/utils.dart';
+import 'package:qrio/src/widgets/select_option.dart';
 
 class SelectQrConfigDialog<T> extends ConsumerWidget {
   const SelectQrConfigDialog({
@@ -71,7 +70,7 @@ class SelectQrConfigDialog<T> extends ConsumerWidget {
                     activeColor: Theme.of(context).colorScheme.primary,
                     value: e.value,
                     groupValue: groupValue,
-                    onChanged: (T? value) {
+                    onChanged: (value) {
                       editConfigFunc(value);
                       Navigator.of(context).pop();
                     },
@@ -91,7 +90,7 @@ class SelectQrConfigDialog<T> extends ConsumerWidget {
                     activeColor: Theme.of(context).colorScheme.primary,
                     value: e.value,
                     groupValue: groupValue,
-                    onChanged: (T? value) {
+                    onChanged: (value) {
                       editConfigFunc(value);
                       Navigator.of(context).pop();
                     },

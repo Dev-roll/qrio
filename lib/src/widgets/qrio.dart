@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qrio/src/app.dart';
 import 'package:qrio/src/constants.dart';
+import 'package:qrio/src/screens/editor.dart';
+import 'package:qrio/src/utils.dart';
+import 'package:qrio/src/widgets/scan_code.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
-
-import '../screens/editor.dart';
-import '../utils.dart';
-import 'scan_code.dart';
 
 class Qrio extends ConsumerStatefulWidget {
   const Qrio({super.key});
@@ -75,8 +74,8 @@ class _QrioState extends ConsumerState<Qrio>
     });
 
     // For sharing images coming from outside the app while the app is in the memory
-    _intentDataStreamSubscription = ReceiveSharingIntent.getMediaStream()
-        .listen((List<SharedMediaFile> value) {
+    _intentDataStreamSubscription =
+        ReceiveSharingIntent.getMediaStream().listen((value) {
       setState(() {
         _sharedFiles = value;
         debugPrint(
@@ -85,18 +84,18 @@ class _QrioState extends ConsumerState<Qrio>
           final List<String?> data = await scanImg(file.path);
           for (var str in data) {
             if (str != null) {
-              addHistoryData(
+              await addHistoryData(
                   str, historyTypeShareImg, DateTime.now().toString());
             }
           }
         });
       });
     }, onError: (err) {
-      debugPrint("getIntentDataStream error: $err");
+      debugPrint('getIntentDataStream error: $err');
     });
 
     // For sharing images coming from outside the app while the app is closed
-    ReceiveSharingIntent.getInitialMedia().then((List<SharedMediaFile> value) {
+    ReceiveSharingIntent.getInitialMedia().then((value) {
       setState(() {
         _sharedFiles = value;
         debugPrint(
@@ -105,7 +104,7 @@ class _QrioState extends ConsumerState<Qrio>
           final List<String?> data = await scanImg(file.path);
           for (var str in data) {
             if (str != null) {
-              addHistoryData(
+              await addHistoryData(
                   str, historyTypeShareImg, DateTime.now().toString());
             }
           }
@@ -115,22 +114,22 @@ class _QrioState extends ConsumerState<Qrio>
 
     // For sharing or opening urls/text coming from outside the app while the app is in the memory
     _intentDataStreamSubscription =
-        ReceiveSharingIntent.getTextStream().listen((String value) {
+        ReceiveSharingIntent.getTextStream().listen((value) {
       setState(() {
         _sharedText = value;
-        debugPrint("Shared: $_sharedText");
+        debugPrint('Shared: $_sharedText');
         addHistoryData(
             _sharedText!, historyTypeShareTxt, DateTime.now().toString());
       });
     }, onError: (err) {
-      debugPrint("getLinkStream error: $err");
+      debugPrint('getLinkStream error: $err');
     });
 
     // For sharing or opening urls/text coming from outside the app while the app is closed
-    ReceiveSharingIntent.getInitialText().then((String? value) {
+    ReceiveSharingIntent.getInitialText().then((value) {
       setState(() {
         _sharedText = value;
-        debugPrint("Shared: $_sharedText");
+        debugPrint('Shared: $_sharedText');
         addHistoryData(
             _sharedText!, historyTypeShareTxt, DateTime.now().toString());
       });

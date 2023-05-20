@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:qrio/src/constants.dart';
+import 'package:qrio/src/enums/default_popup_menu_items_type.dart';
 import 'package:qrio/src/screens/share_app.dart';
-
-import '../constants.dart';
-import '../enums/default_popup_menu_items_type.dart';
-import '../utils.dart';
-import 'select_theme_dialog.dart';
+import 'package:qrio/src/utils.dart';
+import 'package:qrio/src/widgets/select_theme_dialog.dart';
 
 class DefaultPopupMenu extends StatefulWidget {
   const DefaultPopupMenu({super.key});

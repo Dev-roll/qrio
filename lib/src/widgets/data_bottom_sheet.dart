@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qrio/src/app.dart';
 import 'package:qrio/src/constants.dart';
+import 'package:qrio/src/utils.dart';
+import 'package:qrio/src/widgets/config_items.dart';
 import 'package:share_plus/share_plus.dart';
-
-import '../app.dart';
-import '../utils.dart';
-import 'config_items.dart';
 
 class DataBottomSheet extends StatefulWidget {
   const DataBottomSheet({

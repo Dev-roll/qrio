@@ -90,7 +90,7 @@ DateTime parseDate(String? dateStr) {
   }
 }
 
-updateHistory() async {
+Future<void> updateHistory() async {
   final prefs = await SharedPreferences.getInstance();
   final List<String> historyList = prefs.getStringList(qrioHistoryAsLis) ?? [];
   final List<dynamic> historyObj = historyList.map((data) {
@@ -101,17 +101,17 @@ updateHistory() async {
       createdAt: DateTime.now().toString(),
     ).toJson();
   }).toList();
-  prefs.setString(qrioHistoryAsStr, jsonEncode(historyObj));
-  prefs.remove(qrioHistoryAsLis);
+  await prefs.setString(qrioHistoryAsStr, jsonEncode(historyObj));
+  await prefs.remove(qrioHistoryAsLis);
   debugPrint('*** remove list');
 }
 
-createHistory() async {
+Future<void> createHistory() async {
   final prefs = await SharedPreferences.getInstance();
-  prefs.setString(qrioHistoryAsStr, '[]');
+  await prefs.setString(qrioHistoryAsStr, '[]');
 }
 
-addHistoryData(
+Future<bool?> addHistoryData(
   String data,
   String? type,
   String? createdAt, {
@@ -141,9 +141,10 @@ addHistoryData(
     await prefs.setString(qrioHistoryAsStr, jsonEncode(historyObj));
     return true;
   }
+  return null;
 }
 
-deleteHistoryData(int index) async {
+Future<void> deleteHistoryData(int index) async {
   final prefs = await SharedPreferences.getInstance();
   String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
   if (historyList == '') historyList = '[]';
@@ -152,12 +153,12 @@ deleteHistoryData(int index) async {
   await prefs.setString(qrioHistoryAsStr, jsonEncode(historyObj));
 }
 
-deleteAllHistory() async {
+Future<void> deleteAllHistory() async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString(qrioHistoryAsStr, '[]');
 }
 
-switchStarred(int index) async {
+Future<void> switchStarred(int index) async {
   final prefs = await SharedPreferences.getInstance();
   String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
   if (historyList == '') historyList = '[]';
@@ -182,7 +183,7 @@ Future<File> getApplicationDocumentsFile(
 }
 
 void Function(BuildContext context) openDialogFactory(Widget dialogWidget) {
-  return (BuildContext context) {
+  return (context) {
     showDialog<void>(
       context: context,
       builder: (context) => dialogWidget,
@@ -191,7 +192,7 @@ void Function(BuildContext context) openDialogFactory(Widget dialogWidget) {
 }
 
 void Function(BuildContext context) openSheetFactory(Widget sheetWidget) {
-  return (BuildContext context) {
+  return (context) {
     showModalBottomSheet(
       context: context,
       builder: (context) => sheetWidget,
@@ -201,7 +202,7 @@ void Function(BuildContext context) openSheetFactory(Widget sheetWidget) {
   };
 }
 
-showBottomSnackBar(
+void showBottomSnackBar(
   BuildContext context,
   String text, {
   Key? key,

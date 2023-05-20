@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qrio/src/app.dart';
+import 'package:qrio/src/qr_image_config.dart';
 import 'package:qrio/src/utils.dart';
 import 'package:qrio/src/widgets/icon_box.dart';
-
-import '../app.dart';
-import '../qr_image_config.dart';
 
 class ConfigItem extends ConsumerWidget {
   final String? label;
@@ -92,7 +91,7 @@ class ConfigItem extends ConsumerWidget {
                     activeColor: Theme.of(context).colorScheme.primary,
                     onChanged: switchOnChangeHandler,
                     thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
-                      (Set<MaterialState> _) {
+                      (_) {
                         if (switchValue ?? false) {
                           return Icon(
                             Icons.dark_mode_rounded,

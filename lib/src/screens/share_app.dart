@@ -63,7 +63,7 @@ class ShareApp extends StatelessWidget {
                       ElevatedButton.icon(
                         onPressed: () {
                           Share.share(
-                              "https://play.google.com/store/apps/details?id=app.web.qrio");
+                              'https://play.google.com/store/apps/details?id=app.web.qrio');
                         },
                         icon: const Icon(Icons.share_outlined),
                         label: const Text('共有'),
@@ -84,7 +84,7 @@ class ShareApp extends StatelessWidget {
                           Clipboard.setData(
                             const ClipboardData(
                                 text:
-                                    "https://play.google.com/store/apps/details?id=app.web.qrio"),
+                                    'https://play.google.com/store/apps/details?id=app.web.qrio'),
                           ).then(
                             (_) {
                               showBottomSnackBar(
@@ -160,7 +160,7 @@ class ShareApp extends StatelessWidget {
                       ElevatedButton.icon(
                         onPressed: () {
                           Share.share(
-                              "https://apps.apple.com/us/app/qr-i-o-qr-%E3%82%B3%E3%83%BC%E3%83%89-%E8%AA%AD%E3%81%BF%E5%8F%96%E3%82%8A-%E4%BD%9C%E6%88%90%E3%82%A2%E3%83%97%E3%83%AA/id1661431115");
+                              'https://apps.apple.com/us/app/qr-i-o-qr-%E3%82%B3%E3%83%BC%E3%83%89-%E8%AA%AD%E3%81%BF%E5%8F%96%E3%82%8A-%E4%BD%9C%E6%88%90%E3%82%A2%E3%83%97%E3%83%AA/id1661431115');
                         },
                         icon: const Icon(CupertinoIcons.share),
                         label: const Text('共有'),
@@ -181,7 +181,7 @@ class ShareApp extends StatelessWidget {
                           Clipboard.setData(
                             const ClipboardData(
                                 text:
-                                    "https://apps.apple.com/us/app/qr-i-o-qr-%E3%82%B3%E3%83%BC%E3%83%89-%E8%AA%AD%E3%81%BF%E5%8F%96%E3%82%8A-%E4%BD%9C%E6%88%90%E3%82%A2%E3%83%97%E3%83%AA/id1661431115"),
+                                    'https://apps.apple.com/us/app/qr-i-o-qr-%E3%82%B3%E3%83%BC%E3%83%89-%E8%AA%AD%E3%81%BF%E5%8F%96%E3%82%8A-%E4%BD%9C%E6%88%90%E3%82%A2%E3%83%97%E3%83%AA/id1661431115'),
                           ).then(
                             (_) {
                               showBottomSnackBar(

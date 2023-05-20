@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qrio/src/constants.dart';
-
-import '../widgets/config_items.dart';
-import '../widgets/qr_code_preview.dart';
+import 'package:qrio/src/widgets/config_items.dart';
+import 'package:qrio/src/widgets/qr_code_preview.dart';
 
 class Editor extends StatelessWidget {
   const Editor({super.key});

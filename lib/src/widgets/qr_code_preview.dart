@@ -5,13 +5,12 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:qrio/src/app.dart';
 import 'package:qrio/src/constants.dart';
+import 'package:qrio/src/qr_image_config.dart';
+import 'package:qrio/src/utils.dart';
+import 'package:qrio/src/widgets/custom_qr_image.dart';
 import 'package:share_plus/share_plus.dart';
-
-import '../app.dart';
-import '../qr_image_config.dart';
-import '../utils.dart';
-import 'custom_qr_image.dart';
 
 class QrCodePreview extends ConsumerWidget {
   QrCodePreview({super.key});
@@ -78,7 +77,7 @@ class QrCodePreview extends ConsumerWidget {
                             text: qrImageConfig.data,
                             subject: 'QR I/O で作成したQRコードの共有',
                           );
-                          applicationDocumentsFile.delete();
+                          await applicationDocumentsFile.delete();
                         },
                         icon: const Icon(Icons.share_rounded),
                         padding: const EdgeInsets.all(20),

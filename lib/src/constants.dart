@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-
-import 'enums/default_popup_menu_items_type.dart';
-import 'widgets/select_option.dart';
+import 'package:qrio/src/enums/default_popup_menu_items_type.dart';
+import 'package:qrio/src/widgets/select_option.dart';
 
 const Color seedColor = Color(0xFF30A3F0);
 const Color white = Color(0xEEFFFFFF);

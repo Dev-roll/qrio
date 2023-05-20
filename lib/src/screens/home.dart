@@ -3,12 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:qrio/src/app.dart';
-
-import '../constants.dart';
-import '../utils.dart';
-import '../widgets/default_popup_menu.dart';
-import '../widgets/history.dart';
-import '../widgets/qrio.dart';
+import 'package:qrio/src/constants.dart';
+import 'package:qrio/src/utils.dart';
+import 'package:qrio/src/widgets/default_popup_menu.dart';
+import 'package:qrio/src/widgets/history.dart';
+import 'package:qrio/src/widgets/qrio.dart';
 
 class Home extends ConsumerWidget {
   const Home({super.key});
@@ -75,7 +74,7 @@ class Home extends ConsumerWidget {
           ),
           Transform.translate(
             offset: Offset(screenWidth / 2 - 28, topPadding),
-            child: SizedBox(
+            child: const SizedBox(
               height: 56,
               width: 56,
               child: DefaultPopupMenu(),
@@ -88,8 +87,7 @@ class Home extends ConsumerWidget {
               minChildSize: defaultSheetHeight(context),
               maxChildSize: 1 - (topPadding + topContentHeight) / screenHeight,
               snap: true,
-              builder:
-                  (BuildContext context, ScrollController scrollController) {
+              builder: (context, scrollController) {
                 return Container(
                   margin: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                   decoration: BoxDecoration(

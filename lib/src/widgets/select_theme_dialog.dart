@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qrio/main.dart';
+import 'package:qrio/src/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../main.dart';
-import '../constants.dart';
-import '../utils.dart';
-
 class SelectThemeDialog extends ConsumerWidget {
-  SelectThemeDialog({Key? key}) : super(key: key);
+  SelectThemeDialog({super.key});
   final temporaryThemeModeProvider =
       StateProvider((ref) => ref.watch(themeModeProvider));
 
@@ -24,7 +22,7 @@ class SelectThemeDialog extends ConsumerWidget {
                   activeColor: Theme.of(context).colorScheme.primary,
                   value: e.value,
                   groupValue: ref.watch(temporaryThemeModeProvider),
-                  onChanged: (ThemeMode? value) => ref
+                  onChanged: (value) => ref
                       .read(temporaryThemeModeProvider.notifier)
                       .state = value!))
               .toList(growable: false)),

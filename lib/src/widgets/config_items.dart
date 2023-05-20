@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:qrio/src/app.dart';
+import 'package:qrio/src/constants.dart';
+import 'package:qrio/src/qr_image_config.dart';
+import 'package:qrio/src/utils.dart';
+import 'package:qrio/src/widgets/config_item.dart';
+import 'package:qrio/src/widgets/icon_box.dart';
+import 'package:qrio/src/widgets/select_qr_config_dialog.dart';
 import 'package:qrio/src/widgets/slider_qr_config_sheet.dart';
-
-import '../app.dart';
-import '../constants.dart';
-import '../qr_image_config.dart';
-import '../utils.dart';
-import 'config_item.dart';
-import 'icon_box.dart';
-import 'select_qr_config_dialog.dart';
 
 class ConfigItems extends ConsumerWidget {
   const ConfigItems({super.key});
@@ -73,7 +72,7 @@ class ConfigItems extends ConsumerWidget {
                 title: selectQrSeedColorOptionGroup.title,
                 icon: selectQrSeedColorOptionGroup.icon,
                 options: selectQrSeedColorOptionGroup.options,
-                editConfigFunc: (Color? value) {
+                editConfigFunc: (value) {
                   ref
                       .read(qrImageConfigProvider.notifier)
                       .editQrSeedColor(qrSeedColor: value!);
@@ -102,7 +101,7 @@ class ConfigItems extends ConsumerWidget {
                 title: selectQrEyeShapeOptionGroup.title,
                 icon: selectQrEyeShapeOptionGroup.icon,
                 options: selectQrEyeShapeOptionGroup.options,
-                editConfigFunc: (QrEyeShape? value) {
+                editConfigFunc: (value) {
                   ref
                       .read(qrImageConfigProvider.notifier)
                       .editEyeShape(eyeShape: value!);
@@ -121,7 +120,7 @@ class ConfigItems extends ConsumerWidget {
                 title: selectQrDataModuleShapeOptionGroup.title,
                 icon: selectQrDataModuleShapeOptionGroup.icon,
                 options: selectQrDataModuleShapeOptionGroup.options,
-                editConfigFunc: (QrDataModuleShape? value) {
+                editConfigFunc: (value) {
                   ref
                       .read(qrImageConfigProvider.notifier)
                       .editDataModuleShape(dataModuleShape: value!);
@@ -140,7 +139,7 @@ class ConfigItems extends ConsumerWidget {
                 title: selectQrErrorCorrectLevelOptionGroup.title,
                 icon: selectQrErrorCorrectLevelOptionGroup.icon,
                 options: selectQrErrorCorrectLevelOptionGroup.options,
-                editConfigFunc: (int value) {
+                editConfigFunc: (value) {
                   ref
                       .read(qrImageConfigProvider.notifier)
                       .editErrorCorrectLevel(errorCorrectLevel: value);
