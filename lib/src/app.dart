@@ -35,11 +35,13 @@ class App extends ConsumerWidget {
           themeMode: themeMode,
           theme: ThemeData(
             useMaterial3: true,
-            colorSchemeSeed: lightDynamic?.harmonized().primary ?? seedColor,
+            colorScheme: lightDynamic?.harmonized() ??
+                ColorScheme.fromSeed(seedColor: seedColor).harmonized(),
           ),
           darkTheme: ThemeData(
             useMaterial3: true,
-            colorSchemeSeed: darkDynamic?.harmonized().primary ?? seedColor,
+            colorScheme: darkDynamic?.harmonized() ??
+                ColorScheme.fromSeed(seedColor: seedColor).harmonized(),
             brightness: Brightness.dark,
           ),
           home: const Home());
