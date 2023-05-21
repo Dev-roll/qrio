@@ -19,7 +19,7 @@ class CustomQrImage extends StatelessWidget {
         ? Theme.of(context).primaryColor
         : Theme.of(context).colorScheme.onPrimary;
 
-    return QrImage(
+    return QrImageView(
       padding: const EdgeInsets.all(24),
       data: qrImageConfig.data,
       size: qrImageConfig.size,
