@@ -22,11 +22,11 @@ class _QrioState extends ConsumerState<Qrio>
   List<SharedMediaFile>? _sharedFiles;
   String? _sharedText;
   final List<Tab> tabs = <Tab>[
-    Tab(
+    const Tab(
       icon: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
-        children: const [
+        children: [
           SizedBox(
             width: 8,
           ),
@@ -41,11 +41,11 @@ class _QrioState extends ConsumerState<Qrio>
         ],
       ),
     ),
-    Tab(
+    const Tab(
       icon: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
-        children: const [
+        children: [
           SizedBox(
             width: 8,
           ),

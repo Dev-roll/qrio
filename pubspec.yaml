@@ -50,11 +50,11 @@ dependencies:
   flutter_launcher_icons: ^0.12.0
   path_provider: ^2.0.13
   font_awesome_flutter: ^10.4.0
-  google_mlkit_barcode_scanning: ^0.5.0
+  google_mlkit_barcode_scanning: ^0.6.0
   image_picker: ^0.8.6+3
   receive_sharing_intent: ^1.4.5
   vibration: ^1.7.6
-  mobile_scanner: ^3.0.0
+  mobile_scanner: ^3.2.0
   csv: ^5.0.1
   freezed_annotation: ^2.2.0
 
