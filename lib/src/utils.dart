@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:csv/csv.dart';
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
@@ -26,6 +27,21 @@ double defaultSheetHeight(BuildContext context) {
 
 int qrErrorCorrectLevelToIndex(int level) {
   return QrErrorCorrectLevel.levels.indexOf(level);
+}
+
+ThemeData createTheme(
+    ColorScheme? dynamicColor, Brightness brightness, BuildContext context) {
+  bool isAndroid = Platform.isAndroid;
+  var colorScheme = dynamicColor?.harmonized() ??
+      ColorScheme.fromSeed(seedColor: seedColor).harmonized();
+  colorScheme = colorScheme.copyWith(brightness: brightness);
+  return ThemeData(
+    useMaterial3: true,
+    colorScheme: isAndroid ? colorScheme : null,
+    colorSchemeSeed: isAndroid ? null : colorScheme.primary,
+    brightness: brightness,
+    visualDensity: VisualDensity.standard,
+  );
 }
 
 Color alphaBlend(Color foreground, Color background) {
