@@ -187,179 +187,202 @@ class DataBottomSheetState extends State<DataBottomSheet> {
             color: Theme.of(context).colorScheme.outline.withOpacity(0.25),
           ),
           const SizedBox(height: 16),
-          InkWell(
-            onTap: () {
-              switchStarred(widget.index);
-              setState(() {
-                currentStarred = !currentStarred;
-              });
-            },
-            child: Row(
-              children: [
-                const SizedBox(
-                  width: 16,
-                  height: 52,
-                ),
-                Icon(
-                  currentStarred
-                      ? Icons.star_rounded
-                      : Icons.star_border_rounded,
-                  color:
-                      Theme.of(context).colorScheme.secondary.withOpacity(0.8),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  currentStarred ? 'お気に入りから削除' : 'お気に入りに追加',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                switchStarred(widget.index);
+                setState(() {
+                  currentStarred = !currentStarred;
+                });
+              },
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 16,
+                    height: 52,
                   ),
-                ),
-              ],
+                  Icon(
+                    currentStarred
+                        ? Icons.star_rounded
+                        : Icons.star_border_rounded,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .secondary
+                        .withOpacity(0.8),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    currentStarred ? 'お気に入りから削除' : 'お気に入りに追加',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          InkWell(
-            onTap: () {
-              Navigator.of(context).pop();
-              Clipboard.setData(
-                ClipboardData(text: widget.data),
-              ).then((_) {
-                showBottomSnackBar(
-                  context,
-                  'クリップボードにコピーしました',
-                  icon: Icons.library_add_check_rounded,
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+                Clipboard.setData(
+                  ClipboardData(text: widget.data),
+                ).then((_) {
+                  showBottomSnackBar(
+                    context,
+                    'クリップボードにコピーしました',
+                    icon: Icons.library_add_check_rounded,
+                  );
+                });
+              },
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 16,
+                    height: 52,
+                  ),
+                  Icon(
+                    Icons.copy_rounded,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .secondary
+                        .withOpacity(0.8),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    'クリップボードにコピー',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+                Share.share(widget.data, subject: 'QR I/O の履歴共有');
+              },
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 16,
+                    height: 52,
+                  ),
+                  Icon(
+                    Icons.share_rounded,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .secondary
+                        .withOpacity(0.8),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    '共有',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+                widget.ref
+                    .read(qrImageConfigProvider.notifier)
+                    .editData(data: widget.data);
+                ConfigItems.updateTextFieldValue(widget.data);
+                if (tabController.index != 1) {
+                  tabController.animateTo(1);
+                }
+                draggableScrollableController.animateTo(
+                  0,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.ease,
                 );
-              });
-            },
-            child: Row(
-              children: [
-                const SizedBox(
-                  width: 16,
-                  height: 52,
-                ),
-                Icon(
-                  Icons.copy_rounded,
-                  color:
-                      Theme.of(context).colorScheme.secondary.withOpacity(0.8),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'クリップボードにコピー',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
+              },
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 16,
+                    height: 52,
                   ),
-                ),
-              ],
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              Navigator.of(context).pop();
-              Share.share(widget.data, subject: 'QR I/O の履歴共有');
-            },
-            child: Row(
-              children: [
-                const SizedBox(
-                  width: 16,
-                  height: 52,
-                ),
-                Icon(
-                  Icons.share_rounded,
-                  color:
-                      Theme.of(context).colorScheme.secondary.withOpacity(0.8),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  '共有',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
+                  Icon(
+                    Icons.edit_rounded,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .secondary
+                        .withOpacity(0.8),
                   ),
-                ),
-              ],
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              Navigator.of(context).pop();
-              widget.ref
-                  .read(qrImageConfigProvider.notifier)
-                  .editData(data: widget.data);
-              ConfigItems.updateTextFieldValue(widget.data);
-              if (tabController.index != 1) {
-                tabController.animateTo(1);
-              }
-              draggableScrollableController.animateTo(
-                0,
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.ease,
-              );
-            },
-            child: Row(
-              children: [
-                const SizedBox(
-                  width: 16,
-                  height: 52,
-                ),
-                Icon(
-                  Icons.edit_rounded,
-                  color:
-                      Theme.of(context).colorScheme.secondary.withOpacity(0.8),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'QRコードを作成',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
+                  const SizedBox(width: 12),
+                  Text(
+                    'QRコードを作成',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 16),
-          InkWell(
-            onTap: () {
-              Navigator.of(context).pop();
-              deleteHistoryData(widget.index);
-              showBottomSnackBar(
-                context,
-                '削除しました',
-                icon: Icons.done_rounded,
-                seconds: 5,
-                bottomSnackbarAction: SnackBarAction(
-                  label: '元に戻す',
-                  onPressed: () {
-                    addHistoryData(
-                      widget.data,
-                      [noData, 'null'].contains(widget.type)
-                          ? null
-                          : widget.type,
-                      [noData, 'null'].contains(widget.createdAt)
-                          ? null
-                          : widget.createdAt,
-                      index: widget.index,
-                      starred: currentStarred,
-                    );
-                  },
-                ),
-              );
-            },
-            child: Row(
-              children: [
-                const SizedBox(
-                  width: 16,
-                  height: 44,
-                ),
-                Icon(
-                  Icons.delete_outline_rounded,
-                  color: Theme.of(context).colorScheme.error.withOpacity(0.8),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  '削除',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.error,
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+                deleteHistoryData(widget.index);
+                showBottomSnackBar(
+                  context,
+                  '削除しました',
+                  icon: Icons.done_rounded,
+                  seconds: 5,
+                  bottomSnackbarAction: SnackBarAction(
+                    label: '元に戻す',
+                    onPressed: () {
+                      addHistoryData(
+                        widget.data,
+                        [noData, 'null'].contains(widget.type)
+                            ? null
+                            : widget.type,
+                        [noData, 'null'].contains(widget.createdAt)
+                            ? null
+                            : widget.createdAt,
+                        index: widget.index,
+                        starred: currentStarred,
+                      );
+                    },
                   ),
-                ),
-              ],
+                );
+              },
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 16,
+                    height: 44,
+                  ),
+                  Icon(
+                    Icons.delete_outline_rounded,
+                    color: Theme.of(context).colorScheme.error.withOpacity(0.8),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    '削除',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 20),
