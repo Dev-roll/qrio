@@ -75,7 +75,7 @@ class HistoryMenuSheet extends StatelessWidget {
                   await exportStringListToCsv(historyList, 'qrio_history');
 
               if (responseStatus != 0) {
-                // TODO: エラー処理
+                // TODO(anyone): エラー処理
                 throw Error();
               }
             },
@@ -126,7 +126,7 @@ class HistoryMenuSheet extends StatelessWidget {
                   await exportStringListToJson(historyList, 'qrio_history');
 
               if (responseStatus != 0) {
-                // TODO: エラー処理
+                // TODO(anyone): エラー処理
                 throw Error();
               }
             },
