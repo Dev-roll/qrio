@@ -61,166 +61,179 @@ class HistoryMenuSheet extends StatelessWidget {
             color: Theme.of(context).colorScheme.outline.withOpacity(0.25),
           ),
           const SizedBox(height: 16),
-          InkWell(
-            onTap: () async {
-              Navigator.of(context).pop();
-              final prefs = await SharedPreferences.getInstance();
-              String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () async {
+                Navigator.of(context).pop();
+                final prefs = await SharedPreferences.getInstance();
+                String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
 
-              if (historyList.isEmpty) {
-                return;
-              }
+                if (historyList.isEmpty) {
+                  return;
+                }
 
-              final responseStatus =
-                  await exportStringListToCsv(historyList, 'qrio_history');
+                final responseStatus =
+                    await exportStringListToCsv(historyList, 'qrio_history');
 
-              if (responseStatus != 0) {
-                // TODO: エラー処理
-                throw Error();
-              }
-            },
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  width: 16,
-                  height: 52,
-                ),
-                Icon(
-                  Icons.share_rounded,
-                  color:
-                      Theme.of(context).colorScheme.secondary.withOpacity(0.8),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'CSVで共有',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
+                if (responseStatus != 0) {
+                  // TODO(anyone): エラー処理
+                  throw Error();
+                }
+              },
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    width: 16,
+                    height: 52,
                   ),
-                ),
-                const Spacer(),
-                Text(
-                  'qrio_history.csv',
-                  style: TextStyle(
+                  Icon(
+                    Icons.share_rounded,
                     color: Theme.of(context)
                         .colorScheme
                         .secondary
-                        .withOpacity(0.5),
+                        .withOpacity(0.8),
                   ),
-                ),
-                const SizedBox(width: 16),
-              ],
+                  const SizedBox(width: 12),
+                  Text(
+                    'CSVで共有',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    'qrio_history.csv',
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .secondary
+                          .withOpacity(0.5),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                ],
+              ),
             ),
           ),
-          InkWell(
-            onTap: () async {
-              Navigator.of(context).pop();
-              final prefs = await SharedPreferences.getInstance();
-              String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () async {
+                Navigator.of(context).pop();
+                final prefs = await SharedPreferences.getInstance();
+                String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
 
-              if (historyList.isEmpty) {
-                return;
-              }
+                if (historyList.isEmpty) {
+                  return;
+                }
 
-              final responseStatus =
-                  await exportStringListToJson(historyList, 'qrio_history');
+                final responseStatus =
+                    await exportStringListToJson(historyList, 'qrio_history');
 
-              if (responseStatus != 0) {
-                // TODO: エラー処理
-                throw Error();
-              }
-            },
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  width: 16,
-                  height: 52,
-                ),
-                Icon(
-                  Icons.share_rounded,
-                  color:
-                      Theme.of(context).colorScheme.secondary.withOpacity(0.8),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'JSONで共有',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
+                if (responseStatus != 0) {
+                  // TODO(anyone): エラー処理
+                  throw Error();
+                }
+              },
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    width: 16,
+                    height: 52,
                   ),
-                ),
-                const Spacer(),
-                Text(
-                  'qrio_history.json',
-                  style: TextStyle(
+                  Icon(
+                    Icons.share_rounded,
                     color: Theme.of(context)
                         .colorScheme
                         .secondary
-                        .withOpacity(0.5),
+                        .withOpacity(0.8),
                   ),
-                ),
-                const SizedBox(width: 16),
-              ],
+                  const SizedBox(width: 12),
+                  Text(
+                    'JSONで共有',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    'qrio_history.json',
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .secondary
+                          .withOpacity(0.5),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 16),
-          InkWell(
-            onTap: () async {
-              Navigator.of(context).pop();
-              await showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  icon: const Icon(
-                    Icons.delete_outline_rounded,
-                  ),
-                  title: const Text('削除'),
-                  content: Text(
-                    'すべての履歴を削除しますか？',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () async {
+                Navigator.of(context).pop();
+                await showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    icon: const Icon(
+                      Icons.delete_outline_rounded,
                     ),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => {Navigator.pop(context)},
-                      onLongPress: null,
-                      child: const Text('キャンセル'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        deleteAllHistory();
-                      },
-                      onLongPress: null,
-                      child: Text(
-                        'すべて削除',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
-                        ),
+                    title: const Text('削除'),
+                    content: Text(
+                      'すべての履歴を削除しますか？',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
-                  ],
-                ),
-              );
-            },
-            child: Row(
-              children: [
-                const SizedBox(
-                  width: 16,
-                  height: 44,
-                ),
-                Icon(
-                  Icons.delete_outline_rounded,
-                  color: Theme.of(context).colorScheme.error.withOpacity(0.8),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'すべての履歴を削除',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.error,
+                    actions: [
+                      TextButton(
+                        onPressed: () => {Navigator.pop(context)},
+                        onLongPress: null,
+                        child: const Text('キャンセル'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          deleteAllHistory();
+                        },
+                        onLongPress: null,
+                        child: Text(
+                          'すべて削除',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                );
+              },
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 16,
+                    height: 44,
+                  ),
+                  Icon(
+                    Icons.delete_outline_rounded,
+                    color: Theme.of(context).colorScheme.error.withOpacity(0.8),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    'すべての履歴を削除',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 20),

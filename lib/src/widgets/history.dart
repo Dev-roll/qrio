@@ -282,101 +282,106 @@ class History extends ConsumerWidget {
                           historyDurationSeconds;
                     }
 
-                    return InkWell(
-                      onTap: () async {
-                        if (await canLaunchUrl(Uri.parse(data))) {
-                          // ignore: use_build_context_synchronously
-                          await launchURL(context, data);
-                        } else {
-                          await Clipboard.setData(
-                            ClipboardData(text: data),
-                          ).then((_) {
-                            showBottomSnackBar(
-                              context,
-                              'クリップボードにコピーしました',
-                              icon: Icons.library_add_check_rounded,
-                            );
-                          });
-                        }
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const SizedBox(width: 4),
-                          IconButton(
-                            onPressed: () {
-                              switchStarred(index);
-                            },
-                            icon: Icon(
-                              starred
-                                  ? Icons.star_rounded
-                                  : Icons.star_border_rounded,
-                              color: starred
-                                  ? Theme.of(context).colorScheme.primary
-                                  : Theme.of(context)
-                                      .colorScheme
-                                      .onBackground
-                                      .withOpacity(0.5),
-                            ),
-                            padding: const EdgeInsets.all(16.0),
-                          ),
-                          const SizedBox(width: 0),
-                          Expanded(
-                            child: Text(
-                              data,
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: linkFormat.hasMatch(data.toString())
-                                    ? Theme.of(context).colorScheme.secondary
+                    return Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () async {
+                          if (await canLaunchUrl(Uri.parse(data))) {
+                            // ignore: use_build_context_synchronously
+                            await launchURL(context, data);
+                          } else {
+                            await Clipboard.setData(
+                              ClipboardData(text: data),
+                            ).then((_) {
+                              showBottomSnackBar(
+                                context,
+                                'クリップボードにコピーしました',
+                                icon: Icons.library_add_check_rounded,
+                              );
+                            });
+                          }
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const SizedBox(width: 4),
+                            IconButton(
+                              onPressed: () {
+                                switchStarred(index);
+                              },
+                              icon: Icon(
+                                starred
+                                    ? Icons.star_rounded
+                                    : Icons.star_border_rounded,
+                                color: starred
+                                    ? Theme.of(context).colorScheme.primary
                                     : Theme.of(context)
                                         .colorScheme
-                                        .onBackground,
-                                decoration: linkFormat.hasMatch(data.toString())
-                                    ? TextDecoration.underline
-                                    : TextDecoration.none,
+                                        .onBackground
+                                        .withOpacity(0.5),
                               ),
-                              overflow: TextOverflow.fade,
-                              maxLines: 1,
-                              softWrap: false,
+                              padding: const EdgeInsets.all(16.0),
                             ),
-                          ),
-                          Row(
-                            children: [
-                              if (isRecent)
-                                Container(
-                                  margin: const EdgeInsets.only(left: 8),
-                                  width: 8,
-                                  height: 8,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    color: Theme.of(context).colorScheme.error,
-                                  ),
+                            const SizedBox(width: 0),
+                            Expanded(
+                              child: Text(
+                                data,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: linkFormat.hasMatch(data.toString())
+                                      ? Theme.of(context).colorScheme.secondary
+                                      : Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                  decoration:
+                                      linkFormat.hasMatch(data.toString())
+                                          ? TextDecoration.underline
+                                          : TextDecoration.none,
                                 ),
-                              IconButton(
-                                onPressed: () {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    builder: (context) {
-                                      return DataBottomSheet(
-                                        index: index,
-                                        data: data,
-                                        type: type,
-                                        starred: starred,
-                                        createdAt: createdAt,
-                                        ref: ref,
-                                      );
-                                    },
-                                    backgroundColor: Colors.transparent,
-                                    isScrollControlled: true,
-                                  );
-                                },
-                                icon: const Icon(Icons.more_vert_rounded),
-                                padding: const EdgeInsets.all(16.0),
+                                overflow: TextOverflow.fade,
+                                maxLines: 1,
+                                softWrap: false,
                               ),
-                              const SizedBox(width: 4),
-                            ],
-                          ),
-                        ],
+                            ),
+                            Row(
+                              children: [
+                                if (isRecent)
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 8),
+                                    width: 8,
+                                    height: 8,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      color:
+                                          Theme.of(context).colorScheme.error,
+                                    ),
+                                  ),
+                                IconButton(
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) {
+                                        return DataBottomSheet(
+                                          index: index,
+                                          data: data,
+                                          type: type,
+                                          starred: starred,
+                                          createdAt: createdAt,
+                                          ref: ref,
+                                        );
+                                      },
+                                      backgroundColor: Colors.transparent,
+                                      isScrollControlled: true,
+                                    );
+                                  },
+                                  icon: const Icon(Icons.more_vert_rounded),
+                                  padding: const EdgeInsets.all(16.0),
+                                ),
+                                const SizedBox(width: 4),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
