@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "build-number"
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          cache: true
+
+      - name: Doctor
+        run: flutter doctor -v
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Create release.jks
+        run: echo -n ${{ secrets.ANDROID_KEY_JKS }} | base64 -d > android/app/release.jks
+
+      - name: Create service-account-key.json
+        run: |
+          echo -n ${{ secrets.SERVICE_ACCOUNT_KEY_JSON }} | base64 -d > android/service-account-key.json
+
+      - name: Create keystore.properties
+        run: |
+          echo 'storeFile=release.jks' > android/keystore.properties
+          echo 'serviceAccountFile=service-account-key.json' >> android/keystore.properties
+          echo 'storePassword=${{ secrets.ANDROID_STORE_PASSWORD }}' >> android/keystore.properties
+          echo 'keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}' >> android/keystore.properties
+          echo 'keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}' >> android/keystore.properties
+
+      - name: Build an Android App Bundle file
+        run: flutter build appbundle --build-number ${{ github.event.inputs.name }}
+
+      - name: Upload
+        run: ./gradlew publishReleaseBundle
+        working-directory: ./android

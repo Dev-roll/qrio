@@ -25,6 +25,7 @@ def keystorePropertiesFile = rootProject.file("keystore.properties")
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.github.triplet.play'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
