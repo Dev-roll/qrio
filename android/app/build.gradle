@@ -80,6 +80,10 @@ android {
             signingConfig signingConfigs.release
         }
     }
+
+    play {
+        serviceAccountCredentials = rootProject.file(keystoreProperties['serviceAccountFile'])
+    }
 }
 
 flutter {
