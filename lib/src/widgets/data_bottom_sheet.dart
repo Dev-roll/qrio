@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qrio/src/app.dart';
 import 'package:qrio/src/constants.dart';
@@ -7,7 +8,7 @@ import 'package:qrio/src/utils.dart';
 import 'package:qrio/src/widgets/config_items.dart';
 import 'package:share_plus/share_plus.dart';
 
-class DataBottomSheet extends StatefulWidget {
+class DataBottomSheet extends HookWidget {
   const DataBottomSheet({
     super.key,
     required this.index,
@@ -25,16 +26,9 @@ class DataBottomSheet extends StatefulWidget {
   final WidgetRef ref;
 
   @override
-  DataBottomSheetState createState() => DataBottomSheetState();
-}
-
-class DataBottomSheetState extends State<DataBottomSheet> {
-  late bool currentStarred = widget.starred;
-
-  @override
   Widget build(BuildContext context) {
     String displayInfo;
-    switch (widget.type) {
+    switch (type) {
       case historyTypeShareTxt:
         displayInfo = 'テキスト共有により追加';
         break;
@@ -51,8 +45,10 @@ class DataBottomSheetState extends State<DataBottomSheet> {
         displayInfo = noData;
         break;
       default:
-        displayInfo = 'カメラスキャン ・ ${widget.type}';
+        displayInfo = 'カメラスキャン ・ $type';
     }
+
+    final currentStarred = useState(starred);
 
     return Container(
       height: 600,
@@ -90,7 +86,7 @@ class DataBottomSheetState extends State<DataBottomSheet> {
             child: SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
-                child: Text(widget.data),
+                child: Text(data),
               ),
             ),
           ),
@@ -115,7 +111,7 @@ class DataBottomSheetState extends State<DataBottomSheet> {
               ),
               const SizedBox(width: 12),
               Text(
-                '${widget.data.length}文字',
+                '${data.length}文字',
                 style: TextStyle(
                   fontSize: 13,
                   color: Theme.of(context)
@@ -139,9 +135,9 @@ class DataBottomSheetState extends State<DataBottomSheet> {
               ),
               const SizedBox(width: 12),
               Text(
-                widget.type == noData && widget.createdAt != noData
-                    ? '${widget.createdAt} (更新時刻)'
-                    : widget.createdAt,
+                type == noData && createdAt != noData
+                    ? '$createdAt (更新時刻)'
+                    : createdAt,
                 style: TextStyle(
                   fontSize: 13,
                   color: Theme.of(context)
@@ -165,7 +161,7 @@ class DataBottomSheetState extends State<DataBottomSheet> {
               ),
               const SizedBox(width: 12),
               Text(
-                widget.type == noData && widget.createdAt != noData
+                type == noData && createdAt != noData
                     ? '上記は、アプリ更新時のデータ更新時刻'
                     : displayInfo,
                 style: TextStyle(
@@ -191,10 +187,8 @@ class DataBottomSheetState extends State<DataBottomSheet> {
             color: Colors.transparent,
             child: InkWell(
               onTap: () {
-                switchStarred(widget.index);
-                setState(() {
-                  currentStarred = !currentStarred;
-                });
+                switchStarred(index);
+                currentStarred.value = !currentStarred.value;
               },
               child: Row(
                 children: [
@@ -203,7 +197,7 @@ class DataBottomSheetState extends State<DataBottomSheet> {
                     height: 52,
                   ),
                   Icon(
-                    currentStarred
+                    currentStarred.value
                         ? Icons.star_rounded
                         : Icons.star_border_rounded,
                     color: Theme.of(context)
@@ -213,7 +207,7 @@ class DataBottomSheetState extends State<DataBottomSheet> {
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    currentStarred ? 'お気に入りから削除' : 'お気に入りに追加',
+                    currentStarred.value ? 'お気に入りから削除' : 'お気に入りに追加',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
                     ),
@@ -228,7 +222,7 @@ class DataBottomSheetState extends State<DataBottomSheet> {
               onTap: () {
                 Navigator.of(context).pop();
                 Clipboard.setData(
-                  ClipboardData(text: widget.data),
+                  ClipboardData(text: data),
                 ).then((_) {
                   showBottomSnackBar(
                     context,
@@ -266,7 +260,7 @@ class DataBottomSheetState extends State<DataBottomSheet> {
             child: InkWell(
               onTap: () {
                 Navigator.of(context).pop();
-                Share.share(widget.data, subject: 'QR I/O の履歴共有');
+                Share.share(data, subject: 'QR I/O の履歴共有');
               },
               child: Row(
                 children: [
@@ -297,10 +291,8 @@ class DataBottomSheetState extends State<DataBottomSheet> {
             child: InkWell(
               onTap: () {
                 Navigator.of(context).pop();
-                widget.ref
-                    .read(qrImageConfigProvider.notifier)
-                    .editData(data: widget.data);
-                ConfigItems.updateTextFieldValue(widget.data);
+                ref.read(qrImageConfigProvider.notifier).editData(data: data);
+                ConfigItems.updateTextFieldValue(data);
                 if (tabController.index != 1) {
                   tabController.animateTo(1);
                 }
@@ -340,7 +332,7 @@ class DataBottomSheetState extends State<DataBottomSheet> {
             child: InkWell(
               onTap: () {
                 Navigator.of(context).pop();
-                deleteHistoryData(widget.index);
+                deleteHistoryData(index);
                 showBottomSnackBar(
                   context,
                   '削除しました',
@@ -350,15 +342,11 @@ class DataBottomSheetState extends State<DataBottomSheet> {
                     label: '元に戻す',
                     onPressed: () {
                       addHistoryData(
-                        widget.data,
-                        [noData, 'null'].contains(widget.type)
-                            ? null
-                            : widget.type,
-                        [noData, 'null'].contains(widget.createdAt)
-                            ? null
-                            : widget.createdAt,
-                        index: widget.index,
-                        starred: currentStarred,
+                        data,
+                        [noData, 'null'].contains(type) ? null : type,
+                        [noData, 'null'].contains(createdAt) ? null : createdAt,
+                        index: index,
+                        starred: currentStarred.value,
                       );
                     },
                   ),
