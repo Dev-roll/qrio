@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -39,28 +40,11 @@ class _ScanCodeState extends State<ScanCode> {
       body: Stack(
         alignment: Alignment.topLeft,
         children: <Widget>[
-          Positioned.fill(
-            child: Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(16),
-                  bottomRight: Radius.circular(16),
-                ),
-              ),
-              clipBehavior: Clip.antiAlias,
-              child: _buildQrView(context),
-            ),
-          ),
+          _buildQrView(context),
           Container(
             width: MediaQuery.of(context).size.width,
-            height: double.infinity,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(16),
-                bottomRight: Radius.circular(16),
-              ),
-              color: Color(0x22000000),
-            ),
+            height: MediaQuery.of(context).size.height,
+            color: const Color(0x22000000),
           ),
           ValueListenableBuilder(
             valueListenable: controller.torchState,
@@ -84,45 +68,46 @@ class _ScanCodeState extends State<ScanCode> {
               );
             },
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                margin: const EdgeInsets.all(8),
-                width: MediaQuery.of(context).size.width,
-                alignment: Alignment.bottomCenter,
-                child: IconButton(
-                  onPressed: () async {
-                    final List<String?> data = await selectAndScanImg();
-                    if (data.isEmpty) {
-                      if (!mounted) return;
-                      showBottomSnackBar(
-                        context,
-                        '検出できませんでした',
-                        foreground: Theme.of(context).colorScheme.onError,
-                      );
-                    } else if (data.contains(null)) {
-                      if (!mounted) return;
-                      showBottomSnackBar(
-                        context,
-                        '画像を選択してください',
-                        foreground: Theme.of(context).colorScheme.onError,
-                      );
-                    } else {
-                      for (var str in data) {
-                        if (str != null) {
-                          await addHistoryData(str, historyTypeSelectImg,
-                              DateTime.now().toString());
-                        }
-                      }
+          Container(
+            margin: EdgeInsets.fromLTRB(
+              8,
+              8,
+              8,
+              MediaQuery.of(context).size.height * defaultSheetHeight(context) +
+                  72,
+            ),
+            width: MediaQuery.of(context).size.width,
+            alignment: Alignment.bottomCenter,
+            child: IconButton(
+              onPressed: () async {
+                final List<String?> data = await selectAndScanImg();
+                if (data.isEmpty) {
+                  if (!mounted) return;
+                  showBottomSnackBar(
+                    context,
+                    '検出できませんでした',
+                    foreground: Theme.of(context).colorScheme.onError,
+                  );
+                } else if (data.contains(null)) {
+                  if (!mounted) return;
+                  showBottomSnackBar(
+                    context,
+                    '画像を選択してください',
+                    foreground: Theme.of(context).colorScheme.onError,
+                  );
+                } else {
+                  for (var str in data) {
+                    if (str != null) {
+                      await addHistoryData(
+                          str, historyTypeSelectImg, DateTime.now().toString());
                     }
-                  },
-                  icon: const Icon(Icons.collections_rounded),
-                  padding: const EdgeInsets.all(20),
-                  color: white,
-                ),
-              ),
-            ],
+                  }
+                }
+              },
+              icon: const Icon(Icons.collections_rounded),
+              padding: const EdgeInsets.all(20),
+              color: white,
+            ),
           ),
         ],
       ),
@@ -130,30 +115,41 @@ class _ScanCodeState extends State<ScanCode> {
   }
 
   Widget _buildQrView(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        MobileScanner(
-          key: qrKey,
-          controller: controller,
-          onDetect: _onDetect,
-        ),
-        Container(
-          width: (MediaQuery.of(context).size.width <
-                  MediaQuery.of(context).size.height)
-              ? MediaQuery.of(context).size.width * 0.5
-              : MediaQuery.of(context).size.height * 0.5,
-          height: (MediaQuery.of(context).size.width <
-                  MediaQuery.of(context).size.height)
-              ? MediaQuery.of(context).size.width * 0.5
-              : MediaQuery.of(context).size.height * 0.5,
-          decoration: BoxDecoration(
-            color: const Color(0x22FFFFFF),
-            border: Border.all(color: white.withOpacity(0.25), width: 2),
-            borderRadius: BorderRadius.circular(12),
+    final borderColor = white.withOpacity(0.32);
+    final squareSize = min(
+          MediaQuery.of(context).size.width,
+          MediaQuery.of(context).size.height,
+        ) *
+        0.5;
+
+    return Center(
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          MobileScanner(
+            key: qrKey,
+            controller: controller,
+            onDetect: _onDetect,
           ),
-        ),
-      ],
+          Container(
+            width: squareSize,
+            height: squareSize,
+            margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).size.height *
+                      defaultSheetHeight(context) +
+                  20,
+            ),
+            child: CustomPaint(
+              painter: _CornerPainter(
+                lineColor: borderColor,
+                lineWidth: 3,
+                radius: 12,
+                cornerSize: 32,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -171,5 +167,90 @@ class _ScanCodeState extends State<ScanCode> {
   void dispose() {
     controller.dispose();
     super.dispose();
+  }
+}
+
+class _CornerPainter extends CustomPainter {
+  const _CornerPainter({
+    required this.lineColor,
+    required this.lineWidth,
+    required this.radius,
+    required this.cornerSize,
+  });
+
+  final Color lineColor;
+  final double lineWidth;
+  final double radius;
+  final double cornerSize;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = lineColor
+      ..strokeWidth = lineWidth
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke;
+
+    final path = Path()
+      ..moveTo(0, cornerSize)
+      ..lineTo(0, radius)
+      ..arcTo(
+        Rect.fromCenter(
+          center: Offset(radius, radius),
+          width: radius * 2,
+          height: radius * 2,
+        ),
+        pi,
+        pi / 2,
+        false,
+      )
+      ..lineTo(cornerSize, 0)
+      ..moveTo(size.width - cornerSize, 0)
+      ..lineTo(size.width - radius, 0)
+      ..arcTo(
+        Rect.fromCenter(
+          center: Offset(size.width - radius, radius),
+          width: radius * 2,
+          height: radius * 2,
+        ),
+        -pi / 2,
+        pi / 2,
+        false,
+      )
+      ..lineTo(size.width, cornerSize)
+      ..moveTo(size.width, size.height - cornerSize)
+      ..lineTo(size.width, size.height - radius)
+      ..arcTo(
+        Rect.fromCenter(
+          center: Offset(size.width - radius, size.height - radius),
+          width: radius * 2,
+          height: radius * 2,
+        ),
+        0,
+        pi / 2,
+        false,
+      )
+      ..lineTo(size.width - cornerSize, size.height)
+      ..moveTo(cornerSize, size.height)
+      ..lineTo(radius, size.height)
+      ..arcTo(
+        Rect.fromCenter(
+          center: Offset(radius, size.height - radius),
+          width: radius * 2,
+          height: radius * 2,
+        ),
+        pi / 2,
+        pi / 2,
+        false,
+      )
+      ..lineTo(0, size.height - cornerSize);
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(_CornerPainter oldDelegate) {
+    return oldDelegate.lineColor != lineColor ||
+        oldDelegate.lineWidth != lineWidth;
   }
 }
