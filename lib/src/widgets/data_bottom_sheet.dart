@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -49,6 +51,23 @@ class DataBottomSheet extends HookWidget {
     }
 
     final currentStarred = useState(starred);
+    final isRecent = useState(
+        DateTime.now().difference(parseDate(createdAt)).inSeconds <
+            historyDurationSeconds);
+
+    useEffect(() {
+      final elapsedSeconds =
+          DateTime.now().difference(parseDate(createdAt)).inSeconds;
+      final remainingSeconds = historyDurationSeconds - elapsedSeconds;
+      if (remainingSeconds <= 0) {
+        isRecent.value = false;
+        return null;
+      }
+      final timer = Timer(Duration(seconds: remainingSeconds), () {
+        isRecent.value = false;
+      });
+      return timer.cancel;
+    });
 
     return Container(
       height: 600,
@@ -146,6 +165,29 @@ class DataBottomSheet extends HookWidget {
                       .withOpacity(0.6),
                 ),
               ),
+              if (isRecent.value) ...{
+                const Spacer(),
+                Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(badgeSize),
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                  child: Center(
+                    child: Text(
+                      'NEW',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                        height: 1.4,
+                        color: Theme.of(context).colorScheme.onError,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+              }
             ],
           ),
           Row(
