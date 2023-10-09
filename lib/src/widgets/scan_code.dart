@@ -36,6 +36,8 @@ class _ScanCodeState extends State<ScanCode> {
 
   @override
   Widget build(BuildContext context) {
+    const tabBarWidth = 240.0;
+
     return Scaffold(
       body: Stack(
         alignment: Alignment.topLeft,
@@ -70,14 +72,17 @@ class _ScanCodeState extends State<ScanCode> {
           ),
           Container(
             margin: EdgeInsets.fromLTRB(
-              8,
+              max(
+                (MediaQuery.of(context).size.width - tabBarWidth) / 2 - 64,
+                0,
+              ),
               8,
               8,
               MediaQuery.of(context).size.height * defaultSheetHeight(context) +
-                  72,
+                  5,
             ),
+            alignment: Alignment.bottomLeft,
             width: MediaQuery.of(context).size.width,
-            alignment: Alignment.bottomCenter,
             child: IconButton(
               onPressed: () async {
                 final List<String?> data = await selectAndScanImg();
