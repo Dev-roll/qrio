@@ -23,40 +23,28 @@ class _QrioState extends ConsumerState<Qrio>
   String? _sharedText;
   final List<Tab> tabs = <Tab>[
     const Tab(
-      icon: Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
-            width: 8,
-          ),
+          // SizedBox(width: 2),
           Icon(Icons.filter_center_focus_rounded),
-          SizedBox(
-            width: 8,
-          ),
+          SizedBox(width: 8),
           Text('読み取り'),
-          SizedBox(
-            width: 8,
-          ),
+          SizedBox(width: 4),
         ],
       ),
     ),
     const Tab(
-      icon: Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
-            width: 8,
-          ),
+          // SizedBox(width: 2),
           Icon(Icons.edit_rounded),
-          SizedBox(
-            width: 8,
-          ),
+          SizedBox(width: 8),
           Text('作成'),
-          SizedBox(
-            width: 10,
-          ),
+          SizedBox(width: 4),
         ],
       ),
     ),
@@ -145,46 +133,58 @@ class _QrioState extends ConsumerState<Qrio>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: TabBarView(
-        controller: tabController,
-        children: const [
-          ScanCode(),
-          Editor(),
-        ],
-      ),
-      bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min,
+      body: Stack(
+        alignment: AlignmentDirectional.bottomCenter,
         children: [
-          const SizedBox(
-            height: 12,
+          TabBarView(
+            controller: tabController,
+            children: const [
+              ScanCode(),
+              Editor(),
+            ],
           ),
-          Theme(
-            data: ThemeData(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-            ),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 280),
-              child: TabBar(
-                tabs: tabs,
-                controller: tabController,
-                isScrollable: true,
-                labelColor: Theme.of(context).colorScheme.onPrimary,
-                unselectedLabelColor:
-                    Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
-                indicator: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40),
-                  color: Theme.of(context).colorScheme.primary,
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Theme(
+                data: ThemeData(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
                 ),
-                indicatorSize: TabBarIndicatorSize.label,
-                indicatorPadding: const EdgeInsets.fromLTRB(-8, 0, -8, 0),
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? black
+                        : white,
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                  child: TabBar(
+                    tabs: tabs,
+                    controller: tabController,
+                    isScrollable: true,
+                    labelColor: Theme.of(context).colorScheme.onPrimary,
+                    unselectedLabelColor: Theme.of(context)
+                        .colorScheme
+                        .onBackground
+                        .withOpacity(0.5),
+                    padding: EdgeInsets.zero,
+                    indicator: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    indicatorSize: TabBarIndicatorSize.label,
+                    indicatorWeight: 0,
+                    indicatorPadding: const EdgeInsets.fromLTRB(-16, 0, -16, 0),
+                  ),
+                ),
               ),
-            ),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height *
-                    defaultSheetHeight(context) +
-                10,
+              SizedBox(
+                height: MediaQuery.of(context).size.height *
+                        defaultSheetHeight(context) +
+                    10,
+              ),
+            ],
           ),
         ],
       ),
