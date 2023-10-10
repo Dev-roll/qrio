@@ -12,6 +12,7 @@ final qrImageConfigProvider =
   (ref) => QrImageConfigNotifier(),
 );
 final selectedIndexProvider = StateProvider<int>((ref) => 0);
+final isHistoryExpandedProvider = StateProvider<bool>((ref) => false);
 
 class App extends ConsumerWidget {
   const App({super.key});

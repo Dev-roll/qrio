@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qrio/src/app.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/models/history_model.dart';
 import 'package:qrio/src/utils.dart';
@@ -69,6 +70,8 @@ class History extends ConsumerWidget {
     final _ = ref.refresh(futureProvider);
     final asyncValue = ref.watch(futureProvider);
     final offset = ref.watch(scrollOffsetProvider);
+    bool isHistoryExpanded = ref.watch(isHistoryExpandedProvider);
+
     return asyncValue.when(
       error: (err, _) => Text(err.toString()), //エラー時
       loading: () => const CircularProgressIndicator(), //読み込み時
@@ -165,6 +168,21 @@ class History extends ConsumerWidget {
                       ),
                       Row(
                         children: [
+                          isHistoryExpanded
+                              ? IconButton(
+                                  onPressed: () {
+                                    setIsHistoryExpanded(ref, false);
+                                  },
+                                  icon: const Icon(Icons.view_agenda_rounded),
+                                  padding: const EdgeInsets.all(16.0),
+                                )
+                              : IconButton(
+                                  onPressed: () {
+                                    setIsHistoryExpanded(ref, true);
+                                  },
+                                  icon: const Icon(Icons.view_headline_rounded),
+                                  padding: const EdgeInsets.all(16.0),
+                                ),
                           if (hisLen != 0 &&
                               DateTime.now()
                                       .difference(parseDate(
@@ -303,6 +321,9 @@ class History extends ConsumerWidget {
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: isHistoryExpanded
+                              ? CrossAxisAlignment.start
+                              : CrossAxisAlignment.center,
                           children: [
                             const SizedBox(width: 4),
                             IconButton(
@@ -322,25 +343,34 @@ class History extends ConsumerWidget {
                               ),
                               padding: const EdgeInsets.all(16.0),
                             ),
-                            const SizedBox(width: 0),
                             Expanded(
-                              child: Text(
-                                data,
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: linkFormat.hasMatch(data.toString())
-                                      ? Theme.of(context).colorScheme.secondary
-                                      : Theme.of(context)
-                                          .colorScheme
-                                          .onBackground,
-                                  decoration:
-                                      linkFormat.hasMatch(data.toString())
-                                          ? TextDecoration.underline
-                                          : TextDecoration.none,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: isHistoryExpanded ? 16 : 0,
                                 ),
-                                overflow: TextOverflow.fade,
-                                maxLines: 1,
-                                softWrap: false,
+                                child: Text(
+                                  data,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    height: 1.6,
+                                    color: linkFormat.hasMatch(data.toString())
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .secondary
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
+                                    decoration:
+                                        linkFormat.hasMatch(data.toString())
+                                            ? TextDecoration.underline
+                                            : TextDecoration.none,
+                                  ),
+                                  overflow: isHistoryExpanded
+                                      ? TextOverflow.visible
+                                      : TextOverflow.fade,
+                                  maxLines: isHistoryExpanded ? 100 : 1,
+                                  softWrap: isHistoryExpanded,
+                                ),
                               ),
                             ),
                             Row(

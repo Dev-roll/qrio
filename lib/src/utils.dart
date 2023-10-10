@@ -5,10 +5,12 @@ import 'package:csv/csv.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:qrio/src/app.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/models/history_model.dart';
 import 'package:qrio/src/widgets/bottom_snack_bar.dart';
@@ -23,6 +25,10 @@ final DraggableScrollableController draggableScrollableController =
 double defaultSheetHeight(BuildContext context) {
   double screenHeight = MediaQuery.of(context).size.height;
   return sheetMinHeight / screenHeight;
+}
+
+void setIsHistoryExpanded(WidgetRef ref, bool value) {
+  ref.read(isHistoryExpandedProvider.notifier).state = value;
 }
 
 int qrErrorCorrectLevelToIndex(int level) {
