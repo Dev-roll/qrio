@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qrio/src/app.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/enums/default_popup_menu_items_type.dart';
 import 'package:qrio/src/screens/share_app.dart';
 import 'package:qrio/src/utils.dart';
 import 'package:qrio/src/widgets/select_theme_dialog.dart';
 
-class DefaultPopupMenu extends StatefulWidget {
+class DefaultPopupMenu extends ConsumerStatefulWidget {
   const DefaultPopupMenu({super.key});
 
   @override
-  State<DefaultPopupMenu> createState() => _DefaultPopupMenuState();
+  ConsumerState<DefaultPopupMenu> createState() => _DefaultPopupMenuState();
 }
 
-class _DefaultPopupMenuState extends State<DefaultPopupMenu>
+class _DefaultPopupMenuState extends ConsumerState<DefaultPopupMenu>
     with SingleTickerProviderStateMixin {
   OverlayEntry? _overlayEntry;
   bool _isMenuOpen = false;
@@ -168,6 +170,7 @@ class _DefaultPopupMenuState extends State<DefaultPopupMenu>
 
   @override
   Widget build(BuildContext context) {
+    final qrioState = ref.watch(qrioStateProvider);
     return IconButton(
       onPressed: () {
         if (_isMenuOpen) {
@@ -178,7 +181,7 @@ class _DefaultPopupMenuState extends State<DefaultPopupMenu>
       },
       icon: const Icon(Icons.more_vert_rounded),
       color: Theme.of(context).brightness == Brightness.dark ||
-              tabController.index == 0
+              qrioState.selectedTabIndex == 0
           ? white
           : black,
     );
