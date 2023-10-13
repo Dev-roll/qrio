@@ -28,7 +28,8 @@ class Home extends ConsumerWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final topPadding = MediaQuery.of(context).padding.top;
     const topContentHeight = appBarHeight + qrCodeViewHeight;
-    int selectedIndex = ref.watch(selectedIndexProvider);
+    final qrioState = ref.watch(qrioStateProvider);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
@@ -52,7 +53,7 @@ class Home extends ConsumerWidget {
                 children: [
                   SvgPicture.asset(
                     Theme.of(context).brightness == Brightness.dark ||
-                            selectedIndex == 0
+                            qrioState.selectedTabIndex == 0
                         ? 'assets/svg/icon_dark.svg'
                         : 'assets/svg/icon_light.svg',
                     width: 24,
@@ -63,7 +64,7 @@ class Home extends ConsumerWidget {
                     style: TextStyle(
                       fontSize: 22,
                       color: Theme.of(context).brightness == Brightness.dark ||
-                              selectedIndex == 0
+                              qrioState.selectedTabIndex == 0
                           ? white
                           : black,
                     ),

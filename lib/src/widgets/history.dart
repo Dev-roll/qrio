@@ -70,7 +70,7 @@ class History extends ConsumerWidget {
     final _ = ref.refresh(futureProvider);
     final asyncValue = ref.watch(futureProvider);
     final offset = ref.watch(scrollOffsetProvider);
-    bool isHistoryExpanded = ref.watch(isHistoryExpandedProvider);
+    bool isHistoryExpanded = ref.watch(qrioStateProvider).isHistoryExpanded;
 
     return asyncValue.when(
       error: (err, _) => Text(err.toString()), //エラー時
@@ -171,14 +171,18 @@ class History extends ConsumerWidget {
                           isHistoryExpanded
                               ? IconButton(
                                   onPressed: () {
-                                    setIsHistoryExpanded(ref, false);
+                                    ref
+                                        .read(qrioStateProvider.notifier)
+                                        .setIsHistoryExpanded(false);
                                   },
                                   icon: const Icon(Icons.view_agenda_rounded),
                                   padding: const EdgeInsets.all(16.0),
                                 )
                               : IconButton(
                                   onPressed: () {
-                                    setIsHistoryExpanded(ref, true);
+                                    ref
+                                        .read(qrioStateProvider.notifier)
+                                        .setIsHistoryExpanded(true);
                                   },
                                   icon: const Icon(Icons.view_headline_rounded),
                                   padding: const EdgeInsets.all(16.0),

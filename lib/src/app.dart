@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qrio/main.dart';
 import 'package:qrio/src/qr_image_config.dart';
+import 'package:qrio/src/qrio_state.dart';
 import 'package:qrio/src/screens/home.dart';
 import 'package:qrio/src/utils.dart';
 
@@ -11,8 +12,9 @@ final qrImageConfigProvider =
     StateNotifierProvider<QrImageConfigNotifier, QrImageConfig>(
   (ref) => QrImageConfigNotifier(),
 );
-final selectedIndexProvider = StateProvider<int>((ref) => 0);
-final isHistoryExpandedProvider = StateProvider<bool>((ref) => false);
+final qrioStateProvider = StateNotifierProvider<QrioStateNotifier, QrioState>(
+  (ref) => QrioStateNotifier(),
+);
 
 class App extends ConsumerWidget {
   const App({super.key});
