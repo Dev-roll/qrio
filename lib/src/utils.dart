@@ -113,7 +113,7 @@ Future<void> updateHistory() async {
     return HistoryModel(
       data: data.trim(),
       type: null,
-      starred: false,
+      pinned: false,
       createdAt: DateTime.now().toString(),
     ).toJson();
   }).toList();
@@ -132,7 +132,7 @@ Future<bool?> addHistoryData(
   String? type,
   String? createdAt, {
   int index = -1,
-  bool starred = false,
+  bool pinned = false,
 }) async {
   final prefs = await SharedPreferences.getInstance();
   String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
@@ -146,7 +146,7 @@ Future<bool?> addHistoryData(
     final addObj = HistoryModel(
       data: addStr,
       type: type,
-      starred: starred,
+      pinned: pinned,
       createdAt: createdAt,
     ).toJson();
     if (index < historyObj.length && index >= 0) {
@@ -174,14 +174,13 @@ Future<void> deleteAllHistory() async {
   await prefs.setString(qrioHistoryAsStr, '[]');
 }
 
-Future<void> switchStarred(int index) async {
+Future<void> switchPinned(int index) async {
   final prefs = await SharedPreferences.getInstance();
   String historyList = prefs.getString(qrioHistoryAsStr) ?? '[]';
   if (historyList == '') historyList = '[]';
   final List<dynamic> historyObj = jsonDecode(historyList);
   HistoryModel targetModel = HistoryModel.fromJson(historyObj[index]);
-  HistoryModel updatedModel =
-      targetModel.copyWith(starred: !targetModel.starred);
+  HistoryModel updatedModel = targetModel.copyWith(pinned: !targetModel.pinned);
   historyObj[index] = updatedModel.toJson();
   await prefs.setString(qrioHistoryAsStr, jsonEncode(historyObj));
 }

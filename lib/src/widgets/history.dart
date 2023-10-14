@@ -92,21 +92,21 @@ class History extends ConsumerWidget {
             })
             .map((entry) => entry.key)
             .toList();
-        List<int> starredHistory = historyObj
+        List<int> pinnedHistory = historyObj
             .asMap()
             .entries
             .where((entry) {
               final model = HistoryModel.fromJson(entry.value);
-              return model.starred && !newHistory.contains(entry.key);
+              return model.pinned && !newHistory.contains(entry.key);
             })
             .map((entry) => entry.key)
             .toList();
-        List<int> unstarredHistory = historyObj
+        List<int> unpinnedHistory = historyObj
             .asMap()
             .entries
             .where((entry) {
               final model = HistoryModel.fromJson(entry.value);
-              return !model.starred && !newHistory.contains(entry.key);
+              return !model.pinned && !newHistory.contains(entry.key);
             })
             .map((entry) => entry.key)
             .toList();
@@ -285,15 +285,15 @@ class History extends ConsumerWidget {
                   itemBuilder: (context, i) {
                     List<int> combinedHistory = [
                       ...newHistory,
-                      ...starredHistory,
-                      ...unstarredHistory
+                      ...pinnedHistory,
+                      ...unpinnedHistory
                     ];
                     int idx = combinedHistory[i];
                     int index = hisLen - idx - 1;
                     HistoryModel model = HistoryModel.fromJson(historyObj[idx]);
                     String data = model.data;
                     String type = model.type ?? noData;
-                    bool starred = model.starred;
+                    bool pinned = model.pinned;
                     String createdAt = model.createdAt ?? noData;
 
                     bool isRecent = false;
@@ -332,13 +332,13 @@ class History extends ConsumerWidget {
                             const SizedBox(width: 4),
                             IconButton(
                               onPressed: () {
-                                switchStarred(index);
+                                switchPinned(index);
                               },
                               icon: Icon(
-                                starred
+                                pinned
                                     ? Icons.star_rounded
                                     : Icons.star_border_rounded,
-                                color: starred
+                                color: pinned
                                     ? Theme.of(context).colorScheme.primary
                                     : Theme.of(context)
                                         .colorScheme
@@ -399,7 +399,7 @@ class History extends ConsumerWidget {
                                           index: index,
                                           data: data,
                                           type: type,
-                                          starred: starred,
+                                          pinned: pinned,
                                           createdAt: createdAt,
                                           ref: ref,
                                         );

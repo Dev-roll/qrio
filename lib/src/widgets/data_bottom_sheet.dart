@@ -16,14 +16,14 @@ class DataBottomSheet extends HookWidget {
     required this.index,
     required this.data,
     required this.type,
-    required this.starred,
+    required this.pinned,
     required this.createdAt,
     required this.ref,
   });
   final int index;
   final String data;
   final String type;
-  final bool starred;
+  final bool pinned;
   final String createdAt;
   final WidgetRef ref;
 
@@ -50,7 +50,7 @@ class DataBottomSheet extends HookWidget {
         displayInfo = 'カメラスキャン ・ $type';
     }
 
-    final currentStarred = useState(starred);
+    final currentPinned = useState(pinned);
     final isRecent = useState(
         DateTime.now().difference(parseDate(createdAt)).inSeconds <
             historyDurationSeconds);
@@ -229,8 +229,8 @@ class DataBottomSheet extends HookWidget {
             color: Colors.transparent,
             child: InkWell(
               onTap: () {
-                switchStarred(index);
-                currentStarred.value = !currentStarred.value;
+                switchPinned(index);
+                currentPinned.value = !currentPinned.value;
               },
               child: Row(
                 children: [
@@ -239,7 +239,7 @@ class DataBottomSheet extends HookWidget {
                     height: 52,
                   ),
                   Icon(
-                    currentStarred.value
+                    currentPinned.value
                         ? Icons.star_rounded
                         : Icons.star_border_rounded,
                     color: Theme.of(context)
@@ -249,7 +249,7 @@ class DataBottomSheet extends HookWidget {
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    currentStarred.value ? 'お気に入りから削除' : 'お気に入りに追加',
+                    currentPinned.value ? 'お気に入りから削除' : 'お気に入りに追加',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
                     ),
@@ -388,7 +388,7 @@ class DataBottomSheet extends HookWidget {
                         [noData, 'null'].contains(type) ? null : type,
                         [noData, 'null'].contains(createdAt) ? null : createdAt,
                         index: index,
-                        starred: currentStarred.value,
+                        pinned: currentPinned.value,
                       );
                     },
                   ),

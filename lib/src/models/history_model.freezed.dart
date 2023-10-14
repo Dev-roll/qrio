@@ -21,10 +21,8 @@ HistoryModel _$HistoryModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$HistoryModel {
   String get data => throw _privateConstructorUsedError;
+  bool get pinned => throw _privateConstructorUsedError;
   String? get type => throw _privateConstructorUsedError;
-  @JsonKey(name: 'pinned')
-  bool get starred => throw _privateConstructorUsedError;
-  @JsonKey(name: 'created_at')
   String? get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,11 +37,7 @@ abstract class $HistoryModelCopyWith<$Res> {
           HistoryModel value, $Res Function(HistoryModel) then) =
       _$HistoryModelCopyWithImpl<$Res, HistoryModel>;
   @useResult
-  $Res call(
-      {String data,
-      String? type,
-      @JsonKey(name: 'pinned') bool starred,
-      @JsonKey(name: 'created_at') String? createdAt});
+  $Res call({String data, bool pinned, String? type, String? createdAt});
 }
 
 /// @nodoc
@@ -60,8 +54,8 @@ class _$HistoryModelCopyWithImpl<$Res, $Val extends HistoryModel>
   @override
   $Res call({
     Object? data = null,
+    Object? pinned = null,
     Object? type = freezed,
-    Object? starred = null,
     Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
@@ -69,14 +63,14 @@ class _$HistoryModelCopyWithImpl<$Res, $Val extends HistoryModel>
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as String,
+      pinned: null == pinned
+          ? _value.pinned
+          : pinned // ignore: cast_nullable_to_non_nullable
+              as bool,
       type: freezed == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String?,
-      starred: null == starred
-          ? _value.starred
-          : starred // ignore: cast_nullable_to_non_nullable
-              as bool,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -93,11 +87,7 @@ abstract class _$$_HistoryModelCopyWith<$Res>
       __$$_HistoryModelCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String data,
-      String? type,
-      @JsonKey(name: 'pinned') bool starred,
-      @JsonKey(name: 'created_at') String? createdAt});
+  $Res call({String data, bool pinned, String? type, String? createdAt});
 }
 
 /// @nodoc
@@ -112,8 +102,8 @@ class __$$_HistoryModelCopyWithImpl<$Res>
   @override
   $Res call({
     Object? data = null,
+    Object? pinned = null,
     Object? type = freezed,
-    Object? starred = null,
     Object? createdAt = freezed,
   }) {
     return _then(_$_HistoryModel(
@@ -121,14 +111,14 @@ class __$$_HistoryModelCopyWithImpl<$Res>
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as String,
+      pinned: null == pinned
+          ? _value.pinned
+          : pinned // ignore: cast_nullable_to_non_nullable
+              as bool,
       type: freezed == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String?,
-      starred: null == starred
-          ? _value.starred
-          : starred // ignore: cast_nullable_to_non_nullable
-              as bool,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -141,10 +131,7 @@ class __$$_HistoryModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_HistoryModel implements _HistoryModel {
   const _$_HistoryModel(
-      {required this.data,
-      this.type,
-      @JsonKey(name: 'pinned') required this.starred,
-      @JsonKey(name: 'created_at') this.createdAt});
+      {required this.data, required this.pinned, this.type, this.createdAt});
 
   factory _$_HistoryModel.fromJson(Map<String, dynamic> json) =>
       _$$_HistoryModelFromJson(json);
@@ -152,17 +139,15 @@ class _$_HistoryModel implements _HistoryModel {
   @override
   final String data;
   @override
+  final bool pinned;
+  @override
   final String? type;
   @override
-  @JsonKey(name: 'pinned')
-  final bool starred;
-  @override
-  @JsonKey(name: 'created_at')
   final String? createdAt;
 
   @override
   String toString() {
-    return 'HistoryModel(data: $data, type: $type, starred: $starred, createdAt: $createdAt)';
+    return 'HistoryModel(data: $data, pinned: $pinned, type: $type, createdAt: $createdAt)';
   }
 
   @override
@@ -171,15 +156,15 @@ class _$_HistoryModel implements _HistoryModel {
         (other.runtimeType == runtimeType &&
             other is _$_HistoryModel &&
             (identical(other.data, data) || other.data == data) &&
+            (identical(other.pinned, pinned) || other.pinned == pinned) &&
             (identical(other.type, type) || other.type == type) &&
-            (identical(other.starred, starred) || other.starred == starred) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, data, type, starred, createdAt);
+  int get hashCode => Object.hash(runtimeType, data, pinned, type, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -198,9 +183,9 @@ class _$_HistoryModel implements _HistoryModel {
 abstract class _HistoryModel implements HistoryModel {
   const factory _HistoryModel(
       {required final String data,
+      required final bool pinned,
       final String? type,
-      @JsonKey(name: 'pinned') required final bool starred,
-      @JsonKey(name: 'created_at') final String? createdAt}) = _$_HistoryModel;
+      final String? createdAt}) = _$_HistoryModel;
 
   factory _HistoryModel.fromJson(Map<String, dynamic> json) =
       _$_HistoryModel.fromJson;
@@ -208,12 +193,10 @@ abstract class _HistoryModel implements HistoryModel {
   @override
   String get data;
   @override
+  bool get pinned;
+  @override
   String? get type;
   @override
-  @JsonKey(name: 'pinned')
-  bool get starred;
-  @override
-  @JsonKey(name: 'created_at')
   String? get createdAt;
   @override
   @JsonKey(ignore: true)
