@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qrio/src/app.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/qr_image_config.dart';
@@ -96,38 +95,17 @@ class ConfigItems extends ConsumerWidget {
             label: selectQrEyeShapeOptionGroup
                 .getLabelFromValue(qrImageConfig.eyeShape),
             icon: selectQrEyeShapeOptionGroup.icon!,
-            onTapListener: openDialogFactory(
-              SelectQrConfigDialog<QrEyeShape>(
-                title: selectQrEyeShapeOptionGroup.title,
-                icon: selectQrEyeShapeOptionGroup.icon,
-                options: selectQrEyeShapeOptionGroup.options,
-                editConfigFunc: (value) {
-                  ref
-                      .read(qrImageConfigProvider.notifier)
-                      .editEyeShape(eyeShape: value!);
-                },
-                groupValue: qrImageConfig.eyeShape,
-              ),
-            ),
+            onTapListener: (context) =>
+                ref.read(qrImageConfigProvider.notifier).toggleEyeShape(),
           ),
           ConfigItem(
             title: selectQrDataModuleShapeOptionGroup.title,
             label: selectQrDataModuleShapeOptionGroup
                 .getLabelFromValue(qrImageConfig.dataModuleShape),
             icon: selectQrDataModuleShapeOptionGroup.icon!,
-            onTapListener: openDialogFactory(
-              SelectQrConfigDialog<QrDataModuleShape>(
-                title: selectQrDataModuleShapeOptionGroup.title,
-                icon: selectQrDataModuleShapeOptionGroup.icon,
-                options: selectQrDataModuleShapeOptionGroup.options,
-                editConfigFunc: (value) {
-                  ref
-                      .read(qrImageConfigProvider.notifier)
-                      .editDataModuleShape(dataModuleShape: value!);
-                },
-                groupValue: qrImageConfig.dataModuleShape,
-              ),
-            ),
+            onTapListener: (context) => ref
+                .read(qrImageConfigProvider.notifier)
+                .toggleDataModuleShape(),
           ),
           ConfigItem(
             title: selectQrErrorCorrectLevelOptionGroup.title,
