@@ -168,25 +168,26 @@ class History extends ConsumerWidget {
                       ),
                       Row(
                         children: [
-                          isHistoryExpanded
-                              ? IconButton(
-                                  onPressed: () {
+                          IconButton(
+                            onPressed: historyObj.isEmpty
+                                ? null
+                                : () {
                                     ref
                                         .read(qrioStateProvider.notifier)
-                                        .setIsHistoryExpanded(false);
+                                        .setIsHistoryExpanded(
+                                            !isHistoryExpanded);
                                   },
-                                  icon: const Icon(Icons.view_agenda_rounded),
-                                  padding: const EdgeInsets.all(16.0),
-                                )
-                              : IconButton(
-                                  onPressed: () {
-                                    ref
-                                        .read(qrioStateProvider.notifier)
-                                        .setIsHistoryExpanded(true);
-                                  },
-                                  icon: const Icon(Icons.view_headline_rounded),
-                                  padding: const EdgeInsets.all(16.0),
-                                ),
+                            icon: Icon(
+                              isHistoryExpanded
+                                  ? Icons.view_agenda_rounded
+                                  : Icons.view_headline_rounded,
+                            ),
+                            disabledColor: Theme.of(context)
+                                .colorScheme
+                                .onBackground
+                                .withOpacity(0.3),
+                            padding: const EdgeInsets.all(16.0),
+                          ),
                           if (hisLen != 0 &&
                               DateTime.now()
                                       .difference(parseDate(
