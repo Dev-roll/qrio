@@ -11,6 +11,7 @@ class Editor extends StatelessWidget {
   Widget build(BuildContext context) {
     return _Unfocus(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Form(
           child: Column(
             mainAxisSize: MainAxisSize.min,
