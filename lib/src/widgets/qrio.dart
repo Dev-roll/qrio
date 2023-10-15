@@ -27,7 +27,6 @@ class _QrioState extends ConsumerState<Qrio>
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // SizedBox(width: 2),
           Icon(Icons.filter_center_focus_rounded),
           SizedBox(width: 8),
           Text('読み取り'),
@@ -40,7 +39,6 @@ class _QrioState extends ConsumerState<Qrio>
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // SizedBox(width: 2),
           Icon(Icons.edit_rounded),
           SizedBox(width: 8),
           Text('作成'),
@@ -55,10 +53,9 @@ class _QrioState extends ConsumerState<Qrio>
     super.initState();
     tabController = TabController(length: tabs.length, vsync: this);
     tabController.addListener(() {
-      setState(() {
-        ref.watch(selectedIndexProvider.notifier).state = tabController.index;
-        // selectedIndex = tabController.index;
-      });
+      ref
+          .read(qrioStateProvider.notifier)
+          .setSelectedTabIndex(tabController.index);
     });
 
     // For sharing images coming from outside the app while the app is in the memory
@@ -133,6 +130,7 @@ class _QrioState extends ConsumerState<Qrio>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         alignment: AlignmentDirectional.bottomCenter,
         children: [

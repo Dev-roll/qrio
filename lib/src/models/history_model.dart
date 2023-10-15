@@ -7,9 +7,9 @@ part 'history_model.g.dart';
 class HistoryModel with _$HistoryModel {
   const factory HistoryModel({
     required String data,
+    required bool pinned,
     String? type,
-    @JsonKey(name: 'pinned') required bool starred,
-    @JsonKey(name: 'created_at') String? createdAt,
+    String? createdAt,
   }) = _HistoryModel;
 
   factory HistoryModel.fromJson(Map<String, dynamic> json) =>

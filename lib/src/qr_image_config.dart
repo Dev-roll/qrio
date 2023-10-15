@@ -78,6 +78,22 @@ class QrImageConfigNotifier extends StateNotifier<QrImageConfig> {
     state = state.copyWith(dataModuleShape: dataModuleShape);
   }
 
+  void toggleEyeShape() {
+    state = state.copyWith(
+      eyeShape: state.eyeShape == QrEyeShape.square
+          ? QrEyeShape.circle
+          : QrEyeShape.square,
+    );
+  }
+
+  void toggleDataModuleShape() {
+    state = state.copyWith(
+      dataModuleShape: state.dataModuleShape == QrDataModuleShape.circle
+          ? QrDataModuleShape.square
+          : QrDataModuleShape.circle,
+    );
+  }
+
   void toggleIsReversed() {
     state = state.copyWith(isReversed: !state.isReversed);
   }

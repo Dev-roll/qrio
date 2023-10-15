@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qrio/src/app.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/models/history_model.dart';
 import 'package:qrio/src/utils.dart';
@@ -69,6 +70,8 @@ class History extends ConsumerWidget {
     final _ = ref.refresh(futureProvider);
     final asyncValue = ref.watch(futureProvider);
     final offset = ref.watch(scrollOffsetProvider);
+    bool isHistoryExpanded = ref.watch(qrioStateProvider).isHistoryExpanded;
+
     return asyncValue.when(
       error: (err, _) => Text(err.toString()), //エラー時
       loading: () => const CircularProgressIndicator(), //読み込み時
@@ -89,21 +92,21 @@ class History extends ConsumerWidget {
             })
             .map((entry) => entry.key)
             .toList();
-        List<int> starredHistory = historyObj
+        List<int> pinnedHistory = historyObj
             .asMap()
             .entries
             .where((entry) {
               final model = HistoryModel.fromJson(entry.value);
-              return model.starred && !newHistory.contains(entry.key);
+              return model.pinned && !newHistory.contains(entry.key);
             })
             .map((entry) => entry.key)
             .toList();
-        List<int> unstarredHistory = historyObj
+        List<int> unpinnedHistory = historyObj
             .asMap()
             .entries
             .where((entry) {
               final model = HistoryModel.fromJson(entry.value);
-              return !model.starred && !newHistory.contains(entry.key);
+              return !model.pinned && !newHistory.contains(entry.key);
             })
             .map((entry) => entry.key)
             .toList();
@@ -165,6 +168,26 @@ class History extends ConsumerWidget {
                       ),
                       Row(
                         children: [
+                          IconButton(
+                            onPressed: historyObj.isEmpty
+                                ? null
+                                : () {
+                                    ref
+                                        .read(qrioStateProvider.notifier)
+                                        .setIsHistoryExpanded(
+                                            !isHistoryExpanded);
+                                  },
+                            icon: Icon(
+                              isHistoryExpanded
+                                  ? Icons.view_agenda_rounded
+                                  : Icons.view_headline_rounded,
+                            ),
+                            disabledColor: Theme.of(context)
+                                .colorScheme
+                                .onBackground
+                                .withOpacity(0.3),
+                            padding: const EdgeInsets.all(16.0),
+                          ),
                           if (hisLen != 0 &&
                               DateTime.now()
                                       .difference(parseDate(
@@ -263,15 +286,15 @@ class History extends ConsumerWidget {
                   itemBuilder: (context, i) {
                     List<int> combinedHistory = [
                       ...newHistory,
-                      ...starredHistory,
-                      ...unstarredHistory
+                      ...pinnedHistory,
+                      ...unpinnedHistory
                     ];
                     int idx = combinedHistory[i];
                     int index = hisLen - idx - 1;
                     HistoryModel model = HistoryModel.fromJson(historyObj[idx]);
                     String data = model.data;
                     String type = model.type ?? noData;
-                    bool starred = model.starred;
+                    bool pinned = model.pinned;
                     String createdAt = model.createdAt ?? noData;
 
                     bool isRecent = false;
@@ -303,17 +326,20 @@ class History extends ConsumerWidget {
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: isHistoryExpanded
+                              ? CrossAxisAlignment.start
+                              : CrossAxisAlignment.center,
                           children: [
                             const SizedBox(width: 4),
                             IconButton(
                               onPressed: () {
-                                switchStarred(index);
+                                switchPinned(index);
                               },
                               icon: Icon(
-                                starred
+                                pinned
                                     ? Icons.star_rounded
                                     : Icons.star_border_rounded,
-                                color: starred
+                                color: pinned
                                     ? Theme.of(context).colorScheme.primary
                                     : Theme.of(context)
                                         .colorScheme
@@ -322,25 +348,34 @@ class History extends ConsumerWidget {
                               ),
                               padding: const EdgeInsets.all(16.0),
                             ),
-                            const SizedBox(width: 0),
                             Expanded(
-                              child: Text(
-                                data,
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: linkFormat.hasMatch(data.toString())
-                                      ? Theme.of(context).colorScheme.secondary
-                                      : Theme.of(context)
-                                          .colorScheme
-                                          .onBackground,
-                                  decoration:
-                                      linkFormat.hasMatch(data.toString())
-                                          ? TextDecoration.underline
-                                          : TextDecoration.none,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: isHistoryExpanded ? 16 : 0,
                                 ),
-                                overflow: TextOverflow.fade,
-                                maxLines: 1,
-                                softWrap: false,
+                                child: Text(
+                                  data,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    height: 1.6,
+                                    color: linkFormat.hasMatch(data.toString())
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .secondary
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
+                                    decoration:
+                                        linkFormat.hasMatch(data.toString())
+                                            ? TextDecoration.underline
+                                            : TextDecoration.none,
+                                  ),
+                                  overflow: isHistoryExpanded
+                                      ? TextOverflow.visible
+                                      : TextOverflow.fade,
+                                  maxLines: isHistoryExpanded ? 100 : 1,
+                                  softWrap: isHistoryExpanded,
+                                ),
                               ),
                             ),
                             Row(
@@ -365,7 +400,7 @@ class History extends ConsumerWidget {
                                           index: index,
                                           data: data,
                                           type: type,
-                                          starred: starred,
+                                          pinned: pinned,
                                           createdAt: createdAt,
                                           ref: ref,
                                         );

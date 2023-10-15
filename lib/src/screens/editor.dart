@@ -9,83 +9,65 @@ class Editor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _Unfocus(
-      child: Scaffold(
-        body: Form(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              SizedBox(
-                height: MediaQuery.of(context).padding.top + appBarHeight,
-                child: AppBar(
-                  automaticallyImplyLeading: false,
-                  surfaceTintColor: Colors.transparent,
-                ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Form(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SizedBox(
+              height: MediaQuery.of(context).padding.top + appBarHeight,
+              child: AppBar(
+                automaticallyImplyLeading: false,
+                surfaceTintColor: Colors.transparent,
               ),
-              QrCodePreview(),
-              Expanded(
-                child: Stack(
-                  alignment: AlignmentDirectional.bottomCenter,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).size.height *
-                                defaultSheetHeight(context) +
-                            10,
-                      ),
-                      padding: const EdgeInsets.only(top: 4),
-                      child: const SingleChildScrollView(
-                        padding: EdgeInsets.only(bottom: 64),
-                        child: ConfigItems(),
+            ),
+            QrCodePreview(),
+            Expanded(
+              child: Stack(
+                alignment: AlignmentDirectional.bottomCenter,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).size.height *
+                              defaultSheetHeight(context) +
+                          10,
+                    ),
+                    padding: const EdgeInsets.only(top: 4),
+                    child: const SingleChildScrollView(
+                      padding: EdgeInsets.only(bottom: 64),
+                      child: ConfigItems(),
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 64,
+                    margin: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).size.height *
+                              defaultSheetHeight(context) +
+                          10,
+                    ),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Theme.of(context)
+                              .colorScheme
+                              .background
+                              .withOpacity(0),
+                          Theme.of(context).colorScheme.background,
+                          Theme.of(context).colorScheme.background,
+                        ],
                       ),
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 64,
-                      margin: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).size.height *
-                                defaultSheetHeight(context) +
-                            10,
-                      ),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Theme.of(context)
-                                .colorScheme
-                                .background
-                                .withOpacity(0),
-                            Theme.of(context).colorScheme.background,
-                            Theme.of(context).colorScheme.background,
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
-    );
-  }
-}
-
-class _Unfocus extends StatelessWidget {
-  const _Unfocus({required this.child});
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
-      child: child,
     );
   }
 }

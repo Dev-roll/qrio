@@ -39,6 +39,7 @@ class _ScanCodeState extends State<ScanCode> {
     const tabBarWidth = 240.0;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         alignment: Alignment.topLeft,
         children: <Widget>[
