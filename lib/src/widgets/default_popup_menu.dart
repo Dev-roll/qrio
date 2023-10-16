@@ -180,10 +180,12 @@ class _DefaultPopupMenuState extends ConsumerState<DefaultPopupMenu>
         }
       },
       icon: const Icon(Icons.more_vert_rounded),
-      color: Theme.of(context).brightness == Brightness.dark ||
-              qrioState.selectedTabIndex == 0
+      color: Theme.of(context).brightness == Brightness.dark
           ? white
-          : black,
+          : Color.alphaBlend(
+              black.withOpacity(qrioState.tabOffset),
+              white,
+            ),
     );
   }
 }

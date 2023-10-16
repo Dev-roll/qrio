@@ -335,8 +335,12 @@ class DataBottomSheet extends HookWidget {
                 Navigator.of(context).pop();
                 ref.read(qrImageConfigProvider.notifier).editData(data: data);
                 ConfigItems.updateTextFieldValue(data);
-                if (tabController.index != 1) {
-                  tabController.animateTo(1);
+                if (pageController.page != 1) {
+                  pageController.animateToPage(
+                    1,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.ease,
+                  );
                 }
                 draggableScrollableController.animateTo(
                   0,
