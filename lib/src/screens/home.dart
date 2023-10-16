@@ -54,22 +54,29 @@ class Home extends ConsumerWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SvgPicture.asset(
-                      Theme.of(context).brightness == Brightness.dark ||
-                              qrioState.selectedTabIndex == 0
-                          ? 'assets/svg/icon_dark.svg'
-                          : 'assets/svg/icon_light.svg',
+                      'assets/svg/icon_light.svg',
                       width: 24,
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).brightness == Brightness.dark
+                            ? white
+                            : Color.alphaBlend(
+                                black.withOpacity(qrioState.tabOffset),
+                                white,
+                              ),
+                        BlendMode.srcIn,
+                      ),
                     ),
                     const SizedBox(width: 8),
                     Text(
                       'QR I/O',
                       style: TextStyle(
                         fontSize: 22,
-                        color:
-                            Theme.of(context).brightness == Brightness.dark ||
-                                    qrioState.selectedTabIndex == 0
-                                ? white
-                                : black,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? white
+                            : Color.alphaBlend(
+                                black.withOpacity(qrioState.tabOffset),
+                                white,
+                              ),
                       ),
                     ),
                   ],

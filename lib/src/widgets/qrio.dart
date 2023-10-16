@@ -51,12 +51,10 @@ class _QrioState extends ConsumerState<Qrio>
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: tabs.length, vsync: this);
-    tabController.addListener(() {
-      ref
-          .read(qrioStateProvider.notifier)
-          .setSelectedTabIndex(tabController.index);
-    });
+    pageController = PageController()
+      ..addListener(() {
+        ref.read(qrioStateProvider.notifier).setTabOffset(pageController.page!);
+      });
 
     // For sharing images coming from outside the app while the app is in the memory
     _intentDataStreamSubscription =
@@ -123,19 +121,38 @@ class _QrioState extends ConsumerState<Qrio>
 
   @override
   void dispose() {
+    pageController.dispose();
     _intentDataStreamSubscription.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(qrioStateProvider);
+    final navBgColor =
+        Theme.of(context).brightness == Brightness.dark ? black : white;
+    final leftColor = Color.alphaBlend(
+      Theme.of(context)
+          .colorScheme
+          .onBackground
+          .withOpacity(0.5 * state.tabOffset),
+      navBgColor,
+    );
+    final rightColor = Color.alphaBlend(
+      Theme.of(context)
+          .colorScheme
+          .onBackground
+          .withOpacity(0.5 * (1 - state.tabOffset)),
+      navBgColor,
+    );
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
         alignment: AlignmentDirectional.bottomCenter,
         children: [
-          TabBarView(
-            controller: tabController,
+          PageView(
+            controller: pageController,
             children: const [
               ScanCode(),
               Editor(),
@@ -144,11 +161,9 @@ class _QrioState extends ConsumerState<Qrio>
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Theme(
-                data: ThemeData(
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                ),
+              Transform.translate(
+                offset: Offset.zero,
+                // offset: Offset((0.4 - state.tabOffset) * 110, 0),
                 child: Container(
                   padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
@@ -157,23 +172,85 @@ class _QrioState extends ConsumerState<Qrio>
                         : white,
                     borderRadius: BorderRadius.circular(40),
                   ),
-                  child: TabBar(
-                    tabs: tabs,
-                    controller: tabController,
-                    isScrollable: true,
-                    labelColor: Theme.of(context).colorScheme.onPrimary,
-                    unselectedLabelColor: Theme.of(context)
-                        .colorScheme
-                        .onBackground
-                        .withOpacity(0.5),
-                    padding: EdgeInsets.zero,
-                    indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40),
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    indicatorSize: TabBarIndicatorSize.label,
-                    indicatorWeight: 0,
-                    indicatorPadding: const EdgeInsets.fromLTRB(-16, 0, -16, 0),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: state.tabOffset * 128,
+                        right: (1 - state.tabOffset) * 94,
+                        top: 0,
+                        bottom: 0,
+                        child: Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(40),
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          GestureDetector(
+                              onTap: (() {
+                                pageController.animateToPage(
+                                  0,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.ease,
+                                );
+                              }),
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(40),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.filter_center_focus_rounded,
+                                        color: leftColor),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      '読み取り',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: leftColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                          GestureDetector(
+                              onTap: (() {
+                                pageController.animateToPage(
+                                  1,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.ease,
+                                );
+                              }),
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(40),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.edit_rounded, color: rightColor),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      '作成',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: rightColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ))
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),

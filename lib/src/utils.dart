@@ -16,7 +16,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-late TabController tabController;
+late PageController pageController;
 final DraggableScrollableController draggableScrollableController =
     DraggableScrollableController();
 

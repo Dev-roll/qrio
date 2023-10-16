@@ -4,19 +4,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 @immutable
 class QrioState {
   const QrioState({
-    required this.selectedTabIndex,
+    required this.tabOffset,
     required this.isHistoryExpanded,
   });
 
-  final int selectedTabIndex;
+  final double tabOffset;
   final bool isHistoryExpanded;
 
   QrioState copyWith({
-    int? selectedTabIndex,
+    double? tabOffset,
     bool? isHistoryExpanded,
   }) {
     return QrioState(
-      selectedTabIndex: selectedTabIndex ?? this.selectedTabIndex,
+      tabOffset: tabOffset ?? this.tabOffset,
       isHistoryExpanded: isHistoryExpanded ?? this.isHistoryExpanded,
     );
   }
@@ -25,12 +25,12 @@ class QrioState {
 class QrioStateNotifier extends StateNotifier<QrioState> {
   QrioStateNotifier()
       : super(const QrioState(
-          selectedTabIndex: 0,
+          tabOffset: 0,
           isHistoryExpanded: false,
         ));
 
-  void setSelectedTabIndex(int value) {
-    state = state.copyWith(selectedTabIndex: value);
+  void setTabOffset(double value) {
+    state = state.copyWith(tabOffset: value);
   }
 
   void setIsHistoryExpanded(bool value) {
