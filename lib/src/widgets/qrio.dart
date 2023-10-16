@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -175,8 +176,8 @@ class _QrioState extends ConsumerState<Qrio>
                   child: Stack(
                     children: [
                       Positioned(
-                        left: state.tabOffset * 128,
-                        right: (1 - state.tabOffset) * 94,
+                        left: leftCurve(state.tabOffset) * 128,
+                        right: rightCurve(state.tabOffset) * 94,
                         top: 0,
                         bottom: 0,
                         child: Container(
@@ -264,5 +265,13 @@ class _QrioState extends ConsumerState<Qrio>
         ],
       ),
     );
+  }
+
+  double leftCurve(double x) {
+    return 1 - cos(pi / 2 * x);
+  }
+
+  double rightCurve(double x) {
+    return 1 - sin(pi / 2 * x);
   }
 }
