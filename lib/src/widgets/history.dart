@@ -188,40 +188,42 @@ class History extends ConsumerWidget {
                                 .withOpacity(0.3),
                             padding: const EdgeInsets.all(16.0),
                           ),
-                          if (hisLen != 0 &&
-                              DateTime.now()
-                                      .difference(parseDate(
-                                          HistoryModel.fromJson(
-                                                  historyObj.first)
-                                              .createdAt!))
-                                      .inSeconds <
-                                  historyDurationSeconds)
-                            Container(
-                              alignment: Alignment.center,
-                              constraints: BoxConstraints(
-                                minWidth: isShort ? badgeSize : 0,
-                                minHeight: badgeSize,
-                                maxWidth: isShort ? badgeSize : double.infinity,
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: isShort ? 0 : 5),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(badgeSize),
-                                color: Theme.of(context).colorScheme.error,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  '${newHistory.length}',
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w500,
-                                    height: 1,
-                                    color:
-                                        Theme.of(context).colorScheme.onError,
-                                  ),
-                                ),
-                              ),
+                          AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            alignment: Alignment.center,
+                            clipBehavior: Clip.hardEdge,
+                            width: newHistory.isNotEmpty
+                                ? isShort
+                                    ? badgeSize
+                                    : badgeSize +
+                                        (newHistory.length.toString().length -
+                                                1) *
+                                            7
+                                : 0,
+                            height: newHistory.isNotEmpty ? badgeSize : 0,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(badgeSize),
+                              color: Theme.of(context).colorScheme.error,
                             ),
+                            child: Center(
+                              child: hisLen != 0 && newHistory.isNotEmpty
+                                  ? Text(
+                                      '${newHistory.length}',
+                                      softWrap: false,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.visible,
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w500,
+                                        height: 1,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onError,
+                                      ),
+                                    )
+                                  : null,
+                            ),
+                          ),
                           IconButton(
                             onPressed: historyObj.isEmpty
                                 ? null
@@ -380,17 +382,17 @@ class History extends ConsumerWidget {
                             ),
                             Row(
                               children: [
-                                if (isRecent)
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 8),
-                                    width: 8,
-                                    height: 8,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4),
-                                      color:
-                                          Theme.of(context).colorScheme.error,
-                                    ),
+                                AnimatedContainer(
+                                  duration: const Duration(milliseconds: 200),
+                                  margin:
+                                      EdgeInsets.only(left: isRecent ? 4 : 0),
+                                  width: isRecent ? 8 : 0,
+                                  height: isRecent ? 8 : 0,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    color: Theme.of(context).colorScheme.error,
                                   ),
+                                ),
                                 IconButton(
                                   onPressed: () {
                                     showModalBottomSheet(
