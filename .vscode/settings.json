@@ -1,0 +1,5 @@
+{
+  "dart.flutterSdkPath": ".fvm/versions/3.19.5",
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "cSpell.words": ["LTRB", "qrio", "riverpod"]
+}

@@ -59,7 +59,7 @@ class _QrioState extends ConsumerState<Qrio>
 
     // For sharing images coming from outside the app while the app is in the memory
     _intentDataStreamSubscription =
-        ReceiveSharingIntent.getMediaStream().listen((value) {
+        ReceiveSharingIntent.instance.getMediaStream().listen((value) {
       setState(() {
         _sharedFiles = value;
         debugPrint(
@@ -79,7 +79,7 @@ class _QrioState extends ConsumerState<Qrio>
     });
 
     // For sharing images coming from outside the app while the app is closed
-    ReceiveSharingIntent.getInitialMedia().then((value) {
+    ReceiveSharingIntent.instance.getInitialMedia().then((value) {
       setState(() {
         _sharedFiles = value;
         debugPrint(
@@ -98,9 +98,9 @@ class _QrioState extends ConsumerState<Qrio>
 
     // For sharing or opening urls/text coming from outside the app while the app is in the memory
     _intentDataStreamSubscription =
-        ReceiveSharingIntent.getTextStream().listen((value) {
+        ReceiveSharingIntent.instance.getMediaStream().listen((value) {
       setState(() {
-        _sharedText = value;
+        _sharedText = value.toString();
         debugPrint('Shared: $_sharedText');
         addHistoryData(
             _sharedText!, historyTypeShareTxt, DateTime.now().toString());
@@ -110,9 +110,9 @@ class _QrioState extends ConsumerState<Qrio>
     });
 
     // For sharing or opening urls/text coming from outside the app while the app is closed
-    ReceiveSharingIntent.getInitialText().then((value) {
+    ReceiveSharingIntent.instance.getInitialMedia().then((value) {
       setState(() {
-        _sharedText = value;
+        _sharedText = value.toString();
         debugPrint('Shared: $_sharedText');
         addHistoryData(
             _sharedText!, historyTypeShareTxt, DateTime.now().toString());
@@ -135,14 +135,14 @@ class _QrioState extends ConsumerState<Qrio>
     final leftColor = Color.alphaBlend(
       Theme.of(context)
           .colorScheme
-          .onBackground
+          .onSurface
           .withOpacity(0.5 * state.tabOffset),
       navBgColor,
     );
     final rightColor = Color.alphaBlend(
       Theme.of(context)
           .colorScheme
-          .onBackground
+          .onSurface
           .withOpacity(0.5 * (1 - state.tabOffset)),
       navBgColor,
     );
