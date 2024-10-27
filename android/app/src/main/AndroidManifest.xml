@@ -59,7 +59,7 @@
                 Add this filter, if you want support opening urls into your app-->
                 <data
                     android:scheme="https"
-                    android:host="example.com"
+                    android:host="qrio.gajeroll.com"
                     android:pathPrefix="/invite" />
             </intent-filter>
 
