@@ -44,6 +44,7 @@ app.*.map.json
 /android/app/release
 
 *.jks
+*.pem
 keystore.properties
 
 # FVM Version Cache
