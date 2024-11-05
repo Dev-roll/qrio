@@ -38,20 +38,24 @@ class CustomQrImage extends ConsumerWidget {
               ? Theme.of(context).primaryColor
               : Theme.of(context).colorScheme.onPrimary;
 
-          return QrImageView(
-            padding: const EdgeInsets.all(24),
-            data: data ?? config.data,
-            size: config.size,
-            backgroundColor: backgroundColor,
-            version: config.version,
-            errorCorrectionLevel: config.errorCorrectLevel,
-            eyeStyle: QrEyeStyle(
-              eyeShape: config.eyeShape,
-              color: foregroundColor,
-            ),
-            dataModuleStyle: QrDataModuleStyle(
-              dataModuleShape: config.dataModuleShape,
-              color: foregroundColor,
+          return Container(
+            padding: const EdgeInsets.all(16),
+            color: backgroundColor,
+            child: QrImageView(
+              padding: const EdgeInsets.all(0),
+              data: data ?? config.data,
+              size: config.size,
+              backgroundColor: backgroundColor,
+              version: config.version,
+              errorCorrectionLevel: config.errorCorrectLevel,
+              eyeStyle: QrEyeStyle(
+                eyeShape: config.eyeShape,
+                color: foregroundColor,
+              ),
+              dataModuleStyle: QrDataModuleStyle(
+                dataModuleShape: config.dataModuleShape,
+                color: foregroundColor,
+              ),
             ),
           );
         },

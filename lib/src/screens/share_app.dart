@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qrio/src/qr_image_config.dart';
 import 'package:qrio/src/utils.dart';
 import 'package:qrio/src/widgets/custom_qr_image.dart';
@@ -113,20 +114,24 @@ class ShareApp extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Theme(
-                data: ThemeData(
-                  primaryColor: Theme.of(context).colorScheme.onPrimary,
+            SizedBox(
+              width: 160,
+              height: 160,
+              child: Container(
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                child: const CustomQrImage(
-                  qrImageConfig: QrImageConfig(
-                    data:
-                        'https://play.google.com/store/apps/details?id=app.web.qrio',
-                    size: 160,
+                child: Theme(
+                  data: ThemeData(
+                    primaryColor: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                  child: const CustomQrImage(
+                    qrImageConfig: QrImageConfig(
+                      data:
+                          'https://play.google.com/store/apps/details?id=app.web.qrio',
+                      errorCorrectLevel: QrErrorCorrectLevel.M,
+                    ),
                   ),
                 ),
               ),
@@ -228,20 +233,24 @@ class ShareApp extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Theme(
-                data: ThemeData(
-                  primaryColor: Theme.of(context).colorScheme.onPrimary,
+            SizedBox(
+              width: 160,
+              height: 160,
+              child: Container(
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                child: const CustomQrImage(
-                  qrImageConfig: QrImageConfig(
-                    data:
-                        'https://apps.apple.com/us/app/qr-i-o-qr-%E3%82%B3%E3%83%BC%E3%83%89-%E8%AA%AD%E3%81%BF%E5%8F%96%E3%82%8A-%E4%BD%9C%E6%88%90%E3%82%A2%E3%83%97%E3%83%AA/id1661431115',
-                    size: 160,
+                child: Theme(
+                  data: ThemeData(
+                    primaryColor: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                  child: const CustomQrImage(
+                    qrImageConfig: QrImageConfig(
+                      data:
+                          'https://apps.apple.com/us/app/qr-i-o-qr-%E3%82%B3%E3%83%BC%E3%83%89-%E8%AA%AD%E3%81%BF%E5%8F%96%E3%82%8A-%E4%BD%9C%E6%88%90%E3%82%A2%E3%83%97%E3%83%AA/id1661431115',
+                      errorCorrectLevel: QrErrorCorrectLevel.M,
+                    ),
                   ),
                 ),
               ),
