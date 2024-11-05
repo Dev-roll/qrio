@@ -12,7 +12,7 @@ part of 'history_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 HistoryModel _$HistoryModelFromJson(Map<String, dynamic> json) {
   return _HistoryModel.fromJson(json);
@@ -80,22 +80,22 @@ class _$HistoryModelCopyWithImpl<$Res, $Val extends HistoryModel>
 }
 
 /// @nodoc
-abstract class _$$_HistoryModelCopyWith<$Res>
+abstract class _$$HistoryModelImplCopyWith<$Res>
     implements $HistoryModelCopyWith<$Res> {
-  factory _$$_HistoryModelCopyWith(
-          _$_HistoryModel value, $Res Function(_$_HistoryModel) then) =
-      __$$_HistoryModelCopyWithImpl<$Res>;
+  factory _$$HistoryModelImplCopyWith(
+          _$HistoryModelImpl value, $Res Function(_$HistoryModelImpl) then) =
+      __$$HistoryModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String data, bool pinned, String? type, String? createdAt});
 }
 
 /// @nodoc
-class __$$_HistoryModelCopyWithImpl<$Res>
-    extends _$HistoryModelCopyWithImpl<$Res, _$_HistoryModel>
-    implements _$$_HistoryModelCopyWith<$Res> {
-  __$$_HistoryModelCopyWithImpl(
-      _$_HistoryModel _value, $Res Function(_$_HistoryModel) _then)
+class __$$HistoryModelImplCopyWithImpl<$Res>
+    extends _$HistoryModelCopyWithImpl<$Res, _$HistoryModelImpl>
+    implements _$$HistoryModelImplCopyWith<$Res> {
+  __$$HistoryModelImplCopyWithImpl(
+      _$HistoryModelImpl _value, $Res Function(_$HistoryModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -106,7 +106,7 @@ class __$$_HistoryModelCopyWithImpl<$Res>
     Object? type = freezed,
     Object? createdAt = freezed,
   }) {
-    return _then(_$_HistoryModel(
+    return _then(_$HistoryModelImpl(
       data: null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -129,12 +129,12 @@ class __$$_HistoryModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_HistoryModel implements _HistoryModel {
-  const _$_HistoryModel(
+class _$HistoryModelImpl implements _HistoryModel {
+  const _$HistoryModelImpl(
       {required this.data, required this.pinned, this.type, this.createdAt});
 
-  factory _$_HistoryModel.fromJson(Map<String, dynamic> json) =>
-      _$$_HistoryModelFromJson(json);
+  factory _$HistoryModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$HistoryModelImplFromJson(json);
 
   @override
   final String data;
@@ -151,10 +151,10 @@ class _$_HistoryModel implements _HistoryModel {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_HistoryModel &&
+            other is _$HistoryModelImpl &&
             (identical(other.data, data) || other.data == data) &&
             (identical(other.pinned, pinned) || other.pinned == pinned) &&
             (identical(other.type, type) || other.type == type) &&
@@ -169,12 +169,12 @@ class _$_HistoryModel implements _HistoryModel {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_HistoryModelCopyWith<_$_HistoryModel> get copyWith =>
-      __$$_HistoryModelCopyWithImpl<_$_HistoryModel>(this, _$identity);
+  _$$HistoryModelImplCopyWith<_$HistoryModelImpl> get copyWith =>
+      __$$HistoryModelImplCopyWithImpl<_$HistoryModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_HistoryModelToJson(
+    return _$$HistoryModelImplToJson(
       this,
     );
   }
@@ -185,10 +185,10 @@ abstract class _HistoryModel implements HistoryModel {
       {required final String data,
       required final bool pinned,
       final String? type,
-      final String? createdAt}) = _$_HistoryModel;
+      final String? createdAt}) = _$HistoryModelImpl;
 
   factory _HistoryModel.fromJson(Map<String, dynamic> json) =
-      _$_HistoryModel.fromJson;
+      _$HistoryModelImpl.fromJson;
 
   @override
   String get data;
@@ -200,6 +200,6 @@ abstract class _HistoryModel implements HistoryModel {
   String? get createdAt;
   @override
   @JsonKey(ignore: true)
-  _$$_HistoryModelCopyWith<_$_HistoryModel> get copyWith =>
+  _$$HistoryModelImplCopyWith<_$HistoryModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
