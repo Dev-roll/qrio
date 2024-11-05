@@ -58,10 +58,23 @@ class QrCodePreview extends ConsumerWidget {
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: 240,
+                Container(
+                  width: 224,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(32),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .background
+                            .withOpacity(0.75),
+                        blurRadius: 12,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                  ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
                         onPressed: () async {
