@@ -4,10 +4,11 @@ import 'package:qrio/main.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+final temporaryThemeModeProvider =
+    StateProvider((ref) => ref.watch(themeModeProvider));
+
 class SelectThemeDialog extends ConsumerWidget {
-  SelectThemeDialog({super.key});
-  final temporaryThemeModeProvider =
-      StateProvider((ref) => ref.watch(themeModeProvider));
+  const SelectThemeDialog({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
