@@ -81,12 +81,12 @@ android {
         }
     }
 
-
-    if (keystorePropertiesFile.exists()) {
-        play {
-            serviceAccountCredentials = rootProject.file(keystoreProperties['serviceAccountFile'])
-        }
-    }
+    // turn off the comment-out when RELEASE
+    // if (keystorePropertiesFile.exists()) {
+    //     play {
+    //         serviceAccountCredentials = rootProject.file(keystoreProperties['serviceAccountFile'])
+    //     }
+    // }
 
 }
 
