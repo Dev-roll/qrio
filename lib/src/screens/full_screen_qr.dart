@@ -51,9 +51,10 @@ class FullScreenQr extends HookWidget {
               );
             },
           ),
-          Center(
-            child: Container(
-              alignment: Alignment.center,
+          Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(24),
+            child: SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               child: const FittedBox(
