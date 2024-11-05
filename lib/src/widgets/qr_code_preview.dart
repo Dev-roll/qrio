@@ -8,6 +8,7 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:qrio/src/app.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/qr_image_config.dart';
+import 'package:qrio/src/screens/full_screen_qr.dart';
 import 'package:qrio/src/utils.dart';
 import 'package:qrio/src/widgets/custom_qr_image.dart';
 import 'package:share_plus/share_plus.dart';
@@ -20,7 +21,7 @@ class QrCodePreview extends ConsumerWidget {
     final boundary =
         globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
     final image = await boundary.toImage(
-      pixelRatio: 3,
+      pixelRatio: 10,
     );
     final byteData = image.toByteData(
       format: ui.ImageByteFormat.png,
@@ -31,9 +32,6 @@ class QrCodePreview extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     QrImageConfig qrImageConfig = ref.watch(qrImageConfigProvider);
-    final bool isGray =
-        qrImageConfig.qrSeedColor.red == qrImageConfig.qrSeedColor.green &&
-            qrImageConfig.qrSeedColor.green == qrImageConfig.qrSeedColor.blue;
 
     return Container(
       alignment: Alignment.center,
@@ -45,32 +43,51 @@ class QrCodePreview extends ConsumerWidget {
                   margin: const EdgeInsets.fromLTRB(20, 8, 20, 0),
                   height: 200,
                   child: FittedBox(
-                    child: RepaintBoundary(
-                      key: _qrKey,
-                      child: Theme(
-                        data: ThemeData(
-                            colorSchemeSeed:
-                                !isGray ? qrImageConfig.qrSeedColor : null,
-                            primaryColor:
-                                isGray ? qrImageConfig.qrSeedColor : null),
-                        child: CustomQrImage(qrImageConfig: qrImageConfig),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const FullScreenQr(),
+                          ),
+                        );
+                      },
+                      child: RepaintBoundary(
+                        key: _qrKey,
+                        child: const CustomQrImage(),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: 240,
+                Container(
+                  width: 224,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(32),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .background
+                            .withOpacity(0.75),
+                        blurRadius: 8,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                  ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
                         onPressed: () async {
                           final bytes = await exportToImage(_qrKey);
                           final widgetImageBytes = bytes?.buffer.asUint8List(
-                              bytes.offsetInBytes, bytes.lengthInBytes);
+                            bytes.offsetInBytes,
+                            bytes.lengthInBytes,
+                          );
                           final applicationDocumentsFile =
                               await getApplicationDocumentsFile(
-                                  'qrImage', widgetImageBytes!);
+                            'qrImage',
+                            widgetImageBytes!,
+                          );
                           final path = applicationDocumentsFile.path;
                           await Share.shareXFiles(
                             [XFile(path)],

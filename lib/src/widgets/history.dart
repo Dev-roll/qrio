@@ -1,19 +1,17 @@
 import 'dart:convert';
 import 'dart:math' as math;
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qrio/src/app.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/models/history_model.dart';
+import 'package:qrio/src/physics/qrio_scroll_physics.dart';
 import 'package:qrio/src/utils.dart';
-import 'package:qrio/src/widgets/data_bottom_sheet.dart';
+import 'package:qrio/src/widgets/history_item.dart';
 import 'package:qrio/src/widgets/history_menu_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 final FutureProvider futureProvider = FutureProvider<dynamic>((ref) async {
   final prefs = await SharedPreferences.getInstance();
@@ -110,6 +108,13 @@ class History extends ConsumerWidget {
             })
             .map((entry) => entry.key)
             .toList();
+        // 履歴の並び順を変更するための処理
+        List<int> combinedHistory = [
+          ...newHistory,
+          ...pinnedHistory,
+          ...unpinnedHistory
+        ];
+        // 履歴が10件以下であるか否か
         bool isShort = newHistory.length < 10;
 
         return ConstrainedBox(
@@ -282,144 +287,24 @@ class History extends ConsumerWidget {
                 height: scrollContentHeight,
                 child: ListView.builder(
                   controller: controller,
-                  physics: const CustomBouncingScrollPhysics(),
+                  physics: const QrioScrollPhysics(),
                   padding: const EdgeInsets.fromLTRB(0, 8, 0, 80),
                   itemCount: hisLen,
                   itemBuilder: (context, i) {
-                    List<int> combinedHistory = [
-                      ...newHistory,
-                      ...pinnedHistory,
-                      ...unpinnedHistory
-                    ];
+                    // 履歴一覧の一番上に表示されるアイテムか否か
+                    final isTop = i == 0;
+                    // 仮のインデックス
                     int idx = combinedHistory[i];
+                    // 履歴DB`historyObj`におけるインデックス
                     int index = hisLen - idx - 1;
-                    HistoryModel model = HistoryModel.fromJson(historyObj[idx]);
-                    String data = model.data;
-                    String type = model.type ?? noData;
-                    bool pinned = model.pinned;
-                    String createdAt = model.createdAt ?? noData;
-
-                    bool isRecent = false;
-                    if (createdAt != noData) {
-                      isRecent = DateTime.now()
-                              .difference(parseDate(createdAt))
-                              .inSeconds <
-                          historyDurationSeconds;
-                    }
-
-                    return Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () async {
-                          if (await canLaunchUrl(Uri.parse(data))) {
-                            // ignore: use_build_context_synchronously
-                            await launchURL(context, data);
-                          } else {
-                            await Clipboard.setData(
-                              ClipboardData(text: data),
-                            ).then((_) {
-                              showBottomSnackBar(
-                                context,
-                                'クリップボードにコピーしました',
-                                icon: Icons.library_add_check_rounded,
-                              );
-                            });
-                          }
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: isHistoryExpanded
-                              ? CrossAxisAlignment.start
-                              : CrossAxisAlignment.center,
-                          children: [
-                            const SizedBox(width: 4),
-                            IconButton(
-                              onPressed: () {
-                                switchPinned(index);
-                              },
-                              icon: Icon(
-                                pinned
-                                    ? Icons.star_rounded
-                                    : Icons.star_border_rounded,
-                                color: pinned
-                                    ? Theme.of(context).colorScheme.primary
-                                    : Theme.of(context)
-                                        .colorScheme
-                                        .onBackground
-                                        .withOpacity(0.5),
-                              ),
-                              padding: const EdgeInsets.all(16.0),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: isHistoryExpanded ? 16 : 0,
-                                ),
-                                child: Text(
-                                  data,
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    height: 1.6,
-                                    color: linkFormat.hasMatch(data.toString())
-                                        ? Theme.of(context)
-                                            .colorScheme
-                                            .secondary
-                                        : Theme.of(context)
-                                            .colorScheme
-                                            .onBackground,
-                                    decoration:
-                                        linkFormat.hasMatch(data.toString())
-                                            ? TextDecoration.underline
-                                            : TextDecoration.none,
-                                  ),
-                                  overflow: isHistoryExpanded
-                                      ? TextOverflow.visible
-                                      : TextOverflow.fade,
-                                  maxLines: isHistoryExpanded ? 100 : 1,
-                                  softWrap: isHistoryExpanded,
-                                ),
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                AnimatedContainer(
-                                  duration: const Duration(milliseconds: 200),
-                                  margin:
-                                      EdgeInsets.only(left: isRecent ? 4 : 0),
-                                  width: isRecent ? 8 : 0,
-                                  height: isRecent ? 8 : 0,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    color: Theme.of(context).colorScheme.error,
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      builder: (context) {
-                                        return DataBottomSheet(
-                                          index: index,
-                                          data: data,
-                                          type: type,
-                                          pinned: pinned,
-                                          createdAt: createdAt,
-                                          ref: ref,
-                                        );
-                                      },
-                                      backgroundColor: Colors.transparent,
-                                      isScrollControlled: true,
-                                    );
-                                  },
-                                  icon: const Icon(Icons.more_vert_rounded),
-                                  padding: const EdgeInsets.all(16.0),
-                                ),
-                                const SizedBox(width: 4),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                    HistoryModel history =
+                        HistoryModel.fromJson(historyObj[idx]);
+                    return HistoryItem(
+                      history: history,
+                      index: index,
+                      isTop: isTop,
+                      isHistoryExpanded: isHistoryExpanded,
+                      ref: ref,
                     );
                   },
                 ),
@@ -457,98 +342,4 @@ class History extends ConsumerWidget {
       },
     );
   }
-}
-
-class CustomBouncingScrollPhysics extends ScrollPhysics {
-  const CustomBouncingScrollPhysics({
-    this.decelerationRate = ScrollDecelerationRate.normal,
-    super.parent,
-  });
-
-  final ScrollDecelerationRate decelerationRate;
-
-  @override
-  CustomBouncingScrollPhysics applyTo(ScrollPhysics? ancestor) {
-    return CustomBouncingScrollPhysics(
-        parent: buildParent(ancestor), decelerationRate: decelerationRate);
-  }
-
-  double frictionFactor(double overscrollFraction) {
-    return 0.01 * math.pow(1 - overscrollFraction, 2);
-  }
-
-  @override
-  double applyPhysicsToUserOffset(ScrollMetrics position, double offset) {
-    assert(offset != 0.0);
-    assert(position.minScrollExtent <= position.maxScrollExtent);
-
-    if (!position.outOfRange) {
-      return offset;
-    }
-
-    final double overscrollPastStart =
-        math.max(position.minScrollExtent - position.pixels, 0.0);
-    final double overscrollPastEnd =
-        math.max(position.pixels - position.maxScrollExtent, 0.0);
-    final double overscrollPast =
-        math.max(overscrollPastStart, overscrollPastEnd);
-    final bool easing = (overscrollPastStart > 0.0 && offset < 0.0) ||
-        (overscrollPastEnd > 0.0 && offset > 0.0);
-
-    final double friction = easing
-        ? frictionFactor(
-            (overscrollPast - offset.abs()) / position.viewportDimension)
-        : frictionFactor(overscrollPast / position.viewportDimension);
-    final double direction = offset.sign;
-
-    return direction * _applyFriction(overscrollPast, offset.abs(), friction);
-  }
-
-  static double _applyFriction(
-      double extentOutside, double absDelta, double gamma) {
-    assert(absDelta > 0);
-    double total = 0.0;
-    if (extentOutside > 0) {
-      final double deltaToLimit = extentOutside / gamma;
-      if (absDelta < deltaToLimit) {
-        return absDelta * gamma;
-      }
-      total += extentOutside;
-      absDelta -= deltaToLimit;
-    }
-    return total + absDelta;
-  }
-
-  @override
-  double applyBoundaryConditions(ScrollMetrics position, double value) => 0.0;
-
-  @override
-  Simulation? createBallisticSimulation(
-      ScrollMetrics position, double velocity) {
-    final Tolerance tolerance = toleranceFor(position);
-    if (velocity.abs() >= tolerance.velocity || position.outOfRange) {
-      return BouncingScrollSimulation(
-          spring: spring,
-          position: position.pixels,
-          velocity: velocity,
-          leadingExtent: position.minScrollExtent,
-          trailingExtent: position.maxScrollExtent,
-          tolerance: tolerance,
-          constantDeceleration: 0);
-    }
-    return null;
-  }
-
-  @override
-  double get minFlingVelocity => kMinFlingVelocity * 2.0;
-
-  @override
-  double carriedMomentum(double existingVelocity) {
-    return existingVelocity.sign *
-        math.min(0.000816 * math.pow(existingVelocity.abs(), 1.967).toDouble(),
-            40000.0);
-  }
-
-  @override
-  double get dragStartDistanceMotionThreshold => 3.5;
 }

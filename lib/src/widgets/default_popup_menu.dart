@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qrio/main.dart';
 import 'package:qrio/src/app.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/enums/default_popup_menu_items_type.dart';
@@ -18,7 +19,7 @@ class _DefaultPopupMenuState extends ConsumerState<DefaultPopupMenu>
     with SingleTickerProviderStateMixin {
   OverlayEntry? _overlayEntry;
   bool _isMenuOpen = false;
-  final openSelectThemeDialog = openDialogFactory(SelectThemeDialog());
+  final openSelectThemeDialog = openDialogFactory(const SelectThemeDialog());
   late final AnimationController _animationController;
 
   @override
@@ -112,6 +113,11 @@ class _DefaultPopupMenuState extends ConsumerState<DefaultPopupMenu>
                                   );
                                   break;
                                 case DefaultPopupMenuItemsType.selectTheme:
+                                  final currentThemeMode =
+                                      ref.read(themeModeProvider);
+                                  ref
+                                      .read(temporaryThemeModeProvider.notifier)
+                                      .state = currentThemeMode;
                                   openSelectThemeDialog(context);
                                   break;
                                 case DefaultPopupMenuItemsType.about:

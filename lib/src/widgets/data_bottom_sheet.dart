@@ -8,6 +8,7 @@ import 'package:qrio/src/app.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/utils.dart';
 import 'package:qrio/src/widgets/config_items.dart';
+import 'package:qrio/src/widgets/custom_qr_image.dart';
 import 'package:share_plus/share_plus.dart';
 
 class DataBottomSheet extends HookWidget {
@@ -368,6 +369,26 @@ class DataBottomSheet extends HookWidget {
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
+                  const Spacer(),
+                  Container(
+                    width: 52,
+                    height: 52,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        width: 2,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                    child: Container(
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: FittedBox(child: CustomQrImage(data: data)),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
                 ],
               ),
             ),
