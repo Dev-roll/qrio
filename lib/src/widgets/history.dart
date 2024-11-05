@@ -3,17 +3,15 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qrio/src/app.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/models/history_model.dart';
 import 'package:qrio/src/physics/qrio_scroll_physics.dart';
 import 'package:qrio/src/utils.dart';
-import 'package:qrio/src/widgets/data_bottom_sheet.dart';
+import 'package:qrio/src/widgets/history_item.dart';
 import 'package:qrio/src/widgets/history_menu_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 final FutureProvider futureProvider = FutureProvider<dynamic>((ref) async {
   final prefs = await SharedPreferences.getInstance();
@@ -110,6 +108,13 @@ class History extends ConsumerWidget {
             })
             .map((entry) => entry.key)
             .toList();
+        // 履歴の並び順を変更するための処理
+        List<int> combinedHistory = [
+          ...newHistory,
+          ...pinnedHistory,
+          ...unpinnedHistory
+        ];
+        // 履歴が10件以下であるか否か
         bool isShort = newHistory.length < 10;
 
         return ConstrainedBox(
@@ -286,157 +291,20 @@ class History extends ConsumerWidget {
                   padding: const EdgeInsets.fromLTRB(0, 8, 0, 80),
                   itemCount: hisLen,
                   itemBuilder: (context, i) {
-                    // 履歴の並び順を変更するための処理
-                    List<int> combinedHistory = [
-                      ...newHistory,
-                      ...pinnedHistory,
-                      ...unpinnedHistory
-                    ];
+                    // 履歴一覧の一番上に表示されるアイテムか否か
+                    final isTop = i == 0;
                     // 仮のインデックス
                     int idx = combinedHistory[i];
                     // 履歴DB`historyObj`におけるインデックス
                     int index = hisLen - idx - 1;
-                    HistoryModel model = HistoryModel.fromJson(historyObj[idx]);
-                    String data = model.data;
-                    String type = model.type ?? noData;
-                    bool pinned = model.pinned;
-                    String createdAt = model.createdAt ?? noData;
-
-                    // 履歴一覧の一番上に表示するアイテムかどうか
-                    final isTop = i == 0;
-
-                    bool isRecent = false;
-                    if (createdAt != noData) {
-                      isRecent = DateTime.now()
-                              .difference(parseDate(createdAt))
-                              .inSeconds <
-                          historyDurationSeconds;
-                    }
-
-                    return Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () async {
-                          if (await canLaunchUrl(Uri.parse(data))) {
-                            // ignore: use_build_context_synchronously
-                            await launchURL(context, data);
-                          } else {
-                            await Clipboard.setData(
-                              ClipboardData(text: data),
-                            ).then((_) {
-                              showBottomSnackBar(
-                                context,
-                                'クリップボードにコピーしました',
-                                icon: Icons.library_add_check_rounded,
-                              );
-                            });
-                          }
-                        },
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 200),
-                          color: isTop && isRecent
-                              ? Theme.of(context)
-                                  .colorScheme
-                                  .primary
-                                  .withOpacity(0.5)
-                              : Colors.transparent,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: isHistoryExpanded
-                                ? CrossAxisAlignment.start
-                                : CrossAxisAlignment.center,
-                            children: [
-                              const SizedBox(width: 4),
-                              IconButton(
-                                onPressed: () {
-                                  switchPinned(index);
-                                },
-                                icon: Icon(
-                                  pinned
-                                      ? Icons.star_rounded
-                                      : Icons.star_border_rounded,
-                                  color: pinned
-                                      ? Theme.of(context).colorScheme.primary
-                                      : Theme.of(context)
-                                          .colorScheme
-                                          .onBackground
-                                          .withOpacity(0.5),
-                                ),
-                                padding: const EdgeInsets.all(16.0),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: isHistoryExpanded ? 16 : 0,
-                                  ),
-                                  child: Text(
-                                    data,
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      height: 1.6,
-                                      color:
-                                          linkFormat.hasMatch(data.toString())
-                                              ? Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary
-                                              : Theme.of(context)
-                                                  .colorScheme
-                                                  .onBackground,
-                                      decoration:
-                                          linkFormat.hasMatch(data.toString())
-                                              ? TextDecoration.underline
-                                              : TextDecoration.none,
-                                    ),
-                                    overflow: isHistoryExpanded
-                                        ? TextOverflow.visible
-                                        : TextOverflow.fade,
-                                    maxLines: isHistoryExpanded ? 100 : 1,
-                                    softWrap: isHistoryExpanded,
-                                  ),
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  AnimatedContainer(
-                                    duration: const Duration(milliseconds: 200),
-                                    margin:
-                                        EdgeInsets.only(left: isRecent ? 4 : 0),
-                                    width: isRecent ? 8 : 0,
-                                    height: isRecent ? 8 : 0,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4),
-                                      color:
-                                          Theme.of(context).colorScheme.error,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      showModalBottomSheet(
-                                        context: context,
-                                        builder: (context) {
-                                          return DataBottomSheet(
-                                            index: index,
-                                            data: data,
-                                            type: type,
-                                            pinned: pinned,
-                                            createdAt: createdAt,
-                                            ref: ref,
-                                          );
-                                        },
-                                        backgroundColor: Colors.transparent,
-                                        isScrollControlled: true,
-                                      );
-                                    },
-                                    icon: const Icon(Icons.more_vert_rounded),
-                                    padding: const EdgeInsets.all(16.0),
-                                  ),
-                                  const SizedBox(width: 4),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                    HistoryModel history =
+                        HistoryModel.fromJson(historyObj[idx]);
+                    return HistoryItem(
+                      history: history,
+                      index: index,
+                      isTop: isTop,
+                      isHistoryExpanded: isHistoryExpanded,
+                      ref: ref,
                     );
                   },
                 ),
