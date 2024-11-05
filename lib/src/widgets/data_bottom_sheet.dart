@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:qrio/src/app.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/utils.dart';
 import 'package:qrio/src/widgets/config_items.dart';
+import 'package:qrio/src/widgets/custom_qr_image.dart';
 import 'package:share_plus/share_plus.dart';
 
 class DataBottomSheet extends HookWidget {
@@ -379,10 +379,14 @@ class DataBottomSheet extends HookWidget {
                         width: 2,
                         color: Theme.of(context).colorScheme.secondary,
                       ),
-                      color: Colors.white,
                     ),
-                    clipBehavior: Clip.hardEdge,
-                    child: QrImageView(data: data),
+                    child: Container(
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: FittedBox(child: CustomQrImage(data: data)),
+                    ),
                   ),
                   const SizedBox(width: 16),
                 ],
