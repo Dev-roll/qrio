@@ -142,6 +142,7 @@ Future<bool?> addHistoryData(
       historyObj.map((e) => HistoryModel.fromJson(e)).toList();
   final String addStr = data.trim();
   if (addStr.isNotEmpty &&
+      addStr != '[]' &&
       (historyModelList.isEmpty || historyModelList.last.data != addStr)) {
     final addObj = HistoryModel(
       data: addStr,
