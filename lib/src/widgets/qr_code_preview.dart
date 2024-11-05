@@ -8,6 +8,7 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:qrio/src/app.dart';
 import 'package:qrio/src/constants.dart';
 import 'package:qrio/src/qr_image_config.dart';
+import 'package:qrio/src/screens/full_screen_qr.dart';
 import 'package:qrio/src/utils.dart';
 import 'package:qrio/src/widgets/custom_qr_image.dart';
 import 'package:share_plus/share_plus.dart';
@@ -31,9 +32,6 @@ class QrCodePreview extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     QrImageConfig qrImageConfig = ref.watch(qrImageConfigProvider);
-    final bool isGray =
-        qrImageConfig.qrSeedColor.red == qrImageConfig.qrSeedColor.green &&
-            qrImageConfig.qrSeedColor.green == qrImageConfig.qrSeedColor.blue;
 
     return Container(
       alignment: Alignment.center,
@@ -45,15 +43,17 @@ class QrCodePreview extends ConsumerWidget {
                   margin: const EdgeInsets.fromLTRB(20, 8, 20, 0),
                   height: 200,
                   child: FittedBox(
-                    child: RepaintBoundary(
-                      key: _qrKey,
-                      child: Theme(
-                        data: ThemeData(
-                            colorSchemeSeed:
-                                !isGray ? qrImageConfig.qrSeedColor : null,
-                            primaryColor:
-                                isGray ? qrImageConfig.qrSeedColor : null),
-                        child: CustomQrImage(qrImageConfig: qrImageConfig),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const FullScreenQr(),
+                          ),
+                        );
+                      },
+                      child: RepaintBoundary(
+                        key: _qrKey,
+                        child: const CustomQrImage(),
                       ),
                     ),
                   ),
@@ -62,16 +62,10 @@ class QrCodePreview extends ConsumerWidget {
                   width: 224,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(32),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .background
-                            .withOpacity(0.75),
-                        blurRadius: 12,
-                        offset: const Offset(0, 8),
-                      ),
-                    ],
+                    color: Theme.of(context)
+                        .colorScheme
+                        .background
+                        .withOpacity(0.75),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
