@@ -143,6 +143,7 @@ Future<bool?> addHistoryData(
   final String addStr = data.trim();
   if (addStr.isNotEmpty &&
       addStr != '[]' &&
+      !addStr.startsWith('[Instance of') &&
       (historyModelList.isEmpty || historyModelList.last.data != addStr)) {
     final addObj = HistoryModel(
       data: addStr,
