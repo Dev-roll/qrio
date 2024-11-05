@@ -6,7 +6,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 class QrImageConfig {
   const QrImageConfig({
     required this.data,
-    this.size = 280,
+    this.size = 100,
     this.qrSeedColor = const Color(0xFF333333),
     this.version = QrVersions.auto,
     this.errorCorrectLevel = QrErrorCorrectLevel.L,

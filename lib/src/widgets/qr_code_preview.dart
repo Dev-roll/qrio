@@ -21,7 +21,7 @@ class QrCodePreview extends ConsumerWidget {
     final boundary =
         globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
     final image = await boundary.toImage(
-      pixelRatio: 3,
+      pixelRatio: 10,
     );
     final byteData = image.toByteData(
       format: ui.ImageByteFormat.png,
@@ -62,10 +62,16 @@ class QrCodePreview extends ConsumerWidget {
                   width: 224,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(32),
-                    color: Theme.of(context)
-                        .colorScheme
-                        .background
-                        .withOpacity(0.75),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .background
+                            .withOpacity(0.75),
+                        blurRadius: 8,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -74,10 +80,14 @@ class QrCodePreview extends ConsumerWidget {
                         onPressed: () async {
                           final bytes = await exportToImage(_qrKey);
                           final widgetImageBytes = bytes?.buffer.asUint8List(
-                              bytes.offsetInBytes, bytes.lengthInBytes);
+                            bytes.offsetInBytes,
+                            bytes.lengthInBytes,
+                          );
                           final applicationDocumentsFile =
                               await getApplicationDocumentsFile(
-                                  'qrImage', widgetImageBytes!);
+                            'qrImage',
+                            widgetImageBytes!,
+                          );
                           final path = applicationDocumentsFile.path;
                           await Share.shareXFiles(
                             [XFile(path)],
