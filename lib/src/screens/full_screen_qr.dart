@@ -37,22 +37,29 @@ class FullScreenQr extends HookWidget {
       body: Stack(
         children: [
           AnimatedBuilder(
-              animation: animationController,
-              builder: (context, _) {
-                return Opacity(
-                  opacity: animation.value,
-                  child: Container(
-                    alignment: Alignment.topLeft,
-                    child: AppBar(
-                      backgroundColor: Colors.transparent,
-                      elevation: 0,
-                    ),
+            animation: animationController,
+            builder: (context, _) {
+              return Opacity(
+                opacity: animation.value,
+                child: Container(
+                  alignment: Alignment.topLeft,
+                  child: AppBar(
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
                   ),
-                );
-              }),
-          Container(
-            alignment: Alignment.center,
-            child: const CustomQrImage(),
+                ),
+              );
+            },
+          ),
+          Center(
+            child: Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: const FittedBox(
+                child: CustomQrImage(),
+              ),
+            ),
           ),
         ],
       ),
